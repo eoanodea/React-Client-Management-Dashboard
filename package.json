@@ -13,7 +13,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "sass": "sass src/css/sass/style.scss src/css/style.min.css --watch",
-    "dev": "concurrently \"npm run server\" \"npm run sass\""
+    "dev": "concurrently \"npm run start\" \"npm run sass\""
   },
   "eslintConfig": {
     "extends": "react-app"

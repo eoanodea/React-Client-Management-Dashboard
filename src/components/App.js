@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import './App.css';
+import '../css/style.min.css';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <div className="app">
 
         
       </div>
