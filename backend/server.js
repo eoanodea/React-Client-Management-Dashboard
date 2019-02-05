@@ -62,20 +62,23 @@ router.delete("/deleteData", (req, res) => {
   });
 });
 
-// this is our create methid
+// this is our create method
 // this method adds new data in our database
 router.post("/putData", (req, res) => {
   let data = new Data();
 
-  const { id, message } = req.body;
+  const { id, taskName, taskDesc, project, dueDate } = req.body;
 
-  if ((!id && id !== 0) || !message) {
+  if ((!id && id !== 0) || !taskName) {
     return res.json({
       success: false,
       error: "INVALID INPUTS"
     });
   }
-  data.message = message;
+  data.taskName = taskName;
+  data.taskDesc = taskDesc;
+  data.taskProject = taskProject;
+  data.taskDueDate = taskDueDate;
   data.id = id;
   data.save(err => {
     if (err) return res.json({ success: false, error: err });

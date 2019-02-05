@@ -4,16 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"cd backend && node server.js\" \"cd client && npm start\""
+    "dev": "concurrently \"cd backend && node server.js\" \"cd client && npm run start\" \"cd client && npm run sass\""
   },
   "repository": {
     "type": "git",
     "url": "git+https://gitlab.mi.hdm-stuttgart.de/eo023/client-management-system.git"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Eoan O'Dea",
   "license": "ISC",
   "dependencies": {
+    "bootstrap": "^4.2.1",
     "concurrently": "^4.1.0"
   }
 }
