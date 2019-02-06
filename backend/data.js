@@ -8,6 +8,7 @@ const DataSchema = new Schema(
     taskName: String,
     taskDesc: String,
     taskProject: String,
+    taskHours: String,
     taskDueDate: String
   },
   { timestamps: true }

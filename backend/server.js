@@ -67,7 +67,14 @@ router.delete("/deleteData", (req, res) => {
 router.post("/putData", (req, res) => {
   let data = new Data();
 
-  const { id, taskName, taskDesc, project, dueDate } = req.body;
+  const { 
+    id, 
+    taskName, 
+    taskDesc, 
+    taskProject, 
+    taskHours, 
+    taskDueDate 
+  } = req.body;
 
   if ((!id && id !== 0) || !taskName) {
     return res.json({
@@ -78,6 +85,7 @@ router.post("/putData", (req, res) => {
   data.taskName = taskName;
   data.taskDesc = taskDesc;
   data.taskProject = taskProject;
+  data.taskHours = taskHours;
   data.taskDueDate = taskDueDate;
   data.id = id;
   data.save(err => {
