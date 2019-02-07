@@ -41,6 +41,20 @@ router.get("/getData", (req, res) => {
     return res.json({ success: true, data: data });
   });
 });
+router.get("/getOne", (req, res) => {
+    const { id } = req.body;
+    Data.findOne(id, err => {
+      if (err) return res.send(err);
+      return res.json({ success: true });
+    });
+});
+
+// User.findOne({_id: id}, {explicit: true}).then(function(user) {
+//   // do something with user
+//   res.send(user
+// }).catch(function(err) {
+//   res.send({error: err})
+// })
 
 // this is our update method
 // this method overwrites existing data in our database
