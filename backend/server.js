@@ -41,11 +41,12 @@ router.get("/getData", (req, res) => {
     return res.json({ success: true, data: data });
   });
 });
+
 router.get("/getOne", (req, res) => {
     const { id } = req.body;
-    Data.findOne(id, err => {
-      if (err) return res.send(err);
-      return res.json({ success: true });
+    Data.find({id: id}, err => {
+      if (err) return res.json({ success: false, error: err });
+      return res.json({ success: true, data: data });
     });
 });
 
