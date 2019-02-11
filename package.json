@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"cd backend && node server.js\" \"cd client && npm run start\" \"cd client && npm run sass\"",
-    "global-install": "npm install & cd client && npm install & ../ cd backend & npm install"
+    "dev": "concurrently \"cd backend && node server.js\" \"cd frontend && npm run start\" \"cd client && npm run sass\"",
+    "global-install": "npm install & cd frontend && npm install & ../ cd backend & npm install"
   },
   "repository": {
     "type": "git",

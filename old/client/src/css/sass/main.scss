@@ -1,0 +1,53 @@
+@import 'import';
+
+.divider {
+    margin: 3px;
+    background-color: #fff;
+    width: 1px;
+    height: 20px;
+}
+
+// ================
+//  Animations
+// ================
+
+.table-striped tbody tr:nth-of-type(odd):hover {
+    background-color: rgba(0,0,0,.08);
+}
+.table-striped tbody tr:nth-of-type(even):hover {
+    background-color: rgba(0,0,0,.04);
+}
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0,0,0,.05);
+    transition: 0.2s ease;
+}
+.table-striped tbody tr:nth-of-type(even) {
+    transition: 0.2s ease;
+}
+
+.fade-in {
+    animation: fadeEnter 2s;
+}
+.fade-enter{
+    opacity: 0.01;
+}
+.fade-exit{
+    opacity: 1;
+}  
+.fade-exit-active{
+    opacity: 0.01;
+    transition: opacity 1000ms ease-in;
+}
+.fade-enter-active{
+    opacity: 1;
+    transition: opacity 1000ms ease-in;
+}
+@keyframes fadeEnter {
+    from {
+        opacity: 0.01;
+    }
+   
+    to {
+        opacity: 1;
+    }
+}
