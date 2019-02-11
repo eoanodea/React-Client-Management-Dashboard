@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { AppNavbar } from '../AppNavbar.Component';
+import { Dashboard } from '../Dashboard.Component';
 import 'whatwg-fetch';
+import FeatherIcon from 'feather-icons-react';
 import {
     Button,
     Form,
@@ -19,6 +22,7 @@ import {
   setInStorage
 } from '../../utilities/storage';
 
+
 export class UserLogin extends React.Component {
   constructor(props) {
     super(props);
@@ -26,24 +30,22 @@ export class UserLogin extends React.Component {
     this.state = {
       isLoading: true,
       token: '',
+      tokenUser: {
+        firstName: null,
+        lastName: null,
+      },
       signUpError: '',
       signInError: '',
       signInEmail: '',
       signInPassword: '',
-      signUpFirstName: '',
-      signUpLastName: '',
-      signUpEmail: '',
-      signUpPassword: '',
       loggedIn: false,
+      firstName: '',
+      lastName: ''
+      
     };
     this.onTextboxChangeSignInEmail = this.onTextboxChangeSignInEmail.bind(this);
     this.onTextboxChangeSignInPassword = this.onTextboxChangeSignInPassword.bind(this);
-    this.onTextboxChangeSignUpEmail = this.onTextboxChangeSignUpEmail.bind(this);
-    this.onTextboxChangeSignUpPassword = this.onTextboxChangeSignUpPassword.bind(this);
-    this.onTextboxChangeSignUpFirstName = this.onTextboxChangeSignUpFirstName.bind(this);
-    this.onTextboxChangeSignUpLastName = this.onTextboxChangeSignUpLastName.bind(this);
 
-    this.onSignUp = this.onSignUp.bind(this);
     this.logout = this.logout.bind(this);
 
     this.toggle = this.toggle.bind(this);
@@ -65,8 +67,15 @@ export class UserLogin extends React.Component {
           if (json.success) {
             this.setState({
               token,
-              isLoading: false
-            });
+              isLoading: false,
+              tokenUser: {
+                firstName: obj.firstName,
+                lastName: obj.lastName
+                }
+              });
+            
+            return (<AppNavbar user={this.state.tokenUser} />);
+
           } else {
             this.setState({
               isLoading: false
@@ -91,82 +100,9 @@ export class UserLogin extends React.Component {
       signInPassword: event.target.value
     });
   }
-  onTextboxChangeSignUpEmail(event) {
-    this.setState({
-      signUpEmail: event.target.value
-    });
-  }
-  onTextboxChangeSignUpPassword(event) {
-    this.setState({
-      signUpPassword: event.target.value
-    });
-  }
-  onTextboxChangeSignUpFirstName(event) {
-    this.setState({
-      signUpFirstName: event.target.value
-    });
-  }
-  onTextboxChangeSignUpLastName(event) {
-    this.setState({
-      signUpLastName: event.target.value
-    });
-  }
 
-    /*
-    // Gets signup info from the user and posts it to the database
-    */
 
-  onSignUp() {
-    //Grab State
-    const {
-      signUpFirstName,
-      signUpLastName,
-      signUpEmail,
-      signUpPassword
-    } = this.state;
-    
-    this.setState({
-      isLoading: true
-    });
-    //Post request to backend
-    fetch('http://localhost:3001/api/account/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        firstName: signUpFirstName,
-        lastName: signUpLastName,
-        email: signUpEmail,
-        password: signUpPassword
-      }),
-    })
-      .then(res => res.json())
-      .then(json => {
-        console.log('json', json);
-        
-        if (json.success) {
-          this.setState({
-            signUpError: json.message,
-            isLoading: false,
-            signUpEmail: '',
-            signUpPassword: '',
-            signUpFirstName: '',
-            signUpLastName: '',
-            alertMessage: "success"
-          }); 
-        
-          this.toggle('1');
-        } else {
-          this.setState({
-            signUpError: json.message,
-            isLoading: false,
-            alertMessage: "danger"
-          });
 
-        }
-      });
-  }
 
   /*
   // Gets signup info from the user and posts it to the database
@@ -199,16 +135,22 @@ export class UserLogin extends React.Component {
       .then(json => {
         console.log('json', json);
         if (json.success) {
-          setInStorage('the_main_app', { token: json.token });
+          setInStorage('the_main_app', { 
+            token: json.token, 
+            firstName: json.firstName, 
+            lastName: json.lastName 
+          });
           this.setState({
             signInError: json.message,
             isLoading: false,
             signInEmail: '',
             signInPassword: '',
-            token: json.token
+            token: json.token,
+            firstName: json.firstName,
+            lastName: json.lastName
           });
-          console.log("token received");
-          // window.location.replace("http://localhost:8080/profile/");
+          console.log(json);
+          
         } else {
           this.setState({
             signInError: json.message,
@@ -271,13 +213,19 @@ export class UserLogin extends React.Component {
       signUpPassword,
       signUpError,
       alertMessage,
+      firstName
     } = this.state;
 
     if (isLoading) {
-      return(<div><p>Loading...</p></div>);
+      return(
+        <div className="loading">
+          <FeatherIcon className="loadingIcon" icon="loader" size="54" />
+        
+        </div>
+        );
       
     }
-    // Display after the user has successfully logged in
+    // Display before user logs in
     if(!isLoading && !token) {
       return(
         <div>
@@ -397,7 +345,8 @@ export class UserLogin extends React.Component {
     } else {
       return (
         <div>
-          
+          <h1>{this.state.tokenUser.firstName}</h1>
+          <Dashboard />
           <Button 
             color="dark"
             onClick={this.logout}

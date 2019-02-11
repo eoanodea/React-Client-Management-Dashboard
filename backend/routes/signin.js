@@ -118,10 +118,10 @@ var router = express.Router();
          email: email
      }, (err, users) => {
          if(err) {
-             console.log('Error 2', err);
+             console.log('Invalid email', err);
              return res.send({
                  success: false,
-                 message: 'Error: server error'
+                 message: 'Invalid email'
              });
          }
          if (users.length !=1) {
@@ -152,8 +152,11 @@ var router = express.Router();
              return res.send({
                  success: true,
                  message: 'Valid sign in',
-                 token: doc._id
+                 token: doc._id,
+                 firstName: json.firstName,
+                 lastName: json.lastName
              });
+             console.log(token, firstName);
          });
      });   
  }); 

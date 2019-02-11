@@ -11,6 +11,19 @@
 //  Animations
 // ================
 
+.loading {
+    width: 100%;
+    margin: 15% auto;
+    text-align: center;
+    &Icon {
+        width: 60px;
+        height: 60px;
+        animation: spinner 1.5s linear infinite;
+    }
+}
+@keyframes spinner {
+    to {transform: rotate(360deg);}
+  }
 .table-striped tbody tr:nth-of-type(odd):hover {
     background-color: rgba(0,0,0,.08);
 }

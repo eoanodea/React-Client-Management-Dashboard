@@ -9,16 +9,31 @@ import {
     NavLink,
     Container
 } from 'reactstrap';
+import {
+    getFromStorage
+} from '../utilities/storage'
 
 export class AppNavbar extends React.Component {
     constructor(props) {
-        super();
+        super(props);
         this.state = {
             iconName: 'WebSpace Client Management',
-            userName: 'John Doran'
+            tokenUser: {
+                firstName: null,
+                lastName: null,
+              },
+
         }
+    }
+    componentDidMount() {
+        const obj = getFromStorage('the_main_app');
 
-
+        this.setState({
+            tokenUser: {
+                firstName: obj.firstName,
+                lastName: obj.lastName
+            }
+        })
     }
     /*
     // Toggle & state for responsive burger menu
@@ -34,6 +49,9 @@ export class AppNavbar extends React.Component {
 
 
     render() {
+
+        const { tokenUser } = this.state;
+
 
         return (
             <div>
@@ -57,7 +75,7 @@ export class AppNavbar extends React.Component {
                             </NavItem>
                             <NavItem>
                                 <NavLink href="#">
-                                    {this.state.userName}
+                                    {tokenUser.firstName} {tokenUser.lastName}
                                 </NavLink>
                             </NavItem>
                         </Nav>
