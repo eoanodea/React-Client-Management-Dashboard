@@ -74,7 +74,6 @@ export class UserLogin extends React.Component {
                 }
               });
             
-            return (<AppNavbar user={this.state.tokenUser} />);
 
           } else {
             this.setState({
