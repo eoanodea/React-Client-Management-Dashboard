@@ -6,6 +6,7 @@ const Data = require("./data");
 var cors = require('cors')
 
 const API_PORT = 3001;
+const accounts = require("./routes/signin")
 const app = express();
 const router = express.Router();
 
@@ -33,6 +34,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger("dev"));
 
+app.use("/api/account", accounts);
 // this is our get method
 // this method fetches all available data in our database
 router.get("/getData", (req, res) => {

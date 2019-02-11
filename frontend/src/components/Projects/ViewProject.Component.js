@@ -2,14 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 export class ViewProject extends React.Component {
-  // initialize our state 
-  // constructor(props) {
-  //   this.handleChange = this.handleChange.bind(this);
-  // }
-
-  // handleChange(event) {
-  //   this.setState({ value: event.target.value });
-  // }
   state = {
     data: [],
     id: 0,
@@ -60,20 +52,6 @@ export class ViewProject extends React.Component {
     fetch("http://localhost:3001/api/getData")
       .then(data => data.json())
       .then(res => this.setState({ data: res.data }));
-      // if(this.state.data) {
-      //   this.setState({
-      //       project: [
-      //           {
-      //               data: this.state.data
-      //               // this.state.itemId
-      //           }
-      //       ]
-      //   });
-      // }
-      // if (this.state.project.length > 0) { 
-      //   console.log(this.state.project[0].data[1].taskName);
-      // }
-      
   };
 
   // our put method that uses our backend api

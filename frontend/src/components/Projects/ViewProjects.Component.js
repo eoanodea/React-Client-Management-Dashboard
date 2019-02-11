@@ -19,8 +19,9 @@ export class ViewProjects extends React.Component {
     idToUpdate: null,
     objectToUpdate: null,
     isLoading: false,
-    viewProject: true,
-    viewProjects: false
+    viewProject: false,
+    viewProjects: true,
+    projectId: null
   };
 
   // when component mounts, first thing it does is fetch all existing data in our db
@@ -97,7 +98,6 @@ export class ViewProjects extends React.Component {
         objIdToDelete = dat._id;
       }
     });
-
     axios.delete("http://localhost:3001/api/deleteData", {
       data: {
         id: objIdToDelete
@@ -133,9 +133,9 @@ export class ViewProjects extends React.Component {
       viewProjects: false,
       viewProject: true,
     })
-    console.log(this.state.itemId);
+    console.log(this.state.projectId);
   }
-  viewProjects() {
+  viewProjects = () => {
     this.setState({
       isLoading: false,
       viewProject: false,
@@ -155,7 +155,8 @@ export class ViewProjects extends React.Component {
       data,
       isLoading,
       viewProject,
-      viewProjects
+      viewProjects,
+      projectId
     } = this.state;
 
     if(isLoading) {
@@ -183,7 +184,7 @@ export class ViewProjects extends React.Component {
                   {data.length <= 0
                   ? "NO DB ENTRIES YET"
                   : data.map(data => (
-                      <tr key={data.id} className="fade-in" onclick={this.activateProject}>
+                      <tr key={data.id} className="fade-in" onClick={() => this.viewProject(data.id)}>
                         <td>{data.id} </td>
                         <td>{data.taskName}</td>
                         <td>{data.taskDesc}</td>
@@ -200,7 +201,25 @@ export class ViewProjects extends React.Component {
     }
     if(!isLoading && viewProject) {
       return(
-        <ViewProject />
+        <div>  
+          {
+            data.length <= 0
+            ? "NO DB ENTRIES YET"
+            : data.filter(data => data.id === 1).map(data => (
+              <div key={data.id} className="viewProject">
+              <div className="viewProjectHeading">
+                  <p onClick={this.viewProjects}>Back</p>
+                  <p>{data.id}</p>
+                  <h2>{data.taskName}</h2>
+              </div>
+                  {data.taskDesc}
+                  {data.taskProject}
+                  {data.taskHours}
+                  {data.taskDueDate}
+              </div>
+            ))
+          }
+        </div>
       );
     }
 
