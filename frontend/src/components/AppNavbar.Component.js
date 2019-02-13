@@ -17,24 +17,21 @@ export class AppNavbar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            iconName: 'WebSpace Client Management',
-            tokenUser: {
-                firstName: null,
-                lastName: null,
-              },
+            iconName: 'Client Management',
+            userName: "John Doran"
 
         }
     }
-    componentDidMount() {
-        const obj = getFromStorage('the_main_app');
-
-        this.setState({
-            tokenUser: {
-                firstName: obj.firstName,
-                lastName: obj.lastName
-            }
-        })
-    }
+    // componentDidMount() {
+    //     const obj = getFromStorage('the_main_app');
+    //     console.log(obj);
+    //     this.setState({
+    //         tokenUser: {
+    //             firstName: obj.firstName
+                
+    //         }
+    //     })
+    // }
     /*
     // Toggle & state for responsive burger menu
     */
@@ -50,7 +47,7 @@ export class AppNavbar extends React.Component {
 
     render() {
 
-        const { tokenUser } = this.state;
+        const { userName } = this.state;
 
 
         return (
@@ -75,7 +72,7 @@ export class AppNavbar extends React.Component {
                             </NavItem>
                             <NavItem>
                                 <NavLink href="#">
-                                    {tokenUser.firstName} {tokenUser.lastName}
+                                    {userName}
                                 </NavLink>
                             </NavItem>
                         </Nav>

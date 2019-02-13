@@ -520,6 +520,25 @@ body {
 .viewProjectHeading {
   display: flex;
 }
+.viewProjectBackLink {
+  font-size: 1.2em;
+}
+.viewProjectBackIcon {
+  width: 1.5em;
+  height: 1.5em;
+  cursor: pointer;
+}
+
+.login {
+  width: 30%;
+  margin: auto;
+}
+.loginHeading {
+  margin: 40px 0;
+}
+.loginFormGroup Input {
+  margin: 15px 0;
+}
 
 .divider {
   margin: 3px;

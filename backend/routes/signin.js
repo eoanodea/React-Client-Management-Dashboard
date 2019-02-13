@@ -91,8 +91,6 @@ var router = express.Router();
  router.post('/signin', (req, res, next) => {
      const { body } = req;
       const { 
-          firstName,
-          lastName,
           password
       } = body;
       let {
@@ -153,10 +151,10 @@ var router = express.Router();
                  success: true,
                  message: 'Valid sign in',
                  token: doc._id,
-                 firstName: json.firstName,
-                 lastName: json.lastName
+                 firstName: doc.firstName,
+                 lastName: doc.lastName
              });
-             console.log(token, firstName);
+             console.log(token);
          });
      });   
  }); 

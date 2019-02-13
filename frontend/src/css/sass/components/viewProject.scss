@@ -2,4 +2,13 @@
     &Heading {
         display: flex;
     }
+    &BackLink {
+        font-size: 1.2em;
+    }
+    &BackIcon {
+        width: 1.5em;
+        height: 1.5em;
+        cursor: pointer;
+    }
+
 }

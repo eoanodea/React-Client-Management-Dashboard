@@ -8,11 +8,6 @@ import {
     Form,
     FormGroup,
     Input,
-    TabContent, 
-    TabPane,
-    Nav,
-    NavItem,
-    NavLink,
     Alert
 } from 'reactstrap';
 import classnames from 'classnames';
@@ -31,17 +26,14 @@ export class UserLogin extends React.Component {
       isLoading: true,
       token: '',
       tokenUser: {
-        firstName: null,
-        lastName: null,
+        firstName: '',
+        lastName: '',
       },
       signUpError: '',
       signInError: '',
       signInEmail: '',
       signInPassword: '',
       loggedIn: false,
-      firstName: '',
-      lastName: ''
-      
     };
     this.onTextboxChangeSignInEmail = this.onTextboxChangeSignInEmail.bind(this);
     this.onTextboxChangeSignInPassword = this.onTextboxChangeSignInPassword.bind(this);
@@ -73,8 +65,6 @@ export class UserLogin extends React.Component {
                 lastName: obj.lastName
                 }
               });
-            
-
           } else {
             this.setState({
               isLoading: false
@@ -145,16 +135,20 @@ export class UserLogin extends React.Component {
             signInEmail: '',
             signInPassword: '',
             token: json.token,
-            firstName: json.firstName,
-            lastName: json.lastName
+            tokenUser: {
+              firstName: json.firstName,
+              lastName: json.lastName
+            } 
           });
-          console.log(json);
+          
           
         } else {
           this.setState({
             signInError: json.message,
+            alertMessage: "",
             isLoading: false,
           });
+          
         }
       });
   }
@@ -206,13 +200,8 @@ export class UserLogin extends React.Component {
       signInError,
       signInEmail,
       signInPassword,
-      signUpFirstName,
-      signUpLastName,
-      signUpEmail,
-      signUpPassword,
-      signUpError,
       alertMessage,
-      firstName
+      tokenUser
     } = this.state;
 
     if (isLoading) {
@@ -227,39 +216,15 @@ export class UserLogin extends React.Component {
     // Display before user logs in
     if(!isLoading && !token) {
       return(
-        <div>
-          <Nav tabs>
-              <NavItem>
-                  <NavLink
-                  className={
-                      classnames({ 
-                      active: this.state.activeTab === '1'
-                      })
-                  }
-                  onClick = { () => {
-                      this.toggle('1');
-                  }
-                  }
-                  >Sign In
-              </NavLink>
-              </NavItem>
-              <NavItem>
-                  <NavLink
-                      className={
-                      classnames({ 
-                      active: this.state.activeTab === '2'
-                      })
-                      }
-                      onClick = { () => {
-                      this.toggle('2');
-                      }
-                      }
-                      >Sign Up
-                  </NavLink>
-              </NavItem>
-          </Nav>
-          <TabContent activeTab={this.state.activeTab}>
-          <TabPane active="true" tabId="1">
+        <div className="login"> 
+          <h2 className="loginHeading">Sign In</h2>
+          {
+            (signInError) ? (
+              <Alert id="alert" style={{ marginTop: '10px' }}>
+                {signInError}
+              </Alert>
+            ) : (null)
+            }
             <Form onSubmit={this.onSignIn}>
                 <FormGroup className="loginFormGroup">
                     <Input 
@@ -281,64 +246,6 @@ export class UserLogin extends React.Component {
                     >Sign In</Button>
                 </FormGroup>
             </Form>
-            {
-              (signUpError) ? (
-                <Alert id="alert" color={alertMessage.toString()} style={{ marginTop: '10px' }}>
-                {signUpError}
-              </Alert>
-              ) : (null)
-            }
-            {
-            (signInError) ? (
-              <Alert id="alert" style={{ marginTop: '10px' }}>
-                {signInError}
-              </Alert>
-            ) : (null)
-            }
-          </TabPane>
-          <TabPane tabId="2">
-            <Form onSubmit={this.onSignUp}>
-                <FormGroup className="loginFormGroup">
-                    <Input 
-                      type="text" 
-                      placeholder="First Name" 
-                      value={signUpFirstName}
-                      onChange={this.onTextboxChangeSignUpFirstName}
-                    />
-                    <Input 
-                      type="text" 
-                      placeholder="Last Name" 
-                      value={signUpLastName}
-                      onChange={this.onTextboxChangeSignUpLastName}
-                    />
-                    <Input 
-                      type="email" 
-                      placeholder="Email Address" 
-                      value={signUpEmail}
-                      onChange={this.onTextboxChangeSignUpEmail}
-                    />
-                    <Input 
-                      type="password" 
-                      placeholder="Password" 
-                      value={signUpPassword}
-                      onChange={this.onTextboxChangeSignUpPassword}
-                    />
-                    <Button
-                        color="dark"
-                        style={{ marginTop: '2rem' }}
-                        block
-                    >Sign Up</Button>
-                </FormGroup>
-            </Form>
-            {
-              (signUpError) ? (
-                <Alert id="alert" color={alertMessage.toString()} style={{ marginTop: '10px' }}>
-                {signUpError}
-              </Alert>
-              ) : (null)
-            }
-            </TabPane>
-          </TabContent>
         </div>
       );
     } else {

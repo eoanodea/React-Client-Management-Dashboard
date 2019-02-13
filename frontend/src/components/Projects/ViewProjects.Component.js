@@ -207,8 +207,20 @@ export class ViewProjects extends React.Component {
             ? "NO DB ENTRIES YET"
             : data.filter(data => data.id === 1).map(data => (
               <div key={data.id} className="viewProject">
+              <a
+              onClick={this.viewProjects}
+              className="viewProjectBackLink"
+              >
+              <p> 
+                <FeatherIcon 
+                  icon="arrow-left" 
+                  className="viewProjectBackIcon"
+                />
+              Back
+              </p>
+              </a>
               <div className="viewProjectHeading">
-                  <p onClick={this.viewProjects}>Back</p>
+                  
                   <p>{data.id}</p>
                   <h2>{data.taskName}</h2>
               </div>
