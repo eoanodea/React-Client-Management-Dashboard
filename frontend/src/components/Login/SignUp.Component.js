@@ -139,7 +139,14 @@ render() {
     }
   return(
     <div>
-      <h2>Add a new User</h2>
+      <h3>Add a new User</h3>
+      {
+          (signUpError) ? (
+          <Alert id="alert" color={alertMessage.toString()} style={{ marginTop: '10px' }}>
+          {signUpError}
+          </Alert>
+          ) : (null)
+      }
       <Form onSubmit={this.onSignUp}>
           <FormGroup className="loginFormGroup">
               <Input 
@@ -183,13 +190,6 @@ render() {
               >Sign Up</Button>
           </FormGroup>
       </Form>
-      {
-          (signUpError) ? (
-          <Alert id="alert" color={alertMessage.toString()} style={{ marginTop: '10px' }}>
-          {signUpError}
-          </Alert>
-          ) : (null)
-      }
       </div>
     );
   }

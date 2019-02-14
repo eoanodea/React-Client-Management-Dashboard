@@ -87,6 +87,14 @@ var router = express.Router();
          });
      });
  });
+//List users
+router.get("/getData", (req, res) => {
+    User.find((err, user) => {
+      if (err) return res.json({ success: false, error: err });
+      return res.json({ success: true, data: user });
+    });
+  });
+
  //Sign in
  router.post('/signin', (req, res, next) => {
      const { body } = req;

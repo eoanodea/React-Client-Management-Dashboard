@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import FeatherIcon from 'feather-icons-react';
-import ViewProject from './ViewProject.Component';
 
-export class ViewProjects extends React.Component {
+
+export class ViewUsers extends React.Component {
   // initialize our state 
   state = {
     data: [],
@@ -11,7 +11,7 @@ export class ViewProjects extends React.Component {
     itemId: null,
     taskName: null,
     taskDesc: null,
-    taskProject: null,
+    taskUser: null,
     taskHours: null,
     taskDueDate: null,
     intervalIsSet: false,
@@ -19,9 +19,9 @@ export class ViewProjects extends React.Component {
     idToUpdate: null,
     objectToUpdate: null,
     isLoading: false,
-    viewProject: false,
-    viewProjects: true,
-    projectId: null
+    viewUser: false,
+    viewUsers: true,
+    userId: null
   };
 
   // when component mounts, first thing it does is fetch all existing data in our db
@@ -52,9 +52,10 @@ export class ViewProjects extends React.Component {
   // our first get method that uses our backend api to 
   // fetch data from our data base
   getDataFromDb = () => {
-    fetch("http://localhost:3001/api/getData")
+    fetch("http://localhost:3001/api/account/getData")
       .then(data => data.json())
       .then(res => this.setState({ data: res.data }));
+      // console.table(this.state.data);
   };
 
   // our put method that uses our backend api
@@ -62,7 +63,7 @@ export class ViewProjects extends React.Component {
   putDataToDB = (
     taskName, 
     taskDesc, 
-    taskProject, 
+    taskUser, 
     taskHours, 
     taskDueDate
     ) => {
@@ -76,7 +77,7 @@ export class ViewProjects extends React.Component {
       id: idToBeAdded,
       taskName: taskName,
       taskDesc: taskDesc,
-      taskProject: taskProject,
+      taskUser: taskUser,
       taskHours: taskHours,
       taskDueDate: taskDueDate
     })
@@ -121,26 +122,26 @@ export class ViewProjects extends React.Component {
       update: { 
         taskName: updateToApply,
         taskDesc: updateToApply,
-        taskProject: updateToApply,
+        taskUser: updateToApply,
         taskHours: updateToApply,
         taskDueDate: updateToApply
        }
     });
   };
-  viewProject() {
+  viewUser() {
     this.setState({
       isLoading: false,
-      viewProjects: false,
-      viewProject: true,
+      viewUsers: false,
+      viewUser: true,
     })
-    console.log(this.state.projectId);
+    console.log(this.state.userId);
   }
-  viewProjects = () => {
+  viewUsers = () => {
     this.setState({
       isLoading: false,
-      viewProject: false,
-      viewProjects: true,
-      projectId: null
+      viewUser: false,
+      viewUsers: true,
+      userId: null
     })
   }
 
@@ -154,9 +155,9 @@ export class ViewProjects extends React.Component {
     const { 
       data,
       isLoading,
-      viewProject,
-      viewProjects,
-      projectId
+      viewUser,
+      viewUsers,
+      userId
     } = this.state;
 
     if(isLoading) {
@@ -164,10 +165,10 @@ export class ViewProjects extends React.Component {
         <FeatherIcon icon="loading"/>
       );
     }
-    if(!isLoading && viewProjects) {
+    if(!isLoading && viewUsers) {
       return (
         <div className="col">
-          <h2>Project</h2>
+          <h2>User</h2>
           <div>
             <table className="table table-striped table-sm">
               <thead>
@@ -175,7 +176,7 @@ export class ViewProjects extends React.Component {
                     <th>ID</th>
                     <th>Task Name</th>
                     <th>Description</th>
-                    <th>Project</th>
+                    <th>User</th>
                     <th>Hours Logged</th>
                     <th>Due date</th>
                   </tr>
@@ -184,13 +185,12 @@ export class ViewProjects extends React.Component {
                   {data.length <= 0
                   ? "NO DB ENTRIES YET"
                   : data.map(data => (
-                      <tr key={data.id} className="fade-in" onClick={() => this.viewProject(data.id)}>
+                      <tr key={data.id} className="fade-in" onClick={() => this.viewUser(data.id)}>
                         <td>{data.id} </td>
-                        <td>{data.taskName}</td>
-                        <td>{data.taskDesc}</td>
-                        <td>{data.taskProject}</td>
-                        <td>{data.taskHours}</td>
-                        <td>{data.taskDueDate}</td>
+                        <td>{data.firstName}</td>
+                        <td>{data.lastName}</td>
+                        <td>{data.email}</td>
+                        <td>{data.access}</td>
                       </tr>
                     ))}
               </tbody>
@@ -199,33 +199,33 @@ export class ViewProjects extends React.Component {
       </div>
       );
     }
-    if(!isLoading && viewProject) {
+    if(!isLoading && viewUser) {
       return(
         <div>  
           {
             data.length <= 0
             ? "NO DB ENTRIES YET"
             : data.filter(data => data.id === 1).map(data => (
-              <div key={data.id} className="viewProject">
+              <div key={data.id} className="viewUser">
               <a
-              onClick={this.viewProjects}
-              className="viewProjectBackLink"
+              onClick={this.viewUsers}
+              className="viewUserBackLink"
               >
               <p> 
                 <FeatherIcon 
                   icon="arrow-left" 
-                  className="viewProjectBackIcon"
+                  className="viewUserBackIcon"
                 />
               Back
               </p>
               </a>
-              <div className="viewProjectHeading">
+              <div className="viewUserHeading">
                   
                   <p>{data.id}</p>
                   <h2>{data.taskName}</h2>
               </div>
                   {data.taskDesc}
-                  {data.taskProject}
+                  {data.taskUser}
                   {data.taskHours}
                   {data.taskDueDate}
               </div>
@@ -238,4 +238,4 @@ export class ViewProjects extends React.Component {
   }
 }
 
-export default ViewProjects;
+export default ViewUsers;

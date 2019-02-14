@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import ViewProject from './ViewProject.Component';
+import ViewProject from './ViewUser.Component';
 
 export class ViewProjects extends React.Component {
   // initialize our state 
