@@ -128,11 +128,12 @@ export class ViewUsers extends React.Component {
        }
     });
   };
-  viewUser() {
+  viewUser(id) {
     this.setState({
       isLoading: false,
       viewUsers: false,
       viewUser: true,
+      userId: id
     })
     console.log(this.state.userId);
   }
@@ -185,8 +186,8 @@ export class ViewUsers extends React.Component {
                   {data.length <= 0
                   ? "NO DB ENTRIES YET"
                   : data.map(data => (
-                      <tr key={data.id} className="fade-in" onClick={() => this.viewUser(data.id)}>
-                        <td>{data.id} </td>
+                      <tr key={data._id} className="fade-in" onClick={() => this.viewUser(data._id)}>
+                        <td>{data.company}</td>
                         <td>{data.firstName}</td>
                         <td>{data.lastName}</td>
                         <td>{data.email}</td>
@@ -205,8 +206,8 @@ export class ViewUsers extends React.Component {
           {
             data.length <= 0
             ? "NO DB ENTRIES YET"
-            : data.filter(data => data.id === 1).map(data => (
-              <div key={data.id} className="viewUser">
+            : data.filter(data => data._id === userId).map(data => (
+              <div key={data._id} className="viewUser">
               <a
               onClick={this.viewUsers}
               className="viewUserBackLink"
@@ -221,13 +222,13 @@ export class ViewUsers extends React.Component {
               </a>
               <div className="viewUserHeading">
                   
-                  <p>{data.id}</p>
-                  <h2>{data.taskName}</h2>
+                  
+                  <h2>{data.company}</h2>
               </div>
-                  {data.taskDesc}
-                  {data.taskUser}
-                  {data.taskHours}
-                  {data.taskDueDate}
+                  {data.firstName}
+                  {data.lastName}
+                  {data.email}
+                  {data.access}
               </div>
             ))
           }

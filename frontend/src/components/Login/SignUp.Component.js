@@ -14,6 +14,7 @@ export class SignUp extends React.Component {
       this.state = {
         token: '',
         signUpError: '',
+        onSignUpCompanyName: '',
         signUpFirstName: '',
         signUpLastName: '',
         signUpEmail: '',
@@ -25,6 +26,7 @@ export class SignUp extends React.Component {
     this.onTextboxChangeSignUpFirstName = this.onTextboxChangeSignUpFirstName.bind(this);
     this.onTextboxChangeSignUpLastName = this.onTextboxChangeSignUpLastName.bind(this);
     this.onTextboxChangeSignUpAccess = this.onTextboxChangeSignUpAccess.bind(this);
+    this.onTextboxChangeCompanytName = this.onTextboxChangeSignUpAccess.bind(this);
 
     this.onSignUp = this.onSignUp.bind(this);
 }
@@ -55,6 +57,11 @@ onTextboxChangeSignUpEmail(event) {
       signUpAccess: event.target.value
     });
   }
+  onTextboxChangeCompanytName(event) {
+    this.setState({
+      onSignUpCompanyName: event.target.value
+    });
+  }
 
 
 
@@ -65,6 +72,7 @@ onTextboxChangeSignUpEmail(event) {
    onSignUp() {
     //Grab State
     const {
+      onSignUpCompanyName,
       signUpFirstName,
       signUpLastName,
       signUpEmail,
@@ -84,6 +92,7 @@ onTextboxChangeSignUpEmail(event) {
       body: JSON.stringify({
         firstName: signUpFirstName,
         lastName: signUpLastName,
+        company: onSignUpCompanyName,
         email: signUpEmail,
         password: signUpPassword,
         access: signUpAccess
@@ -99,6 +108,7 @@ onTextboxChangeSignUpEmail(event) {
             isLoading: false,
             signUpEmail: '',
             signUpPassword: '',
+            onSignUpCompanyName: '',
             signUpFirstName: '',
             signUpLastName: '',
             signUpAccess: '',
@@ -119,6 +129,7 @@ onTextboxChangeSignUpEmail(event) {
 
 render() {
     const {
+        onSignUpCompanyName,
         signUpFirstName,
         signUpLastName,
         signUpEmail,
@@ -149,6 +160,12 @@ render() {
       }
       <Form onSubmit={this.onSignUp}>
           <FormGroup className="loginFormGroup">
+            <Input 
+              type="text" 
+              placeholder="Company" 
+              value={onSignUpCompanyName}
+              onChange={this.onTextboxChangeCompanytName}
+              />
               <Input 
               type="text" 
               placeholder="First Name" 
