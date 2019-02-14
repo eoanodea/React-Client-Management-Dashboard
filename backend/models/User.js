@@ -17,6 +17,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  access: {
+    type: String,
+    default: 'client'
+  },
   isDeleted: {
     type: Boolean,
     default: false

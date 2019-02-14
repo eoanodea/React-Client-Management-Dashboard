@@ -1,18 +1,30 @@
-export class UserLogin extends React.Component {
+import React from 'react';
+import {
+  Button,
+  Form,
+  FormGroup,
+  Input,
+  Alert
+} from 'reactstrap';
+import FeatherIcon from 'feather-icons-react';
+
+export class SignUp extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-token: '',
-signUpError: '',
-signUpFirstName: '',
-signUpLastName: '',
-signUpEmail: '',
+        token: '',
+        signUpError: '',
+        signUpFirstName: '',
+        signUpLastName: '',
+        signUpEmail: '',
+        signUpAccess: ''
     };   
     
     this.onTextboxChangeSignUpEmail = this.onTextboxChangeSignUpEmail.bind(this);
     this.onTextboxChangeSignUpPassword = this.onTextboxChangeSignUpPassword.bind(this);
     this.onTextboxChangeSignUpFirstName = this.onTextboxChangeSignUpFirstName.bind(this);
     this.onTextboxChangeSignUpLastName = this.onTextboxChangeSignUpLastName.bind(this);
+    this.onTextboxChangeSignUpAccess = this.onTextboxChangeSignUpAccess.bind(this);
 
     this.onSignUp = this.onSignUp.bind(this);
 }
@@ -38,6 +50,11 @@ onTextboxChangeSignUpEmail(event) {
       signUpLastName: event.target.value
     });
   }
+  onTextboxChangeSignUpAccess(event) {
+    this.setState({
+      signUpAccess: event.target.value
+    });
+  }
 
 
 
@@ -51,7 +68,8 @@ onTextboxChangeSignUpEmail(event) {
       signUpFirstName,
       signUpLastName,
       signUpEmail,
-      signUpPassword
+      signUpPassword,
+      signUpAccess
     } = this.state;
     
     this.setState({
@@ -67,7 +85,8 @@ onTextboxChangeSignUpEmail(event) {
         firstName: signUpFirstName,
         lastName: signUpLastName,
         email: signUpEmail,
-        password: signUpPassword
+        password: signUpPassword,
+        access: signUpAccess
       }),
     })
       .then(res => res.json())
@@ -82,6 +101,7 @@ onTextboxChangeSignUpEmail(event) {
             signUpPassword: '',
             signUpFirstName: '',
             signUpLastName: '',
+            signUpAccess: '',
             alertMessage: "success"
           }); 
         
@@ -103,53 +123,75 @@ render() {
         signUpLastName,
         signUpEmail,
         signUpPassword,
+        signUpAccess,
         signUpError,
         alertMessage,
+        isLoading
     } = this.state;
-
-return(
-    <div>
+    if (isLoading) {
+      return(
+        <div className="loading">
+          <FeatherIcon className="loadingIcon" icon="loader" size="54" />
+        
+        </div>
+        );
       
-<Form onSubmit={this.onSignUp}>
-    <FormGroup className="loginFormGroup">
-        <Input 
-        type="text" 
-        placeholder="First Name" 
-        value={signUpFirstName}
-        onChange={this.onTextboxChangeSignUpFirstName}
-        />
-        <Input 
-        type="text" 
-        placeholder="Last Name" 
-        value={signUpLastName}
-        onChange={this.onTextboxChangeSignUpLastName}
-        />
-        <Input 
-        type="email" 
-        placeholder="Email Address" 
-        value={signUpEmail}
-        onChange={this.onTextboxChangeSignUpEmail}
-        />
-        <Input 
-        type="password" 
-        placeholder="Password" 
-        value={signUpPassword}
-        onChange={this.onTextboxChangeSignUpPassword}
-        />
-        <Button
-            color="dark"
-            style={{ marginTop: '2rem' }}
-            block
-        >Sign Up</Button>
-    </FormGroup>
-</Form>
-{
-    (signUpError) ? (
-    <Alert id="alert" color={alertMessage.toString()} style={{ marginTop: '10px' }}>
-    {signUpError}
-    </Alert>
-    ) : (null)
+    }
+  return(
+    <div>
+      <h2>Add a new User</h2>
+      <Form onSubmit={this.onSignUp}>
+          <FormGroup className="loginFormGroup">
+              <Input 
+              type="text" 
+              placeholder="First Name" 
+              value={signUpFirstName}
+              onChange={this.onTextboxChangeSignUpFirstName}
+              />
+              <Input 
+              type="text" 
+              placeholder="Last Name" 
+              value={signUpLastName}
+              onChange={this.onTextboxChangeSignUpLastName}
+              />
+              <Input 
+              type="email" 
+              placeholder="Email Address" 
+              value={signUpEmail}
+              onChange={this.onTextboxChangeSignUpEmail}
+              />
+              <Input 
+              type="password" 
+              placeholder="Password" 
+              value={signUpPassword}
+              onChange={this.onTextboxChangeSignUpPassword}
+              />
+              <Input
+              type="select"
+              placeholder="Privileges"
+              value={signUpAccess}
+              onChange={this.onTextboxChangeSignUpAccess}
+              >
+                <option>Administrator</option>
+                <option>Client</option>
+                <option>Testing</option>
+              </Input>
+              <Button
+                  color="dark"
+                  style={{ marginTop: '2rem' }}
+                  block
+              >Sign Up</Button>
+          </FormGroup>
+      </Form>
+      {
+          (signUpError) ? (
+          <Alert id="alert" color={alertMessage.toString()} style={{ marginTop: '10px' }}>
+          {signUpError}
+          </Alert>
+          ) : (null)
+      }
+      </div>
+    );
+  }
 }
-</div>
-);
-}
+export default SignUp;
