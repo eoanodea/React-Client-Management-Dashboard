@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const UserSchema = new mongoose.Schema({
+  company: {
+    type: String,
+    default: ''
+  },
   firstName: {
     type: String,
     default: ''
@@ -16,6 +20,10 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     default: ''
+  },
+  access: {
+    type: String,
+    default: 'client'
   },
   isDeleted: {
     type: Boolean,

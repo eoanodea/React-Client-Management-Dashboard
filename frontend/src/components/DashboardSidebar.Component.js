@@ -2,7 +2,16 @@ import React from 'react';
 import FeatherIcon from 'feather-icons-react';
 
 export class DashboardSidebar extends React.Component {
+     constructor(props) {
+         super(props)
 
+         this.state = {
+            dashboard: '',
+            clients: '',
+            projects: '',
+            tasks: ''
+         }
+     }
     render() {
         return(
             // {/* 
@@ -20,6 +29,12 @@ export class DashboardSidebar extends React.Component {
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="/">
+                        <FeatherIcon icon="users"/>
+                        Customers
+                        </a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link" href="/">
                         <FeatherIcon icon="file"/>
                         Orders
                         </a>
@@ -30,12 +45,7 @@ export class DashboardSidebar extends React.Component {
                         Products
                         </a>
                     </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="/">
-                        <FeatherIcon icon="users"/>
-                        Customers
-                        </a>
-                    </li>
+
                     <li className="nav-item">
                         <a className="nav-link" href="/">
                         <FeatherIcon icon="bar-chart-2"/>
