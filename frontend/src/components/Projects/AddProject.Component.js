@@ -1,8 +1,25 @@
 import React, { Component } from 'react';
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  FormGroup,
+  Input
+} from 'reactstrap';
 import axios from 'axios';
-import ViewProject from './ViewProject.Component';
 
-export class ViewProjects extends React.Component {
+export class AddProject extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modal: false
+    };
+
+    this.toggle = this.toggle.bind(this);
+  }
+  
   // initialize our state 
   state = {
     data: [],
@@ -58,7 +75,7 @@ export class ViewProjects extends React.Component {
     taskDesc, 
     taskProject, 
     taskHours, 
-    taskDueDate
+    taskDueDate,
     ) => {
     let currentIds = this.state.data.map(data => data.id);
     let idToBeAdded = 0;
@@ -80,6 +97,7 @@ export class ViewProjects extends React.Component {
     .catch(error => {
         console.log(error.response)
     });
+    this.toggle();
   };
 
 
@@ -122,12 +140,12 @@ export class ViewProjects extends React.Component {
        }
     });
   };
-  viewProject() {
-    return(
-      <ViewProject />
-    );
-
+  toggle() {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
   }
+
 
 
   // here is our UI
@@ -136,49 +154,68 @@ export class ViewProjects extends React.Component {
   render() {
     const { data } = this.state;
     return (  
-        <div style={{ padding: "10px" }}>
-          <input
+      <div>
+        <Button color="dark" onClick={this.toggle}>Add Project</Button>
+        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+          <ModalHeader toggle={this.toggle}>Add a Project</ModalHeader>
+          <ModalBody>
+          <FormGroup>
+          <Input
             type="text"
             onChange={e => this.setState({ taskName: e.target.value })}
             placeholder="Name"
-            style={{ width: "200px" }}
           />
-          <input
+          </FormGroup>
+          <FormGroup>
+          <Input
             type="text"
             onChange={e => this.setState({ taskDesc: e.target.value })}
             placeholder="Desc"
-            style={{ width: "200px" }}
           />
-          <input
+          </FormGroup>
+          <FormGroup>
+          <Input
             type="text"
             onChange={e => this.setState({ taskProject: e.target.value })}
             placeholder="Project"
-            style={{ width: "200px" }}
           />
-          <input
+          </FormGroup>
+          <FormGroup>
+          <Input
             type="text"
             onChange={e => this.setState({ taskHours: e.target.value })}
             placeholder="Hours"
-            style={{ width: "200px" }}
           />
-          <input
+          </FormGroup>
+          <FormGroup>
+          <Input
             type="date"
             onChange={e => this.setState({ taskDueDate: e.target.value })}
             placeholder="DueDate"
-            style={{ width: "200px" }}
+            
           />
-          <button onClick={() => this.putDataToDB(
-            this.state.taskName, 
-            this.state.taskDesc, 
-            this.state.taskProject,
-            this.state.taskHours, 
-            this.state.taskDueDate
-            )}>
-            ADD
-          </button>
-        </div>
+          </FormGroup>          
+          </ModalBody>
+          <ModalFooter>
+          <Button
+            color="dark" 
+            onClick={() => this.putDataToDB(
+              this.state.taskName, 
+              this.state.taskDesc, 
+              this.state.taskProject,
+              this.state.taskHours, 
+              this.state.taskDueDate
+            )}
+          >
+          ADD
+          </Button>
+          </ModalFooter>
+        </Modal>
+      </div>
+
+        
     );
   }
 }
 
-export default ViewProjects;
+export default AddProject;

@@ -133,7 +133,7 @@ export class ViewProjects extends React.Component {
       viewProjects: false,
       viewProject: true,
     })
-    console.log(this.state.projectId);
+    
   }
   viewProjects = () => {
     this.setState({

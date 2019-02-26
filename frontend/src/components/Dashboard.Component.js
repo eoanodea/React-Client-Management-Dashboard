@@ -1,6 +1,6 @@
 import React from 'react';
 import FeatherIcon from 'feather-icons-react';
-
+import { AddProject } from './Projects/AddProject.Component';
 import { ViewProjects } from './Projects/ViewProjects.Component';
 import { DashboardSidebar } from './DashboardSidebar.Component';
 
@@ -96,7 +96,7 @@ export class Dashboard extends React.Component {
                                <ViewProjects />
                             </div>
                             <div className="col-4">
-                                <h2>Other stuff</h2>
+                               <AddProject />
                                 
                             </div>
                         </div>
