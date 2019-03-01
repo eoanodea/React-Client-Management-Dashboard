@@ -5,9 +5,25 @@ import { SignUp } from './Login/SignUp.Component';
 import { ViewProjects } from './Projects/ViewProjects.Component';
 import { ViewUsers } from './Users/ViewUsers.Component';
 import { DashboardSidebar } from './DashboardSidebar.Component';
+import { getFromStorage } from '../utilities/storage';
 
 export class Dashboard extends React.Component {
-
+    constructor(props) {
+        super(props);
+        this.state = {
+            current: "projects"
+        }
+    }
+    componentDidMount() {
+        let current = getFromStorage('current_page').current;
+        if (current =! this.state.current) {
+            this.state = {
+                current: current
+            }
+        }
+        console.log(this.state.current)
+        
+    }
     /* globals Chart:false, feather:false */
 
     chart() {
@@ -61,6 +77,23 @@ export class Dashboard extends React.Component {
         })
         console.log(this.props.data)
     }
+    navigation() {
+        const { current } = this.state;
+        console.log("start")
+        if(current === 1)
+        return(
+            <div>
+                <ViewUsers /> 
+                <SignUp />
+            </div>
+        );
+        if(this.state.current == 'projects')
+        return(
+            <div>
+                <ViewProjects /> 
+            </div>
+        );
+    }
 
     render() {
         return(
@@ -95,8 +128,7 @@ export class Dashboard extends React.Component {
                     <div className="container-fluid">
                         <div className="row">
                             <div className="col-8">
-                               <ViewUsers /> 
-                               <SignUp />
+                               {this.navigation()}
                             </div>
                             <div className="col-4">
                                <AddProject />

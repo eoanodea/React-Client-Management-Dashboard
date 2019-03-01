@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { AppNavbar } from '../AppNavbar.Component';
+import React from 'react';
 import { Dashboard } from '../Dashboard.Component';
 import 'whatwg-fetch';
 import FeatherIcon from 'feather-icons-react';
@@ -10,10 +9,8 @@ import {
     Input,
     Alert
 } from 'reactstrap';
-import classnames from 'classnames';
 import {
   getFromStorage,
-  getInStorage,
   setInStorage
 } from '../../utilities/storage';
 
@@ -184,6 +181,18 @@ export class UserLogin extends React.Component {
     }
 
   }
+  logoutButton() {
+    return(
+      <Button 
+        color="dark"
+        onClick={this.logout}
+        style={{ marginTop: '2rem',
+                marginBottom: '2rem',
+                color: '#fff' }}
+        block
+      >Logout</Button>
+    );
+  }
   
   toggle(tab) {
     if (this.state.activeTab !== tab) {
@@ -253,14 +262,7 @@ export class UserLogin extends React.Component {
         <div>
           <h1>{this.state.tokenUser.firstName}</h1>
           <Dashboard />
-          <Button 
-            color="dark"
-            onClick={this.logout}
-            style={{ marginTop: '2rem',
-                    marginBottom: '2rem',
-                    color: '#fff' }}
-            block
-          >Logout</Button>
+          {this.logoutButton()}
         </div>
       );
     }

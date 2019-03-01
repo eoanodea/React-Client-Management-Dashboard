@@ -10,8 +10,10 @@ import {
     Container
 } from 'reactstrap';
 import {
-    getFromStorage
-} from '../utilities/storage'
+    getFromStorage,
+    setInStorage
+  } from '../utilities/storage';
+
 
 export class AppNavbar extends React.Component {
     constructor(props) {
@@ -22,19 +24,6 @@ export class AppNavbar extends React.Component {
 
         }
     }
-    // componentDidMount() {
-    //     const obj = getFromStorage('the_main_app');
-    //     console.log(obj);
-    //     this.setState({
-    //         tokenUser: {
-    //             firstName: obj.firstName
-                
-    //         }
-    //     })
-    // }
-    /*
-    // Toggle & state for responsive burger menu
-    */
     state = {
         isOpen: false
     }
@@ -44,12 +33,7 @@ export class AppNavbar extends React.Component {
         })
     }
 
-
     render() {
-
-        const { userName } = this.state;
-
-
         return (
             <div>
                 <Navbar color="dark" dark expand="sm">
@@ -71,8 +55,10 @@ export class AppNavbar extends React.Component {
                                 </NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#">
-                                    {userName}
+                                <NavLink
+                                    onClick={this.logout}
+                                >
+                                Logout
                                 </NavLink>
                             </NavItem>
                         </Nav>

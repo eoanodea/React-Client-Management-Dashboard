@@ -174,12 +174,10 @@ export class ViewUsers extends React.Component {
             <table className="table table-striped table-sm">
               <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>Task Name</th>
-                    <th>Description</th>
-                    <th>User</th>
-                    <th>Hours Logged</th>
-                    <th>Due date</th>
+                    <th>Company</th>
+                    <th>Contact</th>
+                    <th>Contact Email</th>
+                    <th>Privileges</th>
                   </tr>
               </thead>
               <tbody key={data.taskName}>
