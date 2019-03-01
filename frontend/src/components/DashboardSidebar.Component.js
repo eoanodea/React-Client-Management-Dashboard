@@ -7,11 +7,11 @@ export class DashboardSidebar extends React.Component {
          super(props)
 
          this.state = {
-            dashboard: '',
-            clients: '',
-            projects: '',
-            tasks: '',
-            current: ''
+            dashboard: 'dashboard',
+            clients: 'client',
+            projects: 'project',
+            tasks: 'task',
+            current: 'dashboard'
          }
      }
      current = (key) => {
@@ -32,7 +32,7 @@ export class DashboardSidebar extends React.Component {
                     <ul className="nav flex-column">
                     <li className="nav-item">
                         <a 
-                            key="client"
+                            href="javascript:void(0)"
                             className="nav-link" 
                             onClick={() => this.current(1)}
                         >
@@ -42,7 +42,7 @@ export class DashboardSidebar extends React.Component {
                     </li>
                     <li className="nav-item">
                         <a 
-                            key="client"
+                            href="javascript:void(0)"
                             className="nav-link" 
                             onClick={() => this.current("client")}
                         >
@@ -52,7 +52,7 @@ export class DashboardSidebar extends React.Component {
                     </li>
                     <li className="nav-item">
                         <a 
-                            key="client"
+                            href="javascript:void(0)"
                             className="nav-link" 
                             onClick={() => this.current("project")}
                         >
@@ -62,7 +62,7 @@ export class DashboardSidebar extends React.Component {
                     </li>
                     <li className="nav-item">
                         <a 
-                            key="client"
+                            href="javascript:void(0)"
                             className="nav-link" 
                             onClick={() => this.current("task")}
                         >

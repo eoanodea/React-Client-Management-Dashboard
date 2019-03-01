@@ -79,15 +79,14 @@ export class Dashboard extends React.Component {
     }
     navigation() {
         const { current } = this.state;
-        console.log("start")
-        if(current === 1)
+        if(current === "users")
         return(
             <div>
                 <ViewUsers /> 
                 <SignUp />
             </div>
         );
-        if(this.state.current == 'projects')
+        if(this.state.current === 'projects')
         return(
             <div>
                 <ViewProjects /> 
