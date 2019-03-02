@@ -11,7 +11,7 @@ export class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            current: "projects"
+            current: "users"
         }
     }
     componentDidMount() {
@@ -81,15 +81,24 @@ export class Dashboard extends React.Component {
         const { current } = this.state;
         if(current === "users")
         return(
-            <div>
-                <ViewUsers /> 
-                <SignUp />
+            <div className="row">
+                <div className="col-8">
+                    <ViewUsers /> 
+                </div>
+                <div className="col-4">
+                    <SignUp />
+                </div>
             </div>
         );
         if(this.state.current === 'projects')
         return(
-            <div>
-                <ViewProjects /> 
+            <div className="row">
+                <div className="col-8">
+                    <ViewProjects /> 
+                </div>
+                <div className="col-4">
+                    <AddProject />
+                </div>
             </div>
         );
     }
@@ -125,15 +134,7 @@ export class Dashboard extends React.Component {
                         </div>
                     </div>
                     <div className="container-fluid">
-                        <div className="row">
-                            <div className="col-8">
-                               {this.navigation()}
-                            </div>
-                            <div className="col-4">
-                               <AddProject />
-                                
-                            </div>
-                        </div>
+                        {this.navigation()}
                     </div>
 
                     {/* //chart function broken

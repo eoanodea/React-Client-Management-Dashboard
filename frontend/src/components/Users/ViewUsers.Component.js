@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Input } from 'reactstrap';
 import FeatherIcon from 'feather-icons-react';
 
 
@@ -9,11 +10,13 @@ export class ViewUsers extends React.Component {
     data: [],
     id: 0,
     itemId: null,
-    taskName: null,
-    taskDesc: null,
-    taskUser: null,
-    taskHours: null,
-    taskDueDate: null,
+    updateToApply: null,
+    upDateField: null,
+    // company: null,
+    // firstName: null,
+    // lastName: null,
+    // email: null,
+    // password: null,
     intervalIsSet: false,
     idToDelete: null,
     idToUpdate: null,
@@ -105,28 +108,58 @@ export class ViewUsers extends React.Component {
       }
     });
   };
+  editUser = (id, num) => {
+    const editBox = document.getElementById("editBox");
+    const viewBox = document.getElementById("viewBox");
+    console.log(id);
+    const updateToApply = this.state.updateToApply;
+    const updateToField = this.state.updateToField;
 
+    if(num === 1) {
+      viewBox.style.display = "none";
+      editBox.style.display = "flex";
+      
+    }
+    if(num === 2) {
+      editBox.style.display = "none";
+      viewBox.style.display = "block";
+      const update = this.state.update;
+      this.updateDB(id, updateToApply, updateToField);
+    }
+    
+  }
 
   // our update method that uses our backend api
   // to overwrite existing data base information
-  updateDB = (idToUpdate, updateToApply) => {
+  updateDB = (
+    idToUpdate, 
+    updateToApply,
+    updateToField
+    ) => {
+    
     let objIdToUpdate = null;
     this.state.data.forEach(dat => {
-      if (dat.id === idToUpdate) {
+      if (dat._id === idToUpdate) {
         objIdToUpdate = dat._id;
       }
     });
-
-    axios.post("http://localhost:3001/api/updateData", {
+    console.log(idToUpdate);
+    axios.post("http://localhost:3001/api/account/updateData", {
+      headers: {
+        'Content-Type': 'application/json'
+      },
       id: objIdToUpdate,
-      update: { 
-        taskName: updateToApply,
-        taskDesc: updateToApply,
-        taskUser: updateToApply,
-        taskHours: updateToApply,
-        taskDueDate: updateToApply
-       }
+      firstName: updateToApply
+      
+      
+    })   
+    .then(response => { 
+      console.log(response)
+    })
+    .catch(error => {
+        console.log(error.response)
     });
+
   };
   viewUser(id) {
     this.setState({
@@ -223,11 +256,44 @@ export class ViewUsers extends React.Component {
                   
                   <h2>{data.company}</h2>
               </div>
-                  {data.firstName}
-                  {data.lastName}
-                  {data.email}
-                  {data.access}
+              <div className="viewUserContact">
+                  <h3>Contact</h3>
+                  <div className="row">
+                    <div className="col">
+                    <div id="viewBox" className="viewUserContactView">
+                        <div
+                          
+                          onClick={() => this.editUser(data._id, 1)}
+                          className="viewUserContactViewLink"
+                        >
+                          <p className="viewUserContactViewData">{data.firstName}</p>
+                          <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+                        </div>
+                      </div>
+                        <div id="editBox" className="viewUserContactEdit">
+                          <Input 
+                            type="text"
+                            onChange={e => this.setState({ updateToApply: e.target.value, upDateField: "firstName" })}
+                            placeholder={data.firstName}
+                          >         
+                          </Input>
+                          <FeatherIcon 
+                            color="success" 
+                            className="viewUserContactCheck" 
+                            icon="check"
+                            onClick={() => this.editUser(data._id, 2)} 
+                          />
+                        </div>
+                      <p>Email Address: <span className="viewUserContactData">{data.email}</span></p>
+
+                    </div>
+                    <div className="col">
+                      <p>Last Name: <span className="viewUserContactData">{data.lastName}</span></p>
+                      <p>Account Privileges: <span className="viewUserContactData">{data.access}</span></p>
+                    </div>
+                  </div>
               </div>
+            </div>
             ))
           }
         </div>

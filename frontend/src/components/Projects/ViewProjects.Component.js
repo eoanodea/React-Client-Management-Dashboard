@@ -156,8 +156,6 @@ export class ViewProjects extends React.Component {
   // it is easy to understand their functions when you 
   // see them render into our screen
   render() {
-      
-
     const { 
       data,
       isLoading,
@@ -225,7 +223,6 @@ export class ViewProjects extends React.Component {
               </p>
               </a>
               <div className="viewProjectHeading">
-                  
                   <p>{data.id}</p>
                   <h2>{data.taskName}</h2>
               </div>

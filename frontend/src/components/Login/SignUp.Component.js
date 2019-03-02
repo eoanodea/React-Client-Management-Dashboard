@@ -14,19 +14,20 @@ export class SignUp extends React.Component {
       this.state = {
         token: '',
         signUpError: '',
-        onSignUpCompanyName: '',
+        signUpCompanyName: '',
         signUpFirstName: '',
         signUpLastName: '',
         signUpEmail: '',
+        signUpPassword: '',
         signUpAccess: ''
     };   
-    
+    this.onTextboxChangeCompanyName = this.onTextboxChangeCompanyName.bind(this);
     this.onTextboxChangeSignUpEmail = this.onTextboxChangeSignUpEmail.bind(this);
     this.onTextboxChangeSignUpPassword = this.onTextboxChangeSignUpPassword.bind(this);
     this.onTextboxChangeSignUpFirstName = this.onTextboxChangeSignUpFirstName.bind(this);
     this.onTextboxChangeSignUpLastName = this.onTextboxChangeSignUpLastName.bind(this);
     this.onTextboxChangeSignUpAccess = this.onTextboxChangeSignUpAccess.bind(this);
-    this.onTextboxChangeCompanytName = this.onTextboxChangeSignUpAccess.bind(this);
+  
 
     this.onSignUp = this.onSignUp.bind(this);
 }
@@ -57,9 +58,9 @@ onTextboxChangeSignUpEmail(event) {
       signUpAccess: event.target.value
     });
   }
-  onTextboxChangeCompanytName(event) {
+  onTextboxChangeCompanyName(event) {
     this.setState({
-      onSignUpCompanyName: event.target.value
+      signUpCompanyName: event.target.value
     });
   }
 
@@ -72,7 +73,7 @@ onTextboxChangeSignUpEmail(event) {
    onSignUp() {
     //Grab State
     const {
-      onSignUpCompanyName,
+      signUpCompanyName,
       signUpFirstName,
       signUpLastName,
       signUpEmail,
@@ -90,9 +91,9 @@ onTextboxChangeSignUpEmail(event) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
+        company: signUpCompanyName,
         firstName: signUpFirstName,
         lastName: signUpLastName,
-        company: onSignUpCompanyName,
         email: signUpEmail,
         password: signUpPassword,
         access: signUpAccess
@@ -108,14 +109,13 @@ onTextboxChangeSignUpEmail(event) {
             isLoading: false,
             signUpEmail: '',
             signUpPassword: '',
-            onSignUpCompanyName: '',
+            signUpCompanyName: '',
             signUpFirstName: '',
             signUpLastName: '',
             signUpAccess: '',
             alertMessage: "success"
           }); 
         
-          this.toggle('1');
         } else {
           this.setState({
             signUpError: json.message,
@@ -129,7 +129,7 @@ onTextboxChangeSignUpEmail(event) {
 
 render() {
     const {
-        onSignUpCompanyName,
+        signUpCompanyName,
         signUpFirstName,
         signUpLastName,
         signUpEmail,
@@ -163,8 +163,8 @@ render() {
             <Input 
               type="text" 
               placeholder="Company" 
-              value={onSignUpCompanyName}
-              onChange={this.onTextboxChangeCompanytName}
+              value={signUpCompanyName}
+              onChange={this.onTextboxChangeCompanyName}
               />
               <Input 
               type="text" 
@@ -196,9 +196,9 @@ render() {
               value={signUpAccess}
               onChange={this.onTextboxChangeSignUpAccess}
               >
-                <option>Administrator</option>
-                <option>Client</option>
-                <option>Testing</option>
+                <option value="admin">Admin</option>
+                <option value="client">Client</option>
+                <option value="testing">Testing</option>
               </Input>
               <Button
                   color="dark"

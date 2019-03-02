@@ -38,6 +38,9 @@
     transition: 0.2s ease;
 }
 
+.fade-out {
+    animation: fadeExit 1s;
+}
 .fade-in {
     animation: fadeEnter 2s;
 }
@@ -62,5 +65,14 @@
    
     to {
         opacity: 1;
+    }
+}
+@keyframes fadeExit {
+    from {
+        opacity: 1;
+    }
+   
+    to {
+        opacity: 0.01;
     }
 }

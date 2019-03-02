@@ -21,9 +21,13 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  projectId: {
+    type: Number,
+    default: null
+  },
   access: {
     type: String,
-    default: 'client'
+    default: ''
   },
   isDeleted: {
     type: Boolean,

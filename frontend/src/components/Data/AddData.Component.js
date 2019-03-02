@@ -10,7 +10,7 @@ import {
 } from 'reactstrap';
 import axios from 'axios';
 
-export class AddProject extends React.Component {
+export class AddData extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -218,4 +218,4 @@ export class AddProject extends React.Component {
   }
 }
 
-export default AddProject;
+export default AddData;

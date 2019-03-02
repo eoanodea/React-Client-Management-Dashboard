@@ -10,14 +10,22 @@ var router = express.Router();
    router.post('/signup', (req, res, next) => {
     const { body } = req;
      const { 
+         company,
          firstName,
          lastName,
-         password
+         password,
+         access,
+         projectId
      } = body;
      let {
          email
      } = body;
-
+     if (!company) {
+        return res.send({
+            success: false,
+            message: 'Error: Company cannot be blank'
+        });
+    }
      if (!firstName) {
          return res.send({
              success: false,
@@ -42,10 +50,16 @@ var router = express.Router();
              message: 'Error: Password cannot be blank'
          });
      }
+     if (!access) {
+        return res.send({
+            success: false,
+            message: 'Error: Access cannot be blank'
+        });
+    }
+
 
      email = email.toLowerCase();
 
-     console.log('yo');
      /*
          Steps:
          1. Verify email doesn't exist
@@ -70,9 +84,12 @@ var router = express.Router();
          const newUser = new User();
 
          newUser.email = email;
+         newUser.company = company;
          newUser.firstName = firstName;
          newUser.lastName = lastName;
          newUser.password = newUser.generateHash(password);
+         newUser.access = access;
+         newUser.projectId = projectId;
          newUser.save((err, user) => {
              if (err) {
                  return res.send({
@@ -94,6 +111,27 @@ router.get("/getData", (req, res) => {
       return res.json({ success: true, data: user });
     });
   });
+
+
+// this is our update method
+// this method overwrites existing data in our database
+router.post("/updateData", (req, res) => {
+    const { id, firstName } = req.body;
+    console.log(id, firstName);
+    User.findOneAndUpdate({
+        _id: id,
+    }, 
+        {
+            $set: {
+            firstName: firstName
+        }
+    },
+    (err, user) => {
+      if (err) return res.json({ success: false, error: err });
+      return res.json({ success: true, firstName: user });
+    });
+  });
+
 
  //Sign in
  router.post('/signin', (req, res, next) => {
