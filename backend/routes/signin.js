@@ -140,16 +140,28 @@ router.post("/updateData", (req, res) => {
     newUpdate[field] = update;
     var query = {};
     // query[field] = current;
-    query["_id"] = id;
+
     console.log( newUpdate, query );
+    query["_id"] = id;
+    
     User.findOneAndUpdate(
         query, 
         {
             $set: newUpdate
     },
-    (err, user) => {
-      if (err) return res.json({ success: false, error: err });
-      return res.json({ success: true });
+    (err, newUpdate) => {
+      if (err) return res.json({ success: false, error: err })
+      else if(field === "password") {
+            const user = newUpdate;
+            if (!user.validPassword(update)) {
+                return res.send({
+                    success: false,
+                    message: 'Error: Password does not match'
+                });
+            } else {
+                update = generateHash(update);
+            }
+        } else return res.json({ success: true, password: newUpdate });
     });
   });
 

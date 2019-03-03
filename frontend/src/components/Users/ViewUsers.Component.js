@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Input } from 'reactstrap';
+import { Input, Button } from 'reactstrap';
 import FeatherIcon from 'feather-icons-react';
 
 
@@ -11,6 +11,7 @@ export class ViewUsers extends React.Component {
     id: 0,
     itemId: null,
     updateToApply: null,
+    updateToPasswordApply: null,
     updateToField: null,
     updateCurrent: null,
     intervalIsSet: false,
@@ -104,6 +105,8 @@ export class ViewUsers extends React.Component {
       }
     });
   };
+
+  
   editUser = (id, num) => {
     const editBoxHeading = document.getElementById("editBoxHeading");
     const viewBoxHeading = document.getElementById("viewBoxHeading");
@@ -119,6 +122,9 @@ export class ViewUsers extends React.Component {
 
     const editBox3 = document.getElementById("editBox3");
     const viewBox3 = document.getElementById("viewBox3");
+
+    const editBoxPassword = document.getElementById("editBoxPassword");
+    const viewBoxPassword = document.getElementById("viewBoxPassword");
 
     console.log(id);
     const updateToApply = this.state.updateToApply;
@@ -175,6 +181,16 @@ export class ViewUsers extends React.Component {
       viewBoxHeading.style.display = "block";
       this.updateDB(id, updateToApply, updateCurrent, updateToField);
     }
+    if(num === 51) {
+      viewBoxPassword.style.display = "none";
+      editBoxPassword.style.display = "flex";
+    }
+    if(num === 52) {
+      editBoxPassword.style.display = "none";
+      viewBoxPassword.style.display = "block";
+      this.updateDB(id, updateToApply, updateCurrent, updateToField);
+    }
+ 
     
   }
 
@@ -193,7 +209,10 @@ export class ViewUsers extends React.Component {
         objIdToUpdate = dat._id;
       }
     });
-
+    console.log(    idToUpdate, 
+      updateToApply,
+      updateCurrent,
+      updateToField)
     axios.post("http://localhost:3001/api/account/updateData", {
       headers: {
         'Content-Type': 'application/json'
@@ -437,9 +456,33 @@ export class ViewUsers extends React.Component {
                         </div>
 
                     </div>
-
+                      <div id="viewBoxPassword">
+                        <Button onClick={() => this.editUser(data._id, 51)}>Change Password</Button>
+                      </div>
+                  <div id="editBoxPassword" className="viewUserContactEdit">
+                        <Input 
+                            type="text"
+                            onChange={e => this.setState({ updateToPasswordApply: e.target.value})}
+                            placeholder="Current Password"
+                          >    
+                          </Input>
+                          <Input 
+                            type="text"
+                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.access, updateToField: "password" })}
+                            placeholder="New Password"
+                          >    
+                          </Input>
+                          <FeatherIcon 
+                            color="success" 
+                            className="viewUserContactCheck" 
+                            icon="check"
+                            onClick={() => this.editUser(data._id, 52)} 
+                          />
+                          
+                        </div>
                   </div>
               </div>
+              {data.password}
             </div>
             ))
           }
