@@ -171,8 +171,8 @@ export class ViewUsers extends React.Component {
       editBoxHeading.style.display = "flex"; 
     }
     if(num === 42) {
-      viewBoxHeading.style.display = "none";
-      editBoxHeading.style.display = "block";
+      editBoxHeading.style.display = "none";
+      viewBoxHeading.style.display = "block";
       this.updateDB(id, updateToApply, updateCurrent, updateToField);
     }
     
@@ -193,7 +193,7 @@ export class ViewUsers extends React.Component {
         objIdToUpdate = dat._id;
       }
     });
-    console.log(update + "fabdsoub");
+
     axios.post("http://localhost:3001/api/account/updateData", {
       headers: {
         'Content-Type': 'application/json'
