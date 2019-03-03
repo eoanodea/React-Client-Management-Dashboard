@@ -11,12 +11,8 @@ export class ViewUsers extends React.Component {
     id: 0,
     itemId: null,
     updateToApply: null,
-    upDateField: null,
-    // company: null,
-    // firstName: null,
-    // lastName: null,
-    // email: null,
-    // password: null,
+    updateToField: null,
+    updateCurrent: null,
     intervalIsSet: false,
     idToDelete: null,
     idToUpdate: null,
@@ -109,10 +105,24 @@ export class ViewUsers extends React.Component {
     });
   };
   editUser = (id, num) => {
+    const editBoxHeading = document.getElementById("editBoxHeading");
+    const viewBoxHeading = document.getElementById("viewBoxHeading");
+
     const editBox = document.getElementById("editBox");
     const viewBox = document.getElementById("viewBox");
+
+    const editBox1 = document.getElementById("editBox1");
+    const viewBox1 = document.getElementById("viewBox1");
+
+    const editBox2 = document.getElementById("editBox2");
+    const viewBox2 = document.getElementById("viewBox2");
+
+    const editBox3 = document.getElementById("editBox3");
+    const viewBox3 = document.getElementById("viewBox3");
+
     console.log(id);
     const updateToApply = this.state.updateToApply;
+    const updateCurrent = this.state.updateCurrent;
     const updateToField = this.state.updateToField;
 
     if(num === 1) {
@@ -123,8 +133,47 @@ export class ViewUsers extends React.Component {
     if(num === 2) {
       editBox.style.display = "none";
       viewBox.style.display = "block";
-      const update = this.state.update;
-      this.updateDB(id, updateToApply, updateToField);
+
+      this.updateDB(id, updateToApply, updateCurrent, updateToField);
+    }
+    if(num === 11) {
+      viewBox1.style.display = "none";
+      editBox1.style.display = "flex";
+      
+    }
+    if(num === 12) {
+      editBox1.style.display = "none";
+      viewBox1.style.display = "block";
+      this.updateDB(id, updateToApply, updateCurrent, updateToField);
+    }
+    if(num === 21) {
+      viewBox2.style.display = "none";
+      editBox2.style.display = "flex";
+      
+    }
+    if(num === 22) {
+      editBox2.style.display = "none";
+      viewBox2.style.display = "block";
+      this.updateDB(id, updateToApply, updateCurrent, updateToField);
+    }
+    if(num === 31) {
+      viewBox3.style.display = "none";
+      editBox3.style.display = "flex";
+      
+    }
+    if(num === 32) {
+      editBox3.style.display = "none";
+      viewBox3.style.display = "block";
+      this.updateDB(id, updateToApply, updateCurrent, updateToField);
+    }
+    if(num === 41) {
+      viewBoxHeading.style.display = "none";
+      editBoxHeading.style.display = "flex"; 
+    }
+    if(num === 42) {
+      viewBoxHeading.style.display = "none";
+      editBoxHeading.style.display = "block";
+      this.updateDB(id, updateToApply, updateCurrent, updateToField);
     }
     
   }
@@ -134,24 +183,25 @@ export class ViewUsers extends React.Component {
   updateDB = (
     idToUpdate, 
     updateToApply,
+    updateCurrent,
     updateToField
     ) => {
-    
+    let update = null;
     let objIdToUpdate = null;
     this.state.data.forEach(dat => {
       if (dat._id === idToUpdate) {
         objIdToUpdate = dat._id;
       }
     });
-    console.log(idToUpdate);
+    console.log(update + "fabdsoub");
     axios.post("http://localhost:3001/api/account/updateData", {
       headers: {
         'Content-Type': 'application/json'
       },
       id: objIdToUpdate,
-      firstName: updateToApply
-      
-      
+      current: updateCurrent,
+      update: updateToApply,
+      field: updateToField
     })   
     .then(response => { 
       console.log(response)
@@ -253,27 +303,51 @@ export class ViewUsers extends React.Component {
               </a>
               <div className="viewUserHeading">
                   
+              <div id="viewBoxHeading" className="viewUserContactView">
+                <div
                   
-                  <h2>{data.company}</h2>
+                  onClick={() => this.editUser(data._id, 41)}
+                  className="viewUserContactViewLink"
+                >
+                  <h2 className="viewUserContactViewData">{data.company}</h2>
+                  <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+                </div>
+              </div>
+              <div id="editBoxHeading" className="viewUserContactEdit">
+                  <Input 
+                    type="text"
+                    onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.company, updateToField: "company" })}
+                    placeholder={data.company}
+                  >         
+                  </Input>
+                  <FeatherIcon 
+                    color="success" 
+                    className="viewUserContactCheck" 
+                    icon="check"
+                    onClick={() => this.editUser(data._id, 42)} 
+                  />
+                </div>
+                  {/* <h2>{data.company}</h2> */}
               </div>
               <div className="viewUserContact">
                   <h3>Contact</h3>
                   <div className="row">
                     <div className="col">
-                    <div id="viewBox" className="viewUserContactView">
-                        <div
-                          
-                          onClick={() => this.editUser(data._id, 1)}
-                          className="viewUserContactViewLink"
-                        >
-                          <p className="viewUserContactViewData">{data.firstName}</p>
-                          <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+
+                      <div id="viewBox" className="viewUserContactView">
+                          <div
+                            
+                            onClick={() => this.editUser(data._id, 1)}
+                            className="viewUserContactViewLink"
+                          >
+                            <p className="viewUserContactViewData">{data.firstName}</p>
+                            <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+                          </div>
                         </div>
-                      </div>
                         <div id="editBox" className="viewUserContactEdit">
                           <Input 
                             type="text"
-                            onChange={e => this.setState({ updateToApply: e.target.value, upDateField: "firstName" })}
+                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.firstName, updateToField: "firstName" })}
                             placeholder={data.firstName}
                           >         
                           </Input>
@@ -284,13 +358,86 @@ export class ViewUsers extends React.Component {
                             onClick={() => this.editUser(data._id, 2)} 
                           />
                         </div>
-                      <p>Email Address: <span className="viewUserContactData">{data.email}</span></p>
+                        
+                        <div id="viewBox1" className="viewUserContactView">
+                        <div
+                          
+                          onClick={() => this.editUser(data._id, 11)}
+                          className="viewUserContactViewLink"
+                        >
+                          <p className="viewUserContactViewData">{data.lastName}</p>
+                          <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+                        </div>
+                      </div>
+                        <div id="editBox1" className="viewUserContactEdit">
+                        <Input 
+                            type="text"
+                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.lastName, updateToField: "lastName" })}
+                            placeholder={data.lastName}
+                          >            
+                          </Input>
+                          <FeatherIcon 
+                            color="success" 
+                            className="viewUserContactCheck" 
+                            icon="check"
+                            onClick={() => this.editUser(data._id, 12)} 
+                          />
+                        </div>
+                        
+                      </div>
+                      <div className="col">
+                        <div id="viewBox2" className="viewUserContactView">
+                        <div
+                          
+                          onClick={() => this.editUser(data._id, 21)}
+                          className="viewUserContactViewLink"
+                        >
+                          <p className="viewUserContactViewData">{data.email}</p>
+                          <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+                        </div>
+                      </div>
+                        <div id="editBox2" className="viewUserContactEdit">
+                        <Input 
+                            type="text"
+                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.email, updateToField: "email" })}
+                            placeholder={data.email}
+                          >            
+                          </Input>
+                          <FeatherIcon 
+                            color="success" 
+                            className="viewUserContactCheck" 
+                            icon="check"
+                            onClick={() => this.editUser(data._id, 22)} 
+                          />
+                        </div>
+
+                        <div id="viewBox3" className="viewUserContactView">
+                        <div
+                          
+                          onClick={() => this.editUser(data._id, 31)}
+                          className="viewUserContactViewLink"
+                        >
+                          <p className="viewUserContactViewData">{data.access}</p>
+                          <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+                        </div>
+                      </div>
+                        <div id="editBox3" className="viewUserContactEdit">
+                        <Input 
+                            type="text"
+                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.access, updateToField: "access" })}
+                            placeholder={data.access}
+                          >    
+                          </Input>
+                          <FeatherIcon 
+                            color="success" 
+                            className="viewUserContactCheck" 
+                            icon="check"
+                            onClick={() => this.editUser(data._id, 32)} 
+                          />
+                        </div>
 
                     </div>
-                    <div className="col">
-                      <p>Last Name: <span className="viewUserContactData">{data.lastName}</span></p>
-                      <p>Account Privileges: <span className="viewUserContactData">{data.access}</span></p>
-                    </div>
+
                   </div>
               </div>
             </div>

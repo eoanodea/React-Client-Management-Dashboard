@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"cd backend && node server.js\" \"cd frontend && npm run start\" \"cd frontend && npm run sass\"",
+    "dev": "concurrently \"cd backend && nodemon server.js\" \"cd frontend && npm run start\" \"cd frontend && npm run sass\"",
     "global-install": "npm install & cd frontend && npm install & ../ cd backend & npm install"
   },
   "repository": {
@@ -17,5 +17,8 @@
     "bcrypt": "^3.0.4",
     "bootstrap": "^4.2.1",
     "concurrently": "^4.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
   }
 }

@@ -116,19 +116,40 @@ router.get("/getData", (req, res) => {
 // this is our update method
 // this method overwrites existing data in our database
 router.post("/updateData", (req, res) => {
-    const { id, firstName } = req.body;
-    console.log(id, firstName);
-    User.findOneAndUpdate({
-        _id: id,
-    }, 
+    const { id, field, current, update } = req.body;
+    console.log(id, field, current, update);
+//    if(field === "email") {
+//     User.find({
+//         email: update
+//        }, (err, previousUsers) => {
+//             if(err) {
+//                 return res.send({
+//                     success: false,
+//                     message: 'Error: Server error'
+//                 });
+//             } else if (previousUsers.length > 0) {
+//                 return res.send({
+//                     success: false,
+//                     message: 'Error: Server error'
+//                 });
+//             } 
+//         });
+//     }
+
+    var newUpdate = {}
+    newUpdate[field] = update;
+    var query = {};
+    // query[field] = current;
+    query["_id"] = id;
+    console.log( newUpdate, query );
+    User.findOneAndUpdate(
+        query, 
         {
-            $set: {
-            firstName: firstName
-        }
+            $set: newUpdate
     },
     (err, user) => {
       if (err) return res.json({ success: false, error: err });
-      return res.json({ success: true, firstName: user });
+      return res.json({ success: true });
     });
   });
 
