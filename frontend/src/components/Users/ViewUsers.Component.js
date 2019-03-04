@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Input, Button } from 'reactstrap';
+import { Input, Button, Alert } from 'reactstrap';
 import FeatherIcon from 'feather-icons-react';
 
 
@@ -14,6 +14,10 @@ export class ViewUsers extends React.Component {
     updateToPasswordApply: null,
     updateToField: null,
     updateCurrent: null,
+    alertMsg: {
+      color: "danger",
+      message: null,
+    },
     intervalIsSet: false,
     idToDelete: null,
     idToUpdate: null,
@@ -132,6 +136,7 @@ export class ViewUsers extends React.Component {
     const updateToField = this.state.updateToField;
 
     if(num === 1) {
+
       viewBox.style.display = "none";
       editBox.style.display = "flex";
       
@@ -143,54 +148,60 @@ export class ViewUsers extends React.Component {
       this.updateDB(id, updateToApply, updateCurrent, updateToField);
     }
     if(num === 11) {
+
       viewBox1.style.display = "none";
-      editBox1.style.display = "flex";
-      
+      editBox1.style.display = "flex"; 
     }
     if(num === 12) {
       editBox1.style.display = "none";
       viewBox1.style.display = "block";
+
       this.updateDB(id, updateToApply, updateCurrent, updateToField);
     }
     if(num === 21) {
+
       viewBox2.style.display = "none";
-      editBox2.style.display = "flex";
-      
+      editBox2.style.display = "flex"; 
     }
     if(num === 22) {
       editBox2.style.display = "none";
       viewBox2.style.display = "block";
+
       this.updateDB(id, updateToApply, updateCurrent, updateToField);
     }
     if(num === 31) {
+
       viewBox3.style.display = "none";
       editBox3.style.display = "flex";
-      
     }
     if(num === 32) {
       editBox3.style.display = "none";
       viewBox3.style.display = "block";
+
       this.updateDB(id, updateToApply, updateCurrent, updateToField);
     }
     if(num === 41) {
+
       viewBoxHeading.style.display = "none";
       editBoxHeading.style.display = "flex"; 
     }
     if(num === 42) {
       editBoxHeading.style.display = "none";
       viewBoxHeading.style.display = "block";
+
       this.updateDB(id, updateToApply, updateCurrent, updateToField);
     }
     if(num === 51) {
+
       viewBoxPassword.style.display = "none";
       editBoxPassword.style.display = "flex";
     }
     if(num === 52) {
       editBoxPassword.style.display = "none";
       viewBoxPassword.style.display = "block";
+
       this.updateDB(id, updateToApply, updateCurrent, updateToField);
     }
- 
     
   }
 
@@ -202,6 +213,9 @@ export class ViewUsers extends React.Component {
     updateCurrent,
     updateToField
     ) => {
+    this.setState({
+      isLoading: true,
+    })
     let update = null;
     let objIdToUpdate = null;
     this.state.data.forEach(dat => {
@@ -209,10 +223,7 @@ export class ViewUsers extends React.Component {
         objIdToUpdate = dat._id;
       }
     });
-    console.log(    idToUpdate, 
-      updateToApply,
-      updateCurrent,
-      updateToField)
+
     axios.post("http://localhost:3001/api/account/updateData", {
       headers: {
         'Content-Type': 'application/json'
@@ -224,10 +235,25 @@ export class ViewUsers extends React.Component {
     })   
     .then(response => { 
       console.log(response)
+      this.state.alertMsg = response.data;
     })
     .catch(error => {
         console.log(error.response)
     });
+    if(this.state.alertMsg.success === "true") {
+      this.setState({
+        alertMsg: {color: "success"},
+        isLoading: false
+      })
+      console.log("true")
+    } else {
+      this.setState({
+        alertMsg: {color: "danger"},
+        isLoading: false
+      })
+      console.log("false")
+    }
+
 
   };
   viewUser(id) {
@@ -260,9 +286,9 @@ export class ViewUsers extends React.Component {
       isLoading,
       viewUser,
       viewUsers,
-      userId
+      userId,
+      alertMsg
     } = this.state;
-
     if(isLoading) {
       return(
         <FeatherIcon icon="loading"/>
@@ -308,6 +334,13 @@ export class ViewUsers extends React.Component {
             ? "NO DB ENTRIES YET"
             : data.filter(data => data._id === userId).map(data => (
               <div key={data._id} className="viewUser">
+              {
+                (alertMsg.message) ? (
+                  <Alert color="danger" style={{ marginTop: '10px' }}>
+                    {alertMsg.message}
+                  </Alert>
+                ) : (null)
+              }              
               <a
               onClick={this.viewUsers}
               className="viewUserBackLink"
@@ -320,6 +353,7 @@ export class ViewUsers extends React.Component {
               Back
               </p>
               </a>
+
               <div className="viewUserHeading">
                   
               <div id="viewBoxHeading" className="viewUserContactView">
@@ -468,7 +502,7 @@ export class ViewUsers extends React.Component {
                           </Input>
                           <Input 
                             type="text"
-                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.access, updateToField: "password" })}
+                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.password, updateToField: "password" })}
                             placeholder="New Password"
                           >    
                           </Input>

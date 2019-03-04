@@ -1,6 +1,7 @@
 const User = require('../models/User')
 const UserSession = require('../models/UserSession')
 var express = require("express");
+const bcrypt = require('bcrypt');
 var router = express.Router();
 
 
@@ -117,52 +118,65 @@ router.get("/getData", (req, res) => {
 // this method overwrites existing data in our database
 router.post("/updateData", (req, res) => {
     const { id, field, current, update } = req.body;
-    console.log(id, field, current, update);
-//    if(field === "email") {
-//     User.find({
-//         email: update
-//        }, (err, previousUsers) => {
-//             if(err) {
-//                 return res.send({
-//                     success: false,
-//                     message: 'Error: Server error'
-//                 });
-//             } else if (previousUsers.length > 0) {
-//                 return res.send({
-//                     success: false,
-//                     message: 'Error: Server error'
-//                 });
-//             } 
-//         });
-//     }
 
-    var newUpdate = {}
-    newUpdate[field] = update;
-    var query = {};
-    // query[field] = current;
 
-    console.log( newUpdate, query );
-    query["_id"] = id;
-    
-    User.findOneAndUpdate(
-        query, 
-        {
-            $set: newUpdate
-    },
-    (err, newUpdate) => {
-      if (err) return res.json({ success: false, error: err })
-      else if(field === "password") {
-            const user = newUpdate;
-            if (!user.validPassword(update)) {
+    //Checking if the Users current password is valid
+    //Currently Broken
+    if(field === "password") {
+        User.find({
+            _id: id
+        }, (err, users) => {
+            if(err) {
+                console.log('Invalid id', err);
+                return res.send({
+                    success: false,
+                    message: 'Error'
+                });
+            }
+            if (users.length !=1) {
+                return res.send({
+                    success: false,
+                    message: 'Error: Duplicate in Database'
+                });
+            }
+            const user = users[0];
+            console.log(user);
+            const User = {}
+            // User.newPassword = user.password;
+            // User.oldPassword = bcrypt.hashSync(current, bcrypt.genSaltSync(8), null);
+            console.log("Old Password",current, "NewPassword:" , user.password)
+             
+            if (!bcrypt.compareSync(current, user.newPassword)) {
+                console.log(update + "hello");
                 return res.send({
                     success: false,
                     message: 'Error: Password does not match'
                 });
             } else {
-                update = generateHash(update);
-            }
-        } else return res.json({ success: true, password: newUpdate });
-    });
+                update = bcrypt.hashSync(update, bcrypt.genSaltSync(8), null);
+            } 
+        }
+        );
+    } else if (!update === "false") {
+        var newUpdate = {}
+        newUpdate[field] = update;
+        var query = {};
+        // query[field] = current;
+        query["_id"] = id;
+        
+        User.findOneAndUpdate(
+            query, 
+            {
+                $set: newUpdate
+            },
+        (err, user) => {
+          if (err) return res.json({ success: false, error: err })
+             return res.json({ success: true, user: user });
+        });
+    } else {
+        console.log("Update is null")
+    }
+   
   });
 
 
@@ -211,7 +225,7 @@ router.post("/updateData", (req, res) => {
          if (!user.validPassword(password)) {
              return res.send({
                  success: false,
-                 message: 'Error: '
+                 message: 'Error: Incorrect Password'
              });
          }
 
