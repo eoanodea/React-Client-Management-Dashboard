@@ -118,66 +118,73 @@ router.get("/getData", (req, res) => {
 // this method overwrites existing data in our database
 router.post("/updateData", (req, res) => {
     const { id, field, current, update } = req.body;
-
-
+    // current.userPassword = JSON.stringify(current.userPassword);
     //Checking if the Users current password is valid
-    //Currently Broken
-    if(field === "password") {
-        User.find({
-            _id: id
-        }, (err, users) => {
-            if(err) {
-                console.log('Invalid id', err);
-                return res.send({
-                    success: false,
-                    message: 'Error'
-                });
-            }
-            if (users.length !=1) {
-                return res.send({
-                    success: false,
-                    message: 'Error: Duplicate in Database'
-                });
-            }
-            const user = users[0];
-            console.log(user);
-            const User = {}
-            // User.newPassword = user.password;
-            // User.oldPassword = bcrypt.hashSync(current, bcrypt.genSaltSync(8), null);
-            console.log("Old Password",current, "NewPassword:" , user.password)
-             
-            if (!bcrypt.compareSync(current, user.newPassword)) {
-                console.log(update + "hello");
-                return res.send({
-                    success: false,
-                    message: 'Error: Password does not match'
-                });
-            } else {
-                update = bcrypt.hashSync(update, bcrypt.genSaltSync(8), null);
-            } 
-        }
-        );
-    } else if (!update === "false") {
-        var newUpdate = {}
-        newUpdate[field] = update;
-        var query = {};
-        // query[field] = current;
-        query["_id"] = id;
-        
-        User.findOneAndUpdate(
-            query, 
-            {
-                $set: newUpdate
-            },
-        (err, user) => {
-          if (err) return res.json({ success: false, error: err })
-             return res.json({ success: true, user: user });
-        });
-    } else {
-        console.log("Update is null")
-    }
+    //Broken
+    // if(field === "password") {
+    //     console.log(current);
+    //     if (!bcrypt.compareSync(current.userPassword, current.currentPassword)) {
+    //         return res.send({
+    //             success: false,
+    //             message: 'Error: Password does not match'
+    //         });
+    //     } else {
+    //         update = bcrypt.hashSync(update, bcrypt.genSaltSync(8), null);
+    //     }
+    // } 
+    console.log(id, field, current, update);
+    var newUpdate = {}
+    newUpdate[field] = update;
+    var query = {};
+    // query[field] = current;
+    query["_id"] = id;
+    
+    User.findOneAndUpdate(
+        query, 
+        {
+            $set: newUpdate
+        },
+    (err, user) => {
+        if (err) return res.json({ success: false, error: err })
+            return res.json({ success: true, user: user });
+    });
    
   });
+  updatePassword = (
+      id,
+      field,
+      current,
+      update
+  ) => {
+    User.find({
+        _id: id
+    }, (err, users) => {
+        if(err) {
+            console.log('Invalid id', err);
+            return res.send({
+                success: false,
+                message: 'Error'
+            });
+        }
+        if (users.length !=1) {
+            return res.send({
+                success: false,
+                message: 'Error: Duplicate in Database'
+            });
+        }
+        let user = users[0];
+        console.log("Old Password",current, "NewPassword:" , user.password) 
+        if (!bcrypt.compareSync(current, user.password)) {
+            return res.send({
+                success: false,
+                message: 'Error: Password does not match'
+            });
+        } else {
+            user.password = bcrypt.hashSync(update, bcrypt.genSaltSync(8), null);
+        } 
+    }
+    );
+  }
 
 
  //Sign in

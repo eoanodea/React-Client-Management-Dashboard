@@ -223,7 +223,14 @@ export class ViewUsers extends React.Component {
         objIdToUpdate = dat._id;
       }
     });
-
+    //broken
+    //verifying password in backend
+    // if(updateToField === "password") {
+    //   updateCurrent = {}
+    //   updateCurrent["userPassword"] = this.state.updateToPasswordApply;
+    //   updateCurrent["currentPassword"] = this.state.updateCurrent;
+    // }
+    console.log(objIdToUpdate, updateCurrent, updateToApply, updateToField)
     axios.post("http://localhost:3001/api/account/updateData", {
       headers: {
         'Content-Type': 'application/json'
@@ -231,7 +238,7 @@ export class ViewUsers extends React.Component {
       id: objIdToUpdate,
       current: updateCurrent,
       update: updateToApply,
-      field: updateToField
+      field: updateToField,
     })   
     .then(response => { 
       console.log(response)
