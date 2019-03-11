@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Input, Button, Alert } from 'reactstrap';
 import FeatherIcon from 'feather-icons-react';
+import {ViewData} from '../Data/ViewData.Component';
+import {AddData} from '../Data/AddData.Component';
 
 
 export class ViewUsers extends React.Component {
@@ -18,6 +20,7 @@ export class ViewUsers extends React.Component {
       color: "danger",
       message: null,
     },
+    project: null,
     intervalIsSet: false,
     idToDelete: null,
     idToUpdate: null,
@@ -62,38 +65,6 @@ export class ViewUsers extends React.Component {
       // console.table(this.state.data);
   };
 
-  // our put method that uses our backend api
-  // to create new query into our database
-  putDataToDB = (
-    taskName, 
-    taskDesc, 
-    taskUser, 
-    taskHours, 
-    taskDueDate
-    ) => {
-    let currentIds = this.state.data.map(data => data.id);
-    let idToBeAdded = 0;
-    while (currentIds.includes(idToBeAdded)) {
-      ++idToBeAdded;
-    }
-
-    axios.post("http://localhost:3001/api/putData", {
-      id: idToBeAdded,
-      taskName: taskName,
-      taskDesc: taskDesc,
-      taskUser: taskUser,
-      taskHours: taskHours,
-      taskDueDate: taskDueDate
-    })
-    .then(response => { 
-      console.log(response)
-    })
-    .catch(error => {
-        console.log(error.response)
-    });
-  };
-
-
   // our delete method that uses our backend api 
   // to remove existing database information
   deleteFromDB = idTodelete => {
@@ -129,6 +100,9 @@ export class ViewUsers extends React.Component {
 
     const editBoxPassword = document.getElementById("editBoxPassword");
     const viewBoxPassword = document.getElementById("viewBoxPassword");
+
+    const editBox4 = document.getElementById("editBox4");
+    const viewBox4 = document.getElementById("viewBox4");
 
     console.log(id);
     const updateToApply = this.state.updateToApply;
@@ -199,6 +173,17 @@ export class ViewUsers extends React.Component {
     if(num === 52) {
       editBoxPassword.style.display = "none";
       viewBoxPassword.style.display = "block";
+
+      this.updateDB(id, updateToApply, updateCurrent, updateToField);
+    }
+    if(num === 61) {
+      viewBox4.style.display = "none";
+      editBox4.style.display = "flex";
+      
+    }
+    if(num === 62) {
+      editBox4.style.display = "none";
+      viewBox4.style.display = "block";
 
       this.updateDB(id, updateToApply, updateCurrent, updateToField);
     }
@@ -387,7 +372,7 @@ export class ViewUsers extends React.Component {
                     onClick={() => this.editUser(data._id, 42)} 
                   />
                 </div>
-                  {/* <h2>{data.company}</h2> */}
+                  
               </div>
               <div className="viewUserContact">
                   <h3>Contact</h3>
@@ -500,7 +485,7 @@ export class ViewUsers extends React.Component {
                       <div id="viewBoxPassword">
                         <Button onClick={() => this.editUser(data._id, 51)}>Change Password</Button>
                       </div>
-                  <div id="editBoxPassword" className="viewUserContactEdit">
+                      <div id="editBoxPassword" className="viewUserContactEdit">
                         <Input 
                             type="text"
                             onChange={e => this.setState({ updateToPasswordApply: e.target.value})}
@@ -523,7 +508,40 @@ export class ViewUsers extends React.Component {
                         </div>
                   </div>
               </div>
-              {data.password}
+
+              {/* User project */}
+
+              <div className="row">
+                <div className="col">
+                  <h3>Project</h3>
+                    <div id="viewBox4" className="viewUserContactView">
+                        <div
+                          
+                          onClick={() => this.editUser(data._id, 61)}
+                          className="viewUserContactViewLink"
+                        >
+                          <p className="viewUserContactViewData">{data.projectId}</p>
+                          <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+                        </div>
+                      </div>
+                    <div id="editBox4" className="viewUserContactEdit">
+                        <Input 
+                            type="text"
+                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.projectId, updateToField: "projectId" })}
+                            placeholder={data.projectId}
+                          >    
+                          </Input>
+                          <FeatherIcon 
+                            color="success" 
+                            className="viewUserContactCheck" 
+                            icon="check"
+                            onClick={() => this.editUser(data._id, 62)} 
+                          />
+                        </div>
+                      <AddData user={data.company} userId={data._id}/>
+                      <ViewData id={data._id} />
+                </div>
+              </div>
             </div>
             ))
           }

@@ -32,7 +32,8 @@ export class AddData extends React.Component {
     intervalIsSet: false,
     idToDelete: null,
     idToUpdate: null,
-    objectToUpdate: null
+    objectToUpdate: null,
+    userId: null
   };
 
   // when component mounts, first thing it does is fetch all existing data in our db
@@ -77,12 +78,16 @@ export class AddData extends React.Component {
     taskHours, 
     taskDueDate,
     ) => {
+    let userId = this.props.userId;
+    if(userId != null) {
+      taskProject = userId;
+    }
     let currentIds = this.state.data.map(data => data.id);
     let idToBeAdded = 0;
     while (currentIds.includes(idToBeAdded)) {
       ++idToBeAdded;
     }
-
+    console.log(taskProject + this.props.userId)
     axios.post("http://localhost:3001/api/putData", {
       id: idToBeAdded,
       taskName: taskName,
@@ -153,6 +158,9 @@ export class AddData extends React.Component {
   // see them render into our screen
   render() {
     const { data } = this.state;
+    let userCompany = this.props.user;
+    let userId = this.props.userId;
+
     return (  
       <div>
         <Button color="dark" onClick={this.toggle}>Add Project</Button>
@@ -174,11 +182,21 @@ export class AddData extends React.Component {
           />
           </FormGroup>
           <FormGroup>
-          <Input
-            type="text"
-            onChange={e => this.setState({ taskProject: e.target.value })}
-            placeholder="Project"
+          {
+            userId = null
+            ? <Input
+                type="text"
+                onChange={e => this.setState({ taskProject: e.target.value })}
+                placeholder="Project"
+              />
+            : <Input
+                type="text"
+                value={userCompany}
+                disabled
+                
           />
+          }
+          
           </FormGroup>
           <FormGroup>
           <Input
