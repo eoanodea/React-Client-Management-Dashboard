@@ -25,7 +25,7 @@ export class ViewData extends React.Component {
     isLoading: false,
     viewData: false,
     viewDatas: true,
-    dataId: null
+    viewDataId: null
   };
 
   // when component mounts, first thing it does is fetch all existing data in our db
@@ -131,11 +131,13 @@ export class ViewData extends React.Component {
        }
     });
   };
-  viewData() {
+  viewData(id) {
+    console.log(id)
     this.setState({
       isLoading: false,
       viewDatas: false,
       viewData: true,
+      viewDataId: id
     })
     
   }
@@ -144,7 +146,7 @@ export class ViewData extends React.Component {
       isLoading: false,
       viewData: false,
       viewDatas: true,
-      dataId: null
+      viewDataId: null
     })
   }
   loading() {
@@ -157,26 +159,63 @@ export class ViewData extends React.Component {
 
   userProjects(id) {
     this.state.title = "Projects";
-    const { data } = this.state;
-    return(
-      <tbody>
-      {
-        data.length <= 0
-        ? <FeatherIcon icon="loading"/>
-        : data.filter(data => data.taskProject === id).map(data => (
+    const { data, viewDataId } = this.state;
+    if(this.state.viewDatas = true){
+      return(
+        <tbody>
+        {
+          data.length <= 0
+          ? <FeatherIcon icon="loading"/>
+          : data.filter(data => data.taskProject === id).map(data => (
 
-                <tr key={data.id} className="fade-in" onClick={() => this.viewData(data.id)}>
-                  <td>{data.id} </td>
-                  <td>{data.taskName}</td>
-                  <td>{data.taskDesc}</td>
-                  <td>{data.taskData}</td>
-                  <td>{data.taskHours}</td>
-                  <td>{data.taskDueDate}</td>
-                </tr>
-              ))
-            }
-      </tbody>
-    );  
+                  <tr key={data.id} className="fade-in" onClick={() => this.viewData(data.id)}>
+                    <td>{data.id}</td>
+                    <td>{data.taskName}</td>
+                    <td>{data.taskDesc}</td>
+                    <td>{data.taskData}</td>
+                    <td>{data.taskHours}</td>
+                    <td>{data.taskDueDate}</td>
+                  </tr>
+                ))
+              }
+        </tbody>
+      );  
+      }
+      if(this.state.viewData = true) {
+        return(
+        <div>  
+          {
+            data.length <= 0
+            ? <FeatherIcon icon="loading"/>
+            : data.filter(data => data.id === viewDataId).map(data => (
+              <div key={data.id} className="viewData">
+              <a
+              onClick={this.viewDatas}
+              className="viewDataBackLink"
+              >
+              <p> 
+                <FeatherIcon 
+                  icon="arrow-left" 
+                  className="viewDataBackIcon"
+                />
+              Back
+              </p>
+              </a>
+              <div className="viewDataHeading">
+                  
+                  <p>{data.id}</p>
+                  <h2>{data.taskName}</h2>
+              </div>
+                  {data.taskDesc}
+                  {data.taskData}
+                  {data.taskHours}
+                  {data.taskDueDate}
+              </div>
+            ))
+          }
+        </div>
+        );
+      }
   }
 
 
@@ -191,7 +230,7 @@ export class ViewData extends React.Component {
       isLoading,
       viewData,
       viewDatas,
-      dataId
+      viewDataId
     } = this.state;
     let userId = this.props.id;
     if(isLoading) {
@@ -240,7 +279,7 @@ export class ViewData extends React.Component {
           {
             data.length <= 0
             ? <FeatherIcon icon="loading"/>
-            : data.filter(data => data.id === 1).map(data => (
+            : data.filter(data => data.id === viewDataId).map(data => (
               <div key={data.id} className="viewData">
               <a
               onClick={this.viewDatas}
