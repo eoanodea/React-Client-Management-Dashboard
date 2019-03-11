@@ -260,7 +260,6 @@ export class UserLogin extends React.Component {
     } else {
       return (
         <div>
-          <h1>{this.state.tokenUser.firstName}</h1>
           <Dashboard />
           {this.logoutButton()}
         </div>

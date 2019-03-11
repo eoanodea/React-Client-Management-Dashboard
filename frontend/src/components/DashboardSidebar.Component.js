@@ -19,9 +19,9 @@ export class DashboardSidebar extends React.Component {
             current: key
         })
         console.log(key)
+
      }
     render() {
-        const key = "";
         return(
             // {/* 
             //     Dashboard Sidebar
@@ -44,7 +44,7 @@ export class DashboardSidebar extends React.Component {
                         <a 
                             href="javascript:void(0)"
                             className="nav-link" 
-                            onClick={() => this.current("client")}
+                            onClick={() => this.current(2)}
                         >
                         <FeatherIcon icon="users"/>
                         Clients
@@ -54,7 +54,7 @@ export class DashboardSidebar extends React.Component {
                         <a 
                             href="javascript:void(0)"
                             className="nav-link" 
-                            onClick={() => this.current("project")}
+                            onClick={() => this.current(3)}
                         >
                         <FeatherIcon icon="briefcase"/>
                         Projects
@@ -64,7 +64,7 @@ export class DashboardSidebar extends React.Component {
                         <a 
                             href="javascript:void(0)"
                             className="nav-link" 
-                            onClick={() => this.current("task")}
+                            onClick={() => this.current(4)}
                         >
                         <FeatherIcon icon="clipboard"/>
                         Tasks

@@ -513,33 +513,8 @@ export class ViewUsers extends React.Component {
 
               <div className="row">
                 <div className="col">
-                  <h3>Project</h3>
-                    <div id="viewBox4" className="viewUserContactView">
-                        <div
-                          
-                          onClick={() => this.editUser(data._id, 61)}
-                          className="viewUserContactViewLink"
-                        >
-                          <p className="viewUserContactViewData">{data.projectId}</p>
-                          <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
-                        </div>
-                      </div>
-                    <div id="editBox4" className="viewUserContactEdit">
-                        <Input 
-                            type="text"
-                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.projectId, updateToField: "projectId" })}
-                            placeholder={data.projectId}
-                          >    
-                          </Input>
-                          <FeatherIcon 
-                            color="success" 
-                            className="viewUserContactCheck" 
-                            icon="check"
-                            onClick={() => this.editUser(data._id, 62)} 
-                          />
-                        </div>
-                      <AddData user={data.company} userId={data._id}/>
-                      <ViewData id={data._id} />
+                    <AddData user={data.company} userId={data._id}/>
+                    <ViewData id={data._id} />
                 </div>
               </div>
             </div>

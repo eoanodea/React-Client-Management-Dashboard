@@ -6,17 +6,20 @@ import { ViewProjects } from './Projects/ViewProjects.Component';
 import { ViewUsers } from './Users/ViewUsers.Component';
 import { DashboardSidebar } from './DashboardSidebar.Component';
 import { getFromStorage } from '../utilities/storage';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+
 
 export class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            current: "users"
+            current: 1
         }
     }
     componentDidMount() {
-        let current = getFromStorage('current_page').current;
-        if (current =! this.state.current) {
+        const current = getFromStorage('current_page');
+        console.log(current);
+        if (current != this.state.current) {
             this.state = {
                 current: current
             }
@@ -78,8 +81,8 @@ export class Dashboard extends React.Component {
         console.log(this.props.data)
     }
     navigation() {
-        const { current } = this.state;
-        if(current === "users")
+        const { current } = this.state.current;
+        if(this.state.current = 1)
         return(
             <div className="row">
                 <div className="col-8">
@@ -90,7 +93,7 @@ export class Dashboard extends React.Component {
                 </div>
             </div>
         );
-        if(this.state.current === 'projects')
+        if(this.state.current = 2)
         return(
             <div className="row">
                 <div className="col-8">
@@ -134,7 +137,15 @@ export class Dashboard extends React.Component {
                         </div>
                     </div>
                     <div className="container-fluid">
-                        {this.navigation()}
+                        {/* {this.navigation()} */}
+                    <Router>
+                        <div>
+                            <Route exact path="/" component={ViewUsers} />
+                            <Route path="/profile" component={ViewUsers} />
+                            <Route path="/project" component={ViewProjects} />
+                        </div>
+                    </Router>
+
                     </div>
 
                     {/* //chart function broken
