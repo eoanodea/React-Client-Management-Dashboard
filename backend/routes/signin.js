@@ -251,10 +251,8 @@ router.post("/updateData", (req, res) => {
                  success: true,
                  message: 'Valid sign in',
                  token: doc._id,
-                 firstName: doc.firstName,
-                 lastName: doc.lastName
+                 user: user
              });
-             console.log(token);
          });
      });   
  }); 

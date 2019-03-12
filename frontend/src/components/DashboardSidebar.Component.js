@@ -1,6 +1,8 @@
 import React from 'react';
 import FeatherIcon from 'feather-icons-react';
 import { setInStorage } from '../utilities/storage';
+import { Link, BrowserRouter } from 'react-router-dom';
+import { Dashboard } from './Dashboard.Component';
 
 export class DashboardSidebar extends React.Component {
      constructor(props) {
@@ -14,68 +16,96 @@ export class DashboardSidebar extends React.Component {
             current: 'dashboard'
          }
      }
-     current = (key) => {
-        setInStorage('current_page', {
-            current: key
-        })
-        console.log(key)
-
+     navigation() {
+        
+        console.log("change");
      }
+
     render() {
         return(
             // {/* 
             //     Dashboard Sidebar
             // */}
 
-            <nav className="col-md-2 d-none d-md-block bg-light sidebar">
-                <div className="sidebar-sticky">
-                    <ul className="nav flex-column">
-                    <li className="nav-item">
-                        <a 
-                            href="javascript:void(0)"
-                            className="nav-link" 
-                            onClick={() => this.current(1)}
-                        >
-                        <FeatherIcon icon="home"/>
-                        Dashboard <span className="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a 
-                            href="javascript:void(0)"
-                            className="nav-link" 
-                            onClick={() => this.current(2)}
-                        >
-                        <FeatherIcon icon="users"/>
-                        Clients
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a 
-                            href="javascript:void(0)"
-                            className="nav-link" 
-                            onClick={() => this.current(3)}
-                        >
-                        <FeatherIcon icon="briefcase"/>
-                        Projects
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a 
-                            href="javascript:void(0)"
-                            className="nav-link" 
-                            onClick={() => this.current(4)}
-                        >
-                        <FeatherIcon icon="clipboard"/>
-                        Tasks
-                        </a>
-                    </li>
-                    </ul>
-                </div>
-                </nav>
+            <div>
+            <Link
+            to="/"
+            className="nav-link" 
+            onClick={this.navigation} 
+            >
+            Link</Link>
+            <Link
+            to="/profile"
+            className="nav-link" 
+            onClick={this.navigation} 
+            >
+            Link</Link>
+            <Link
+            to="/project"
+            className="nav-link" 
+            onClick={this.navigation} 
+            >
+            Link</Link>
+            </div>
+
+
+          
 
         );
     }
 }
 
 export default DashboardSidebar;
+
+
+
+
+{/* // <nav className="col-md-2 d-none d-md-block bg-light sidebar">
+            //     <div className="sidebar-sticky">
+                
+            //         <div>
+            //             <ul className="nav flex-column">
+            //             <li className="nav-item">
+            //                 <Link
+            //                     to="/"
+            //                     className="nav-link" 
+            //                     onClick={this.navigation} 
+            //                 >
+            //                 <FeatherIcon icon="home"/>
+            //                 Dashboard <span className="sr-only">(current)</span>
+            //                 </Link>
+            //             </li>
+            //             <li className="nav-item">
+            //                 <Link
+            //                     to="/profile"
+            //                     className="nav-link" 
+            //                     onClick={this.navigation} 
+            //                 >
+            //                 <FeatherIcon icon="users"/>
+            //                 {this.state.clients}
+            //                 </Link>
+            //             </li>
+            //             <li className="nav-item">
+            //                 <Link
+            //                     to="/project"
+            //                     className="nav-link" 
+            //                     onClick={this.navigation} 
+            //                 >
+            //                 <FeatherIcon icon="briefcase"/>
+            //                 {this.state.projects}
+            //                 </Link>
+            //             </li>
+            //             <li className="nav-item">
+            //                 <Link
+            //                     to="/"
+            //                     className="nav-link" onClick={this.navigation} 
+            //                 >
+            //                 <FeatherIcon icon="clipboard"/>
+            //                 {this.state.tasks}
+            //                 </Link>
+            //             </li>
+            //             </ul>
+            //         </div>
+
+            //     </div>
+            //     </nav> */}

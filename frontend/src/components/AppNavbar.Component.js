@@ -9,10 +9,7 @@ import {
     NavLink,
     Container
 } from 'reactstrap';
-import {
-    getFromStorage,
-    setInStorage
-  } from '../utilities/storage';
+import { Link } from 'react-router-dom';
 
 
 export class AppNavbar extends React.Component {
@@ -21,7 +18,6 @@ export class AppNavbar extends React.Component {
         this.state = {
             iconName: 'Client Management',
             userName: "John Doran"
-
         }
     }
     state = {
@@ -34,6 +30,7 @@ export class AppNavbar extends React.Component {
     }
 
     render() {
+        const userFirstName = JSON.parse(localStorage.getItem('user_firstName'));
         return (
             <div>
                 <Navbar color="dark" dark expand="sm">
@@ -45,8 +42,8 @@ export class AppNavbar extends React.Component {
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                <NavLink href="/">
-                                    Home
+                                <NavLink to="/profile">
+                                    Hi, {userFirstName}
                                 </NavLink>
                             </NavItem>
                             <NavItem className="d-none d-sm-block">

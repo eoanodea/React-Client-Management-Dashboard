@@ -4,9 +4,10 @@ import { AddProject } from './Projects/AddProject.Component';
 import { SignUp } from './Login/SignUp.Component';
 import { ViewProjects } from './Projects/ViewProjects.Component';
 import { ViewUsers } from './Users/ViewUsers.Component';
+import { DashboardLanding } from './DashboardLanding.Component';
 import { DashboardSidebar } from './DashboardSidebar.Component';
 import { getFromStorage } from '../utilities/storage';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
 
 
 export class Dashboard extends React.Component {
@@ -27,6 +28,13 @@ export class Dashboard extends React.Component {
         console.log(this.state.current)
         
     }
+    componentWillReceiveProps() {
+        if(this.props.change = 1) {
+            this.forceUpdate();
+            this.props.change = 2;
+        }
+     }
+
     /* globals Chart:false, feather:false */
 
     chart() {
@@ -81,29 +89,7 @@ export class Dashboard extends React.Component {
         console.log(this.props.data)
     }
     navigation() {
-        const { current } = this.state.current;
-        if(this.state.current = 1)
-        return(
-            <div className="row">
-                <div className="col-8">
-                    <ViewUsers /> 
-                </div>
-                <div className="col-4">
-                    <SignUp />
-                </div>
-            </div>
-        );
-        if(this.state.current = 2)
-        return(
-            <div className="row">
-                <div className="col-8">
-                    <ViewProjects /> 
-                </div>
-                <div className="col-4">
-                    <AddProject />
-                </div>
-            </div>
-        );
+        console.log("yo");
     }
 
     render() {
@@ -115,7 +101,6 @@ export class Dashboard extends React.Component {
                     Dashboard Sidebar
                 */}
 
-                <DashboardSidebar />
 
                 {/* 
                     Dashboard Main
@@ -136,15 +121,16 @@ export class Dashboard extends React.Component {
                         </button>
                         </div>
                     </div>
+                    {/* <Link to="/">Home</Link> <div> */}
                     <div className="container-fluid">
-                        {/* {this.navigation()} */}
-                    <Router>
+                    <BrowserRouter>
+                        <DashboardSidebar />
                         <div>
-                            <Route exact path="/" component={ViewUsers} />
+                            <Route exact path="/" component={DashboardLanding} />
                             <Route path="/profile" component={ViewUsers} />
                             <Route path="/project" component={ViewProjects} />
                         </div>
-                    </Router>
+                    </BrowserRouter>
 
                     </div>
 

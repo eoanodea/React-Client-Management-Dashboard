@@ -22,10 +22,8 @@ export class UserLogin extends React.Component {
     this.state = {
       isLoading: true,
       token: '',
-      tokenUser: {
-        firstName: '',
-        lastName: '',
-      },
+      userFirstName: '',
+      userAccess: '',
       signUpError: '',
       signInError: '',
       signInEmail: '',
@@ -47,6 +45,9 @@ export class UserLogin extends React.Component {
   
   componentDidMount() {
     const obj = getFromStorage('the_main_app');
+    const userAccess = JSON.parse(localStorage.getItem('user_access'));
+    const userFirstName = JSON.parse(localStorage.getItem('user_firstName'));
+
     if (obj && obj.token) {
       const { token } = obj;
       //Verify token with GET request
@@ -55,12 +56,10 @@ export class UserLogin extends React.Component {
         .then(json => {
           if (json.success) {
             this.setState({
-              token,
+              token: token,
               isLoading: false,
-              tokenUser: {
-                firstName: obj.firstName,
-                lastName: obj.lastName
-                }
+              userFirstName: userFirstName,
+              userAccess: userAccess
               });
           } else {
             this.setState({
@@ -119,26 +118,22 @@ export class UserLogin extends React.Component {
     })
       .then(res => res.json())
       .then(json => {
-        console.log('json', json);
         if (json.success) {
+          console.log(json.user.access);
           setInStorage('the_main_app', { 
             token: json.token, 
-            firstName: json.firstName, 
-            lastName: json.lastName 
           });
+          localStorage.setItem('user_access', JSON.stringify(json.user.access));
+          localStorage.setItem('user_firstName', JSON.stringify(json.user.firstName));
           this.setState({
             signInError: json.message,
             isLoading: false,
             signInEmail: '',
             signInPassword: '',
             token: json.token,
-            tokenUser: {
-              firstName: json.firstName,
-              lastName: json.lastName
-            } 
-          });
-          
-          
+            userFirstName: json.user.firstName,
+            userAccess: json.user.access
+          });         
         } else {
           this.setState({
             signInError: json.message,
