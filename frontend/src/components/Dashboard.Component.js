@@ -17,23 +17,6 @@ export class Dashboard extends React.Component {
             current: 1
         }
     }
-    componentDidMount() {
-        const current = getFromStorage('current_page');
-        console.log(current);
-        if (current != this.state.current) {
-            this.state = {
-                current: current
-            }
-        }
-        console.log(this.state.current)
-        
-    }
-    componentWillReceiveProps() {
-        if(this.props.change = 1) {
-            this.forceUpdate();
-            this.props.change = 2;
-        }
-     }
 
     /* globals Chart:false, feather:false */
 
@@ -88,57 +71,46 @@ export class Dashboard extends React.Component {
         })
         console.log(this.props.data)
     }
-    navigation() {
-        console.log("yo");
-    }
+    
 
     render() {
         return(
             <div className="container-fluid">
                 <div className="row">
 
-                {/* 
-                    Dashboard Sidebar
-                */}
-
-
-                {/* 
-                    Dashboard Main
-                */}
-
-
-                <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
-                    <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 className="h2">Dashboard</h1>
-                        <div className="btn-toolbar mb-2 mb-md-0">
-                        <div className="btn-group mr-2">
-                            <button type="button" className="btn btn-sm btn-outline-secondary">Share</button>
-                            <button type="button" className="btn btn-sm btn-outline-secondary">Export</button>
-                        </div>
-                        <button type="button" className="btn btn-sm btn-outline-secondary dropdown-toggle">
-                            <FeatherIcon icon="calendar"/>
-                            This week
-                        </button>
-                        </div>
-                    </div>
                     {/* <Link to="/">Home</Link> <div> */}
+
                     <div className="container-fluid">
-                    <BrowserRouter>
-                        <DashboardSidebar />
-                        <div>
-                            <Route exact path="/" component={DashboardLanding} />
-                            <Route path="/profile" component={ViewUsers} />
-                            <Route path="/project" component={ViewProjects} />
-                        </div>
-                    </BrowserRouter>
-
+                        <BrowserRouter>
+                            <>
+                                <div className="row">
+                                    <DashboardSidebar />
+                                        <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
+                                            <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                            <h1 className="h2">Dashboard</h1>
+                                                <div className="btn-toolbar mb-2 mb-md-0">
+                                                    <div className="btn-group mr-2">
+                                                        <button type="button" className="btn btn-sm btn-outline-secondary">Share</button>
+                                                        <button type="button" className="btn btn-sm btn-outline-secondary">Export</button>
+                                                    </div>
+                                                    <button type="button" className="btn btn-sm btn-outline-secondary dropdown-toggle">
+                                                        <FeatherIcon icon="calendar"/>
+                                                        This week
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        <div>
+                                            <Route exact path="/" component={DashboardLanding} />
+                                            <Route path="/profile" component={ViewUsers} />
+                                            <Route path="/project" component={ViewProjects} />
+                                        </div>
+                                        {/* //chart function broken
+                                        <canvas className="my-4 w-100" id="myChart" width="900" height="380"></canvas> */}
+                                    </main>
+                                </div>
+                            </>
+                        </BrowserRouter>
                     </div>
-
-                    {/* //chart function broken
-                    <canvas className="my-4 w-100" id="myChart" width="900" height="380"></canvas> */}
-
-
-                    </main>
                 </div>
             </div>
         );
