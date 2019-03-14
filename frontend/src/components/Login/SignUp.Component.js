@@ -196,6 +196,7 @@ render() {
               value={signUpAccess}
               onChange={this.onTextboxChangeSignUpAccess}
               >
+                <option value="">Please Select An Option</option>
                 <option value="admin">Admin</option>
                 <option value="client">Client</option>
                 <option value="testing">Testing</option>

@@ -4,13 +4,18 @@ import { Input, Button, Alert } from 'reactstrap';
 import FeatherIcon from 'feather-icons-react';
 import {ViewData} from '../Data/ViewData.Component';
 import {AddData} from '../Data/AddData.Component';
+import { SignUp } from '../Login/SignUp.Component';
 
 
 export class ViewUsers extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   // initialize our state 
   state = {
     data: [],
     id: 0,
+    logoutProp: this.props.func,
     itemId: null,
     updateToApply: null,
     updateToPasswordApply: null,
@@ -208,13 +213,7 @@ export class ViewUsers extends React.Component {
         objIdToUpdate = dat._id;
       }
     });
-    //broken
-    //verifying password in backend
-    // if(updateToField === "password") {
-    //   updateCurrent = {}
-    //   updateCurrent["userPassword"] = this.state.updateToPasswordApply;
-    //   updateCurrent["currentPassword"] = this.state.updateCurrent;
-    // }
+    
     console.log(objIdToUpdate, updateCurrent, updateToApply, updateToField)
     axios.post("http://localhost:3001/api/account/updateData", {
       headers: {
@@ -244,9 +243,7 @@ export class ViewUsers extends React.Component {
         isLoading: false
       })
       console.log("false")
-    }
-
-
+  }
   };
   viewUser(id) {
     this.setState({
@@ -288,32 +285,37 @@ export class ViewUsers extends React.Component {
     }
     if(!isLoading && viewUsers) {
       return (
-        <div className="col">
-          <h2>User</h2>
-          <div>
-            <table className="table table-striped table-sm">
-              <thead>
-                  <tr>
-                    <th>Company</th>
-                    <th>Contact</th>
-                    <th>Contact Email</th>
-                    <th>Privileges</th>
-                  </tr>
-              </thead>
-              <tbody key={data.taskName}>
-                  {data.length <= 0
-                  ? "NO DB ENTRIES YET"
-                  : data.map(data => (
-                      <tr key={data._id} className="fade-in" onClick={() => this.viewUser(data._id)}>
-                        <td>{data.company}</td>
-                        <td>{data.firstName}</td>
-                        <td>{data.lastName}</td>
-                        <td>{data.email}</td>
-                        <td>{data.access}</td>
-                      </tr>
-                    ))}
-              </tbody>
-            </table>
+        <div className="row">
+          <div className="col-md-9">
+            <h2>User</h2>
+            <div>
+              <table className="table table-striped table-sm">
+                <thead>
+                    <tr>
+                      <th>Company</th>
+                      <th>Contact</th>
+                      <th>Contact Email</th>
+                      <th>Privileges</th>
+                    </tr>
+                </thead>
+                <tbody key={data.taskName}>
+                    {data.length <= 0
+                    ? "NO DB ENTRIES YET"
+                    : data.map(data => (
+                        <tr key={data._id} className="fade-in" onClick={() => this.viewUser(data._id)}>
+                          <td>{data.company}</td>
+                          <td>{data.firstName}</td>
+                          <td>{data.lastName}</td>
+                          <td>{data.email}</td>
+                          <td>{data.access}</td>
+                        </tr>
+                      ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="col-md-3">
+              <SignUp />
           </div>
       </div>
       );

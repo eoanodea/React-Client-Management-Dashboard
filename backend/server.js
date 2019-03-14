@@ -47,12 +47,26 @@ router.get("/getData", (req, res) => {
 // this is our update method
 // this method overwrites existing data in our database
 router.post("/updateData", (req, res) => {
-  const { id, update } = req.body;
-  Data.findOneAndUpdate(id, update, err => {
-    if (err) return res.json({ success: false, error: err });
-    return res.json({ success: true });
+  const { id, field, current, update } = req.body;
+  console.log(id, field, current, update);
+  var newUpdate = {}
+  newUpdate[field] = update;
+  var query = {};
+  // query[field] = current;
+  query["id"] = id;
+  
+  Data.findOneAndUpdate(
+      query, 
+      {
+          $set: newUpdate
+      },
+  (err, data) => {
+      if (err) return res.json({ success: false, error: err })
+          return res.json({ success: true, data: data });
   });
+ 
 });
+
 
 // this is our delete method
 // this method removes existing data in our database

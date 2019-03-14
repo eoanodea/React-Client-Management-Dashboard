@@ -9,7 +9,9 @@ import {
     NavLink,
     Container
 } from 'reactstrap';
+import UserLogIn from './Login/UserLogIn.Component';
 import { Link } from 'react-router-dom';
+import UserLogout from './Login/UserLogout.Component';
 
 
 export class AppNavbar extends React.Component {
@@ -17,7 +19,6 @@ export class AppNavbar extends React.Component {
         super(props);
         this.state = {
             iconName: 'Client Management',
-            userName: "John Doran"
         }
     }
     state = {
@@ -52,10 +53,8 @@ export class AppNavbar extends React.Component {
                                 </NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink
-                                    onClick={this.logout}
-                                >
-                                Logout
+                                <NavLink>
+                                {/* <UserLogout /> */}
                                 </NavLink>
                             </NavItem>
                         </Nav>

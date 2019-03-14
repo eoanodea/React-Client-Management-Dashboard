@@ -22,43 +22,43 @@ export class DashboardSidebar extends React.Component {
                     id: 1,
                     name: 'Clients',
                     icon: 'users',
-                    link: '/', 
+                    link: '/profile', 
                     access: 'admin'
                 },
                 {
                     id: 2,
                     name: 'My Profile',
                     icon: 'users',
-                    link: '/', 
+                    link: '/profile', 
                     access: 'all'
                 },
                 {
                     id: 3,
                     name: 'Projects',
                     icon: 'briefcase',
-                    link: '/', 
+                    link: '/project', 
                     access: 'admin'
                 },
                 {
                     id: 4,
-                    name: 'Project',
+                    name: 'Projects',
                     icon: 'briefcase',
-                    link: '/', 
+                    link: '/project', 
                     access: 'all'
                 },
                 {
                     id: 5,               
-                    name: 'Tasks',
+                    name: '(broken link)Tasks',
                     icon: 'clipboard',
                     link: '/', 
                     access: 'admin'
                 },
                 {
                     id: 6,               
-                    name: 'Tasks',
+                    name: '(broken link)Tasks',
                     icon: 'clipboard',
                     link: '/', 
-                    access: 'admin'
+                    access: 'all'
                 },
             ]
 

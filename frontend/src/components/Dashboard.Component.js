@@ -1,7 +1,6 @@
 import React from 'react';
 import FeatherIcon from 'feather-icons-react';
 import { AddProject } from './Projects/AddProject.Component';
-import { SignUp } from './Login/SignUp.Component';
 import { ViewProjects } from './Projects/ViewProjects.Component';
 import { ViewUsers } from './Users/ViewUsers.Component';
 import { DashboardLanding } from './DashboardLanding.Component';

@@ -13,6 +13,7 @@ import {
   getFromStorage,
   setInStorage
 } from '../../utilities/storage';
+import { AppNavbar } from '../AppNavbar.Component';
 
 
 export class UserLogin extends React.Component {
@@ -20,7 +21,7 @@ export class UserLogin extends React.Component {
     super(props);
 
     this.state = {
-      isLoading: true,
+      isLoading: true, 
       token: '',
       userFirstName: '',
       userAccess: '',
@@ -86,9 +87,6 @@ export class UserLogin extends React.Component {
     });
   }
 
-
-
-
   /*
   // Gets signup info from the user and posts it to the database
   */
@@ -132,7 +130,8 @@ export class UserLogin extends React.Component {
             signInPassword: '',
             token: json.token,
             userFirstName: json.user.firstName,
-            userAccess: json.user.access
+            userAccess: json.user.access,
+            loggedIn: true
           });         
         } else {
           this.setState({
@@ -159,7 +158,8 @@ export class UserLogin extends React.Component {
           if (json.success) {
             this.setState({
               token: "",
-              isLoading: false
+              isLoading: false,
+              loggedIn: false
             });
           } else {
             this.setState({
@@ -204,8 +204,7 @@ export class UserLogin extends React.Component {
       signInError,
       signInEmail,
       signInPassword,
-      alertMessage,
-      tokenUser
+      loggedIn
     } = this.state;
 
     if (isLoading) {
@@ -220,41 +219,45 @@ export class UserLogin extends React.Component {
     // Display before user logs in
     if(!isLoading && !token) {
       return(
-        <div className="login"> 
-          <h2 className="loginHeading">Sign In</h2>
-          {
-            (signInError) ? (
-              <Alert id="alert" style={{ marginTop: '10px' }}>
-                {signInError}
-              </Alert>
-            ) : (null)
-            }
-            <Form onSubmit={this.onSignIn}>
-                <FormGroup className="loginFormGroup">
-                    <Input 
-                      type="email" 
-                      placeholder="Email Address" 
-                      value={signInEmail}
-                      onChange={this.onTextboxChangeSignInEmail}
-                    />
-                    <Input 
-                      type="password" 
-                      placeholder="Password" 
-                      value={signInPassword}
-                      onChange={this.onTextboxChangeSignInPassword}
-                    />
-                    <Button
-                        color="dark"
-                        style={{ marginTop: '2rem' }}
-                        block
-                    >Sign In</Button>
-                </FormGroup>
-            </Form>
+        <div>
+          <AppNavbar />
+          <div className="login"> 
+            <h2 className="loginHeading">Sign In</h2>
+            {
+              (signInError) ? (
+                <Alert id="alert" style={{ marginTop: '10px' }}>
+                  {signInError}
+                </Alert>
+              ) : (null)
+              }
+              <Form onSubmit={this.onSignIn}>
+                  <FormGroup className="loginFormGroup">
+                      <Input 
+                        type="email" 
+                        placeholder="Email Address" 
+                        value={signInEmail}
+                        onChange={this.onTextboxChangeSignInEmail}
+                      />
+                      <Input 
+                        type="password" 
+                        placeholder="Password" 
+                        value={signInPassword}
+                        onChange={this.onTextboxChangeSignInPassword}
+                      />
+                      <Button
+                          color="dark"
+                          style={{ marginTop: '2rem' }}
+                          block
+                      >Sign In</Button>
+                  </FormGroup>
+              </Form>
+          </div>
         </div>
       );
     } else {
       return (
         <div>
+          <AppNavbar logout={this.logout}/>
           <Dashboard />
           {this.logoutButton()}
         </div>

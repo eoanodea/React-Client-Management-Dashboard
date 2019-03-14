@@ -23,6 +23,7 @@ export class AddProject extends React.Component {
   // initialize our state 
   state = {
     data: [],
+    user: [],
     id: 0,
     taskName: null,
     taskDesc: null,
@@ -67,6 +68,38 @@ export class AddProject extends React.Component {
       .then(data => data.json())
       .then(res => this.setState({ data: res.data }));
   };
+
+  userProject() {
+    fetch("http://localhost:3001/api/account/getData")
+    .then(data => data.json())
+    .then(res => this.setState({ user: res.data }));
+
+    const { user } = this.state;
+    console.log(user);
+    return(
+      <div>
+        {
+          !user
+          ? <Input
+            type="text"
+            onChange={e => this.setState({ taskProject: e.target.value })}
+            placeholder="Project"
+            />
+          : <Input
+              type="select"
+              placeholder="Select a company"
+              onChange={e => this.setState({ taskProject: e.target.value })}
+              >
+              { 
+                user.map(user => (
+                  <option key={user._id} value={user._id}>{user.firstName} {user.lastName} - {user.company}</option>      
+                ))
+              }
+            </Input>
+        }
+        </div>
+      );
+    }
 
   // our put method that uses our backend api
   // to create new query into our database
@@ -174,11 +207,12 @@ export class AddProject extends React.Component {
           />
           </FormGroup>
           <FormGroup>
-          <Input
+          {/* <Input
             type="text"
             onChange={e => this.setState({ taskProject: e.target.value })}
             placeholder="Project"
-          />
+          /> */}
+          {this.userProject()}
           </FormGroup>
           <FormGroup>
           <Input
