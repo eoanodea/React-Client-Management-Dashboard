@@ -221,7 +221,7 @@ export class UserLogin extends React.Component {
     if(!isLoading && !token) {
       return(
         <div>
-          <AppNavbar />
+          
           <div className="login"> 
             <h2 className="loginHeading">Sign In</h2>
             {
