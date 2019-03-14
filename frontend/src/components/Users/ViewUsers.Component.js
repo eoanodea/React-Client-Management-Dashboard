@@ -15,6 +15,7 @@ export class ViewUsers extends React.Component {
   state = {
     data: [],
     id: 0,
+    admin: "all",
     logoutProp: this.props.func,
     itemId: null,
     updateToApply: null,
@@ -30,9 +31,9 @@ export class ViewUsers extends React.Component {
     idToDelete: null,
     idToUpdate: null,
     objectToUpdate: null,
-    isLoading: false,
+    isLoading: true,
     viewUser: false,
-    viewUsers: true,
+    viewUsers: false,
     userId: null
   };
 
@@ -263,26 +264,44 @@ export class ViewUsers extends React.Component {
     })
   }
 
+  authorized = () => {
+    const userAccess = JSON.parse(localStorage.getItem('user_access'));
+    if(userAccess === "admin") {
+        this.setState({admin: 'admin'})
+        this.viewUsers();
+    } else {
+        this.setState({admin: 'all'});
+        const userId = JSON.parse(localStorage.getItem('user_id'));
+        this.viewUser(userId);
+    }
+ }
+
 
   // here is our UI
   // it is easy to understand their functions when you 
   // see them render into our screen
   render() {
-      
-
     const { 
       data,
       isLoading,
       viewUser,
       viewUsers,
       userId,
-      alertMsg
+      alertMsg,
+      admin
     } = this.state;
+
     if(isLoading) {
       return(
-        <FeatherIcon icon="loading"/>
+        <div>
+          <FeatherIcon icon="loading"/>
+          {this.authorized()}
+        </div>
       );
     }
+
+    
+
     if(!isLoading && viewUsers) {
       return (
         <div className="row">
@@ -327,26 +346,32 @@ export class ViewUsers extends React.Component {
             data.length <= 0
             ? "NO DB ENTRIES YET"
             : data.filter(data => data._id === userId).map(data => (
-              <div key={data._id} className="viewUser">
+              <div key={data._id} className="row">
+              <div className="viewUser col-md-9">
               {
                 (alertMsg.message) ? (
                   <Alert color="danger" style={{ marginTop: '10px' }}>
                     {alertMsg.message}
                   </Alert>
                 ) : (null)
-              }              
-              <a
-              onClick={this.viewUsers}
-              className="viewUserBackLink"
-              >
-              <p> 
-                <FeatherIcon 
-                  icon="arrow-left" 
-                  className="viewUserBackIcon"
-                />
-              Back
-              </p>
-              </a>
+              }       
+              {
+                this.state.admin === "admin"
+                ? <a
+                    onClick={this.viewUsers}
+                    className="viewUserBackLink"
+                    >
+                      <p> 
+                        <FeatherIcon 
+                          icon="arrow-left" 
+                          className="viewUserBackIcon"
+                        />
+                      Back
+                      </p>
+                    </a>
+                : <> </>
+              }   
+
 
               <div className="viewUserHeading">
                   
@@ -510,19 +535,26 @@ export class ViewUsers extends React.Component {
                         </div>
                   </div>
               </div>
-
+            
               {/* User project */}
-
+            
               <div className="row">
                 <div className="col">
-                    <AddData user={data.company} userId={data._id}/>
                     <ViewData id={data._id} />
                 </div>
               </div>
+              </div>
+              <div className="col-md-3">
+                <AddData user={data.company} userId={data._id}/>  
+              </div>
             </div>
+
             ))
           }
+                      
+
         </div>
+        
       );
     }
 

@@ -48,14 +48,14 @@ export class DashboardSidebar extends React.Component {
                 },
                 {
                     id: 5,               
-                    name: '(broken link)Tasks',
+                    name: 'Tasks',
                     icon: 'clipboard',
                     link: '/', 
                     access: 'admin'
                 },
                 {
                     id: 6,               
-                    name: '(broken link)Tasks',
+                    name: 'Tasks',
                     icon: 'clipboard',
                     link: '/', 
                     access: 'all'

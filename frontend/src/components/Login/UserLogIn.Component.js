@@ -123,6 +123,7 @@ export class UserLogin extends React.Component {
           });
           localStorage.setItem('user_access', JSON.stringify(json.user.access));
           localStorage.setItem('user_firstName', JSON.stringify(json.user.firstName));
+          localStorage.setItem('user_id', JSON.stringify(json.user._id));
           this.setState({
             signInError: json.message,
             isLoading: false,
