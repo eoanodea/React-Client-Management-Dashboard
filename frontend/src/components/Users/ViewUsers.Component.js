@@ -509,30 +509,6 @@ export class ViewUsers extends React.Component {
                         </div>
 
                     </div>
-                      <div id="viewBoxPassword">
-                        <Button onClick={() => this.editUser(data._id, 51)}>Change Password</Button>
-                      </div>
-                      <div id="editBoxPassword" className="viewUserContactEdit">
-                        <Input 
-                            type="text"
-                            onChange={e => this.setState({ updateToPasswordApply: e.target.value})}
-                            placeholder="Current Password"
-                          >    
-                          </Input>
-                          <Input 
-                            type="text"
-                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.password, updateToField: "password" })}
-                            placeholder="New Password"
-                          >    
-                          </Input>
-                          <FeatherIcon 
-                            color="success" 
-                            className="viewUserContactCheck" 
-                            icon="check"
-                            onClick={() => this.editUser(data._id, 52)} 
-                          />
-                          
-                        </div>
                   </div>
               </div>
             
@@ -545,7 +521,31 @@ export class ViewUsers extends React.Component {
               </div>
               </div>
               <div className="col-md-3">
-                <AddData user={data.company} userId={data._id}/>  
+              <div id="viewBoxPassword" className="viewUserButton">
+                  <Button color="dark" onClick={() => this.editUser(data._id, 51)}>Change Password</Button>
+                </div>
+                <div id="editBoxPassword" className="viewUserContactEdit">
+                  <Input 
+                      type="text"
+                      onChange={e => this.setState({ updateToPasswordApply: e.target.value})}
+                      placeholder="Current Password"
+                    >    
+                    </Input>
+                    <Input 
+                      type="text"
+                      onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.password, updateToField: "password" })}
+                      placeholder="New Password"
+                    >    
+                    </Input>
+                    <FeatherIcon 
+                      color="success" 
+                      className="viewUserContactCheck" 
+                      icon="check"
+                      onClick={() => this.editUser(data._id, 52)} 
+                    />
+                    
+                  </div>
+                <AddData user={data.company} userId={data._id} />  
               </div>
             </div>
 

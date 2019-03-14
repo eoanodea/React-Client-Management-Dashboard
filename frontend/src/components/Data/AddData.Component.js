@@ -162,7 +162,7 @@ export class AddData extends React.Component {
     let userId = this.props.userId;
 
     return (  
-      <div>
+      <div className="viewUserButton">
         <Button color="dark" onClick={this.toggle}>Add Project</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Add a Project</ModalHeader>

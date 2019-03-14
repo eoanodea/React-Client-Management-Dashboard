@@ -153,9 +153,22 @@ export class ViewData extends React.Component {
     return(
       <div className="loading">
         <FeatherIcon className="loadingIcon" icon="loader" size="54" />
+        {this.authorized()}
       </div>
     );
   }
+  authorized = () => {
+    const userAccess = JSON.parse(localStorage.getItem('user_access'));
+    if(userAccess === "admin") {
+        this.setState({admin: 'admin'})
+        this.viewUsers();
+    } else {
+        this.setState({admin: 'all'});
+        const userId = JSON.parse(localStorage.getItem('user_id'));
+        this.userProjects(userId);
+        console.log("hey");
+    }
+ }
 
   userProjects(id) {
     this.state.title = "Projects";

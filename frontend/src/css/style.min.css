@@ -542,6 +542,10 @@ body {
   padding-bottom: 10px;
   width: 70%;
 }
+.viewUserButton .btn {
+  width: 80%;
+  margin: 10px auto;
+}
 .viewUserContactEdit {
   display: flex;
   justify-content: space-between;
@@ -573,12 +577,11 @@ body {
   transition: 0.2s ease;
 }
 .viewUserContactCheck {
-  width: 26px;
-  height: 26px;
+  width: 40px;
+  height: 40px;
   position: relative;
-  top: 8px;
-  right: 30px;
-  color: green;
+  top: 1px;
+  right: -5px;
 }
 .viewUserContactViewData {
   font-weight: 400;

@@ -9,6 +9,7 @@ export class ViewProjects extends React.Component {
   state = {
     data: [],
     id: 0,
+    admin: "all",
     itemId: null,
     taskName: null,
     taskDesc: null,
@@ -291,13 +292,89 @@ export class ViewProjects extends React.Component {
       projectId: null
     })
   }
+
+
+  authorized = () => {
+    const userAccess = JSON.parse(localStorage.getItem('user_access'));
+    if(userAccess === "admin") {
+        this.state.admin = 'admin';
+        this.viewProjects();
+    } else {
+        this.state.admin = 'all';
+        const userId = JSON.parse(localStorage.getItem('user_id'));
+        this.state.userId = userId;
+    }
+ }
+
   loading() {
     return(
       <div className="loading">
         <FeatherIcon className="loadingIcon" icon="loader" size="54" />
+        {this.authorized()}
       </div>
     );
   }
+
+  userProjects(id) {
+    this.state.isLoading = false;
+    this.state.title = "Projects";
+    const { data, projectId } = this.state;
+    if(this.state.viewProjects = true){
+      return(
+        <tbody>
+        {
+          data.length <= 0
+          ? <FeatherIcon icon="loading"/>
+          : data.filter(data => data.taskProject === id).map(data => (
+
+                  <tr key={data.id} className="fade-in" onClick={() => this.viewProject(data.id)}>
+                    <td>{data.taskName}</td>
+                    <td>{data.taskProject}</td>
+                    <td>{data.taskHours}</td>
+                    <td>{data.taskDueDate}</td>
+                  </tr>
+                ))
+              }
+        </tbody>
+      );  
+      }
+      if(this.state.viewProject = true) {
+        return(
+        <div>  
+          {
+            data.length <= 0
+            ? <FeatherIcon icon="loading"/>
+            : data.filter(data => data.id === id).map(data => (
+              <div key={data.id} className="viewData">
+              <a
+              onClick={this.viewDatas}
+              className="viewDataBackLink"
+              >
+              <p> 
+                <FeatherIcon 
+                  icon="arrow-left" 
+                  className="viewDataBackIcon"
+                />
+              Back
+              </p>
+              </a>
+              <div className="viewDataHeading">
+                  
+                  <p>{data.id}</p>
+                  <h2>{data.taskName}</h2>
+              </div>
+                  {data.taskDesc}
+                  {data.taskData}
+                  {data.taskHours}
+                  {data.taskDueDate}
+              </div>
+            ))
+          }
+        </div>
+        );
+      }
+  }
+
 
 
   // here is our UI
@@ -310,7 +387,9 @@ export class ViewProjects extends React.Component {
       viewProject,
       viewProjects,
       projectId,
-      alertMsg
+      alertMsg,
+      userId,
+      admin
     } = this.state;
     if(isLoading) {
       return this.loading();
@@ -323,33 +402,38 @@ export class ViewProjects extends React.Component {
               <table className="table table-striped table-sm">
                 <thead>
                     <tr>
-                      <th>Task Name</th>
-                      <th>Project</th>
+                      <th>Project Name</th>
+                      <th>Company</th>
                       <th>Hours Logged</th>
                       <th>Due Date</th>
                     </tr>
                 </thead>
-                <tbody key={data.taskName}>
-                    {data.length <= 0
-                    ? "NO DB ENTRIES YET"
-                    : data.map(data => (
-                        <tr key={data.id} className="fade-in" onClick={() => this.viewProject(data.id)}>
-                          <td>{data.taskName}</td>
-                          <td>{data.taskProject}</td>
-                          <td>{data.taskHours}</td>
-                          <td>{data.taskDueDate}</td>
-                        </tr>
-                      ))}
-                </tbody>
-              </table>
+
+                    {
+                      this.state.admin === "admin"
+                      ? this.userProjects()
+                      : data.length <= 0
+                        ? "NO DB ENTRIES YET"
+                        : data.map(data => (
+                          <tbody key={data.taskName}>
+                          <tr key={data.id} className="fade-in" onClick={() => this.viewProject(data.id)}>
+                            <td>{data.taskName}</td>
+                            <td>{data.taskProject}</td>
+                            <td>{data.taskHours}</td>
+                            <td>{data.taskDueDate}</td>
+                          </tr>
+                          </tbody>
+                        ))}
+                  
+                </table>
+              </div>
             </div>
-          </div>
-          <div className="col-md-3">
+            <div className="col-md-3">
               <AddProject />
-          </div>
-      </div>
-      );
-    }
+            </div>
+        </div>
+        );
+      }
     if(!isLoading && viewProject) {
       return(
         <div>  
@@ -526,6 +610,7 @@ export class ViewProjects extends React.Component {
       ); 
       }
     }
+
   }
 
   export default ViewProjects;
