@@ -11,11 +11,11 @@ export class ViewProjects extends React.Component {
     id: 0,
     admin: "all",
     itemId: null,
-    taskName: null,
+    name: null,
     taskDesc: null,
-    taskProject: null,
-    taskHours: null,
-    taskDueDate: null,
+    parentId: null,
+    hours: null,
+    dueDate: null,
     alertMsg: {
       color: "danger",
       message: null,
@@ -58,7 +58,7 @@ export class ViewProjects extends React.Component {
   // our first get method that uses our backend api to 
   // fetch data from our data base
   getDataFromDb = () => {
-    fetch("http://localhost:3001/api/getData")
+    fetch("http://localhost:3001/api/data/getData")
       .then(data => data.json())
       .then(res => this.setState({ data: res.data }));
   };
@@ -66,11 +66,11 @@ export class ViewProjects extends React.Component {
   // our put method that uses our backend api
   // to create new query into our database
   putDataToDB = (
-    taskName, 
+    name, 
     taskDesc, 
-    taskProject, 
-    taskHours, 
-    taskDueDate
+    parentId, 
+    hours, 
+    dueDate
     ) => {
     let currentIds = this.state.data.map(data => data.id);
     let idToBeAdded = 0;
@@ -78,13 +78,13 @@ export class ViewProjects extends React.Component {
       ++idToBeAdded;
     }
 
-    axios.post("http://localhost:3001/api/putData", {
+    axios.post("http://localhost:3001/api/data/putData", {
       id: idToBeAdded,
-      taskName: taskName,
+      name: name,
       taskDesc: taskDesc,
-      taskProject: taskProject,
-      taskHours: taskHours,
-      taskDueDate: taskDueDate
+      parentId: parentId,
+      hours: hours,
+      dueDate: dueDate
     })
     .then(response => { 
       console.log(response)
@@ -215,7 +215,7 @@ export class ViewProjects extends React.Component {
         objIdToDelete = dat.id;
       }
     });
-    axios.delete("http://localhost:3001/api/deleteData", {
+    axios.delete("http://localhost:3001/api/data/deleteData", {
       data: {
         id: objIdToDelete
       }
@@ -245,7 +245,7 @@ export class ViewProjects extends React.Component {
     });
 
     console.log(objIdToUpdate, updateCurrent, updateToApply, updateToField)
-    axios.post("http://localhost:3001/api/updateData", {
+    axios.post("http://localhost:3001/api/data/updateData", {
       headers: {
         'Content-Type': 'application/json'
       },
@@ -325,13 +325,13 @@ export class ViewProjects extends React.Component {
         {
           data.length <= 0
           ? <FeatherIcon icon="loading"/>
-          : data.filter(data => data.taskProject === id).map(data => (
+          : data.filter(data => data.parentId === id).map(data => (
 
                   <tr key={data.id} className="fade-in" onClick={() => this.viewProject(data.id)}>
-                    <td>{data.taskName}</td>
-                    <td>{data.taskProject}</td>
-                    <td>{data.taskHours}</td>
-                    <td>{data.taskDueDate}</td>
+                    <td>{data.name}</td>
+                    <td>{data.parentId}</td>
+                    <td>{data.hours}</td>
+                    <td>{data.dueDate}</td>
                   </tr>
                 ))
               }
@@ -361,12 +361,12 @@ export class ViewProjects extends React.Component {
               <div className="viewDataHeading">
                   
                   <p>{data.id}</p>
-                  <h2>{data.taskName}</h2>
+                  <h2>{data.name}</h2>
               </div>
                   {data.taskDesc}
                   {data.taskData}
-                  {data.taskHours}
-                  {data.taskDueDate}
+                  {data.hours}
+                  {data.dueDate}
               </div>
             ))
           }
@@ -415,12 +415,12 @@ export class ViewProjects extends React.Component {
                       : data.length <= 0
                         ? "NO DB ENTRIES YET"
                         : data.map(data => (
-                          <tbody key={data.taskName}>
+                          <tbody key={data.name}>
                           <tr key={data.id} className="fade-in" onClick={() => this.viewProject(data.id)}>
-                            <td>{data.taskName}</td>
-                            <td>{data.taskProject}</td>
-                            <td>{data.taskHours}</td>
-                            <td>{data.taskDueDate}</td>
+                            <td>{data.name}</td>
+                            <td>{data.parentId}</td>
+                            <td>{data.hours}</td>
+                            <td>{data.dueDate}</td>
                           </tr>
                           </tbody>
                         ))}
@@ -470,15 +470,15 @@ export class ViewProjects extends React.Component {
                     onClick={() => this.editUser(data.id, 41)}
                     className="viewUserContactViewLink"
                   >
-                    <h2 className="viewUserContactViewData">{data.taskName}</h2>
+                    <h2 className="viewUserContactViewData">{data.name}</h2>
                     <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
                   </div>
               </div>
               <div id="editBoxHeading" className="viewUserContactEdit">
                   <Input 
                     type="text"
-                    onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.taskName, updateToField: "taskName" })}
-                    placeholder={data.taskName}
+                    onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.name, updateToField: "name" })}
+                    placeholder={data.name}
                   >         
                   </Input>
                   <FeatherIcon 
@@ -526,15 +526,15 @@ export class ViewProjects extends React.Component {
                           onClick={() => this.editUser(data.id, 11)}
                           className="viewUserContactViewLink"
                         >3
-                          <p className="viewUserContactViewData">{data.taskProject}</p>
+                          <p className="viewUserContactViewData">{data.parentId}</p>
                           <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
                         </div>
                       </div>
                         <div id="editBox1" className="viewUserContactEdit">
                         <Input 
                             type="text"
-                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.taskProject, updateToField: "taskProject" })}
-                            placeholder={data.taskProject}
+                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.parentId, updateToField: "parentId" })}
+                            placeholder={data.parentId}
                           >            
                           </Input>
                           <FeatherIcon 
@@ -553,15 +553,15 @@ export class ViewProjects extends React.Component {
                           onClick={() => this.editUser(data.id, 21)}
                           className="viewUserContactViewLink"
                         >
-                          <p className="viewUserContactViewData">{data.taskHours}</p>
+                          <p className="viewUserContactViewData">{data.hours}</p>
                           <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
                         </div>
                       </div>
                         <div id="editBox2" className="viewUserContactEdit">
                         <Input 
                             type="text"
-                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.taskHours, updateToField: "taskHours" })}
-                            placeholder={data.taskHours}
+                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.hours, updateToField: "hours" })}
+                            placeholder={data.hours}
                           >            
                           </Input>
                           <FeatherIcon 
@@ -578,15 +578,15 @@ export class ViewProjects extends React.Component {
                           onClick={() => this.editUser(data.id, 31)}
                           className="viewUserContactViewLink"
                         >
-                          <p className="viewUserContactViewData">{data.taskDueDate}</p>
+                          <p className="viewUserContactViewData">{data.dueDate}</p>
                           <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
                         </div>
                       </div>
                         <div id="editBox3" className="viewUserContactEdit">
                         <Input 
                             type="text"
-                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.taskDueDate, updateToField: "taskDueDate" })}
-                            placeholder={data.taskDueDate}
+                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.dueDate, updateToField: "dueDate" })}
+                            placeholder={data.dueDate}
                           >    
                           </Input>
                           <FeatherIcon 

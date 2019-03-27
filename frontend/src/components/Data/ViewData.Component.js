@@ -56,7 +56,7 @@ export class ViewData extends React.Component {
   // our first get method that uses our backend api to 
   // fetch data from our data base
   getDataFromDb = () => {
-    fetch("http://localhost:3001/api/getData")
+    fetch("http://localhost:3001/api/data/getData")
       .then(data => data.json())
       .then(res => this.setState({ data: res.data }));
   };
@@ -76,7 +76,7 @@ export class ViewData extends React.Component {
       ++idToBeAdded;
     }
 
-    axios.post("http://localhost:3001/api/putData", {
+    axios.post("http://localhost:3001/api/data/putData", {
       id: idToBeAdded,
       taskName: taskName,
       taskDesc: taskDesc,
@@ -102,7 +102,7 @@ export class ViewData extends React.Component {
         objIdToDelete = dat._id;
       }
     });
-    axios.delete("http://localhost:3001/api/deleteData", {
+    axios.delete("http://localhost:3001/api/data/deleteData", {
       data: {
         id: objIdToDelete
       }
@@ -120,7 +120,7 @@ export class ViewData extends React.Component {
       }
     });
 
-    axios.post("http://localhost:3001/api/updateData", {
+    axios.post("http://localhost:3001/api/data/updateData", {
       id: objIdToUpdate,
       update: { 
         taskName: updateToApply,

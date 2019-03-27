@@ -1,5 +1,5 @@
-const User = require('../Schema/User')
-const UserSession = require('../Schema/UserSession')
+const User = require('../models/User')
+const UserSession = require('../models/UserSession')
 var express = require("express");
 const bcrypt = require('bcrypt');
 var router = express.Router();
@@ -16,6 +16,7 @@ var router = express.Router();
          lastName,
          password,
          access,
+         projectId
      } = body;
      let {
          email
@@ -89,6 +90,7 @@ var router = express.Router();
          newUser.lastName = lastName;
          newUser.password = newUser.generateHash(password);
          newUser.access = access;
+         newUser.projectId = projectId;
          newUser.save((err, user) => {
              if (err) {
                  return res.send({

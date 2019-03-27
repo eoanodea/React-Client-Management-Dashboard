@@ -64,7 +64,7 @@ export class AddData extends React.Component {
   // our first get method that uses our backend api to 
   // fetch data from our data base
   getDataFromDb = () => {
-    fetch("http://localhost:3001/api/getData")
+    fetch("http://localhost:3001/api/data/getData")
       .then(data => data.json())
       .then(res => this.setState({ data: res.data }));
   };
@@ -88,7 +88,7 @@ export class AddData extends React.Component {
       ++idToBeAdded;
     }
     console.log(taskProject + this.props.userId)
-    axios.post("http://localhost:3001/api/putData", {
+    axios.post("http://localhost:3001/api/data/putData", {
       id: idToBeAdded,
       taskName: taskName,
       taskDesc: taskDesc,
@@ -116,7 +116,7 @@ export class AddData extends React.Component {
       }
     });
 
-    axios.delete("http://localhost:3001/api/deleteData", {
+    axios.delete("http://localhost:3001/api/data/deleteData", {
       data: {
         id: objIdToDelete
       }
@@ -134,7 +134,7 @@ export class AddData extends React.Component {
       }
     });
 
-    axios.post("http://localhost:3001/api/updateData", {
+    axios.post("http://localhost:3001/api/data/updateData", {
       id: objIdToUpdate,
       update: { 
         taskName: updateToApply,
