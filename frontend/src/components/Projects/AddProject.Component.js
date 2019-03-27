@@ -25,6 +25,7 @@ export class AddProject extends React.Component {
     data: [],
     user: [],
     id: 0,
+    userProject: false,
     taskName: null,
     taskDesc: null,
     taskProject: null,
@@ -70,12 +71,15 @@ export class AddProject extends React.Component {
   };
 
   userProject() {
-    fetch("http://localhost:3001/api/account/getData")
-    .then(data => data.json())
-    .then(res => this.setState({ user: res.data }));
 
+    if(!this.state.userProject) {
+      console.log("YOO");
+      fetch("http://localhost:3001/api/account/getData")
+      .then(data => data.json())
+      .then(res => this.setState({ user: res.data }));
+      this.state.userProject = true;
+    }
     const { user } = this.state;
-    console.log(user);
     return(
       <div>
         {
@@ -99,6 +103,7 @@ export class AddProject extends React.Component {
         }
         </div>
       );
+    
     }
 
   // our put method that uses our backend api
@@ -207,12 +212,13 @@ export class AddProject extends React.Component {
           />
           </FormGroup>
           <FormGroup>
-          {/* <Input
-            type="text"
-            onChange={e => this.setState({ taskProject: e.target.value })}
-            placeholder="Project"
-          /> */}
-          {this.userProject()}
+
+          {
+            !this.state.modal
+            ? <span />
+            : this.userProject()
+          }
+
           </FormGroup>
           <FormGroup>
           <Input
