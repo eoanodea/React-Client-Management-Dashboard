@@ -530,11 +530,7 @@ body {
 }
 
 .viewUserHeading h2 {
-  text-transform: capitalize;
   font-size: 1.5rem;
-}
-.viewUserContact {
-  text-transform: capitalize;
 }
 .viewUserContact h3 {
   margin: 20px 0;

@@ -525,7 +525,7 @@ export class ViewProjects extends React.Component {
                           
                           onClick={() => this.editUser(data.id, 11)}
                           className="viewUserContactViewLink"
-                        >
+                        >3
                           <p className="viewUserContactViewData">{data.taskProject}</p>
                           <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
                         </div>
