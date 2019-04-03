@@ -1,23 +1,25 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Input, Button, Alert } from 'reactstrap';
 import FeatherIcon from 'feather-icons-react';
-
+import AddData from './AddData.Component';
 
 export class ViewData extends React.Component {
   // initialize our state 
-  constructor(props) {
-    super(props);
-  }
   state = {
     data: [],
-    title: "Projects",
     id: 0,
+    admin: "all",
     itemId: null,
-    taskName: null,
-    taskDesc: null,
-    taskData: null,
-    taskHours: null,
-    taskDueDate: null,
+    name: null,
+    desc: null,
+    parentId: null,
+    hours: null,
+    dueDate: null,
+    alertMsg: {
+      color: "danger",
+      message: null,
+    },
     intervalIsSet: false,
     idToDelete: null,
     idToUpdate: null,
@@ -25,7 +27,7 @@ export class ViewData extends React.Component {
     isLoading: false,
     viewData: false,
     viewDatas: true,
-    viewDataId: null
+    projectId: null
   };
 
   // when component mounts, first thing it does is fetch all existing data in our db
@@ -64,11 +66,13 @@ export class ViewData extends React.Component {
   // our put method that uses our backend api
   // to create new query into our database
   putDataToDB = (
-    taskName, 
-    taskDesc, 
-    taskData, 
-    taskHours, 
-    taskDueDate
+    name, 
+    desc, 
+    parentName,
+    parentId, 
+    hours, 
+    dueDate,
+    type
     ) => {
     let currentIds = this.state.data.map(data => data.id);
     let idToBeAdded = 0;
@@ -78,11 +82,13 @@ export class ViewData extends React.Component {
 
     axios.post("http://localhost:3001/api/data/putData", {
       id: idToBeAdded,
-      taskName: taskName,
-      taskDesc: taskDesc,
-      taskData: taskData,
-      taskHours: taskHours,
-      taskDueDate: taskDueDate
+      name: name,
+      desc: desc,
+      parentId: parentId,
+      parentName: parentName,
+      hours: hours,
+      dueDate: dueDate,
+      type: type
     })
     .then(response => { 
       console.log(response)
@@ -93,13 +99,124 @@ export class ViewData extends React.Component {
   };
 
 
+  
+  editUser = (id, num) => {
+    const editBoxHeading = document.getElementById("editBoxHeading");
+    const viewBoxHeading = document.getElementById("viewBoxHeading");
+
+    const editBox = document.getElementById("editBox");
+    const viewBox = document.getElementById("viewBox");
+
+    const editBox1 = document.getElementById("editBox1");
+    const viewBox1 = document.getElementById("viewBox1");
+
+    const editBox2 = document.getElementById("editBox2");
+    const viewBox2 = document.getElementById("viewBox2");
+
+    const editBox3 = document.getElementById("editBox3");
+    const viewBox3 = document.getElementById("viewBox3");
+
+    const editBoxPassword = document.getElementById("editBoxPassword");
+    const viewBoxPassword = document.getElementById("viewBoxPassword");
+
+    const editBox4 = document.getElementById("editBox4");
+    const viewBox4 = document.getElementById("viewBox4");
+
+    console.log(id);
+    const updateToApply = this.state.updateToApply;
+    const updateCurrent = this.state.updateCurrent;
+    const updateToField = this.state.updateToField;
+
+    if(num === 1) {
+
+      viewBox.style.display = "none";
+      editBox.style.display = "flex";
+      
+    }
+    if(num === 2) {
+      editBox.style.display = "none";
+      viewBox.style.display = "block";
+
+      this.updateDB(id, updateToApply, updateCurrent, updateToField);
+    }
+    if(num === 11) {
+
+      viewBox1.style.display = "none";
+      editBox1.style.display = "flex"; 
+    }
+    if(num === 12) {
+      editBox1.style.display = "none";
+      viewBox1.style.display = "block";
+
+      this.updateDB(id, updateToApply, updateCurrent, updateToField);
+    }
+    if(num === 21) {
+
+      viewBox2.style.display = "none";
+      editBox2.style.display = "flex"; 
+    }
+    if(num === 22) {
+      editBox2.style.display = "none";
+      viewBox2.style.display = "block";
+
+      this.updateDB(id, updateToApply, updateCurrent, updateToField);
+    }
+    if(num === 31) {
+
+      viewBox3.style.display = "none";
+      editBox3.style.display = "flex";
+    }
+    if(num === 32) {
+      editBox3.style.display = "none";
+      viewBox3.style.display = "block";
+
+      this.updateDB(id, updateToApply, updateCurrent, updateToField);
+    }
+    if(num === 41) {
+
+      viewBoxHeading.style.display = "none";
+      editBoxHeading.style.display = "flex"; 
+    }
+    if(num === 42) {
+      editBoxHeading.style.display = "none";
+      viewBoxHeading.style.display = "block";
+
+      this.updateDB(id, updateToApply, updateCurrent, updateToField);
+    }
+    if(num === 51) {
+
+      viewBoxPassword.style.display = "none";
+      editBoxPassword.style.display = "flex";
+    }
+    if(num === 52) {
+      editBoxPassword.style.display = "none";
+      viewBoxPassword.style.display = "block";
+
+      this.updateDB(id, updateToApply, updateCurrent, updateToField);
+    }
+    if(num === 61) {
+      viewBox4.style.display = "none";
+      editBox4.style.display = "flex";
+      
+    }
+    if(num === 62) {
+      editBox4.style.display = "none";
+      viewBox4.style.display = "block";
+
+      this.updateDB(id, updateToApply, updateCurrent, updateToField);
+    }
+    
+  }
+
+
+
   // our delete method that uses our backend api 
   // to remove existing database information
   deleteFromDB = idTodelete => {
     let objIdToDelete = null;
     this.state.data.forEach(dat => {
       if (dat.id === idTodelete) {
-        objIdToDelete = dat._id;
+        objIdToDelete = dat.id;
       }
     });
     axios.delete("http://localhost:3001/api/data/deleteData", {
@@ -112,32 +229,62 @@ export class ViewData extends React.Component {
 
   // our update method that uses our backend api
   // to overwrite existing data base information
-  updateDB = (idToUpdate, updateToApply) => {
+
+
+  updateDB = (
+    idToUpdate, 
+    updateToApply,
+    updateCurrent,
+    updateToField
+    ) => {
+    this.setState({
+      isLoading: true,
+    })
+    let update = null;
     let objIdToUpdate = null;
     this.state.data.forEach(dat => {
       if (dat.id === idToUpdate) {
-        objIdToUpdate = dat._id;
+        objIdToUpdate = dat.id;
       }
     });
 
+    console.log(objIdToUpdate, updateCurrent, updateToApply, updateToField)
     axios.post("http://localhost:3001/api/data/updateData", {
+      headers: {
+        'Content-Type': 'application/json'
+      },
       id: objIdToUpdate,
-      update: { 
-        taskName: updateToApply,
-        taskDesc: updateToApply,
-        taskData: updateToApply,
-        taskHours: updateToApply,
-        taskDueDate: updateToApply
-       }
+      current: updateCurrent,
+      update: updateToApply,
+      field: updateToField,
+    })   
+    .then(response => { 
+      console.log(response)
+      this.state.alertMsg = response.data;
+    })
+    .catch(error => {
+        console.log(error.response)
     });
+    if(this.state.alertMsg.success === "true") {
+      this.setState({
+        alertMsg: {color: "success"},
+        isLoading: false
+      })
+      console.log("true")
+    } else {
+      this.setState({
+        alertMsg: {color: "danger"},
+        isLoading: false
+      })
+      console.log("false")
+  }
   };
   viewData(id) {
-    console.log(id)
     this.setState({
       isLoading: false,
       viewDatas: false,
       viewData: true,
-      viewDataId: id
+      projectId: id
     })
     
   }
@@ -146,9 +293,23 @@ export class ViewData extends React.Component {
       isLoading: false,
       viewData: false,
       viewDatas: true,
-      viewDataId: null
+      projectId: null
     })
   }
+
+
+  authorized = () => {
+    const userAccess = JSON.parse(localStorage.getItem('user_access'));
+    if(userAccess === "admin") {
+        this.state.admin = 'admin';
+        this.viewDatas();
+    } else {
+        this.state.admin = 'all';
+        const userId = JSON.parse(localStorage.getItem('user_id'));
+        this.state.userId = userId;
+    }
+ }
+
   loading() {
     return(
       <div className="loading">
@@ -157,37 +318,24 @@ export class ViewData extends React.Component {
       </div>
     );
   }
-  authorized = () => {
-    const userAccess = JSON.parse(localStorage.getItem('user_access'));
-    if(userAccess === "admin") {
-        this.setState({admin: 'admin'})
-        this.viewUsers();
-    } else {
-        this.setState({admin: 'all'});
-        const userId = JSON.parse(localStorage.getItem('user_id'));
-        this.userProjects(userId);
-        console.log("hey");
-    }
- }
 
-  userProjects(id) {
-    this.state.title = "Projects";
-    const { data, viewDataId } = this.state;
+  userDatas(id) {
+    this.state.isLoading = false;
+    this.state.title = "Datas";
+    const { data, projectId } = this.state;
     if(this.state.viewDatas = true){
       return(
         <tbody>
         {
           data.length <= 0
           ? <FeatherIcon icon="loading"/>
-          : data.filter(data => data.taskProject === id).map(data => (
+          : data.filter(data => data.parentId === id).map(data => (
 
                   <tr key={data.id} className="fade-in" onClick={() => this.viewData(data.id)}>
-                    <td>{data.id}</td>
-                    <td>{data.taskName}</td>
-                    <td>{data.taskDesc}</td>
-                    <td>{data.taskData}</td>
-                    <td>{data.taskHours}</td>
-                    <td>{data.taskDueDate}</td>
+                    <td>{data.name}</td>
+                    <td>{data.parentId}</td>
+                    <td>{data.hours}</td>
+                    <td>{data.dueDate}</td>
                   </tr>
                 ))
               }
@@ -200,7 +348,7 @@ export class ViewData extends React.Component {
           {
             data.length <= 0
             ? <FeatherIcon icon="loading"/>
-            : data.filter(data => data.id === viewDataId).map(data => (
+            : data.filter(data => data.id === id).map(data => (
               <div key={data.id} className="viewData">
               <a
               onClick={this.viewDatas}
@@ -217,12 +365,12 @@ export class ViewData extends React.Component {
               <div className="viewDataHeading">
                   
                   <p>{data.id}</p>
-                  <h2>{data.taskName}</h2>
+                  <h2>{data.name}</h2>
               </div>
-                  {data.taskDesc}
-                  {data.taskData}
-                  {data.taskHours}
-                  {data.taskDueDate}
+                  {data.desc}
+                  {data.type}
+                  {data.hours}
+                  {data.dueDate}
               </div>
             ))
           }
@@ -232,97 +380,238 @@ export class ViewData extends React.Component {
   }
 
 
+
   // here is our UI
   // it is easy to understand their functions when you 
   // see them render into our screen
   render() {
-      
-
     const { 
       data,
       isLoading,
       viewData,
       viewDatas,
-      viewDataId
+      projectId,
+      alertMsg,
+      userId,
+      admin
     } = this.state;
-    let userId = this.props.id;
     if(isLoading) {
       return this.loading();
     }
     if(!isLoading && viewDatas) {
       return (
-        <div className="col">
-          <h3>{this.state.title}</h3>
-          <div>
-            <table className="table table-striped table-sm">
-              <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Task Name</th>
-                    <th>Description</th>
-                    <th>Data</th>
-                    <th>Hours Logged</th>
-                    <th>Due date</th>
-                  </tr>
-              </thead>
-              {
-                userId != null
-                ? this.userProjects(userId)
-                : data.map(data => (
-                  <tbody >
-                    <tr key={data.id} className="fade-in" onClick={() => this.viewData(data.id)}>
-                      <td>{data.id} </td>
-                      <td>{data.taskName}</td>
-                      <td>{data.taskDesc}</td>
-                      <td>{data.taskData}</td>
-                      <td>{data.taskHours}</td>
-                      <td>{data.taskDueDate}</td>
+        <div className="row">
+          <div className="col-md-12">
+            <div>
+              <table className="table table-striped table-sm">
+                <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Company</th>
+                      <th>Hours Logged</th>
+                      <th>Due Date</th>
                     </tr>
-                    </tbody>
-                  ))
-              }
-            </table>
-          </div>
-      </div>
-      );
-    }
+                </thead>
+
+                    {
+                      this.state.admin === "admin"
+                      ? this.userDatas()
+                      : data.length <= 0
+                        ? "NO DB ENTRIES YET"
+                        : data.map(data => (
+                          <tbody key={data.name}>
+                          <tr key={data.id} className="fade-in" onClick={() => this.viewData(data.id)}>
+                            <td>{data.name}</td>
+                            <td>{data.parentName}</td>
+                            <td>{data.hours}</td>
+                            <td>{data.dueDate}</td>
+                          </tr>
+                          </tbody>
+                        ))}
+                  
+                </table>
+              </div>
+            </div>
+        </div>
+        );
+      }
     if(!isLoading && viewData) {
       return(
         <div>  
           {
             data.length <= 0
-            ? <FeatherIcon icon="loading"/>
-            : data.filter(data => data.id === viewDataId).map(data => (
-              <div key={data.id} className="viewData">
+            ? "NO DB ENTRIES YET"
+            : data.filter(data => data.id === projectId).map(data => (
+              <div key={data.id} className="viewUser">
+              {
+                (alertMsg.message) ? (
+                  <Alert color="danger" style={{ marginTop: '10px' }}>
+                    {alertMsg.message}
+                  </Alert>
+                ) : (null)
+              }              
               <a
               onClick={this.viewDatas}
-              className="viewDataBackLink"
+              className="viewUserBackLink"
               >
-              <p> 
-                <FeatherIcon 
-                  icon="arrow-left" 
-                  className="viewDataBackIcon"
-                />
-              Back
-              </p>
+                <p> 
+                  <FeatherIcon 
+                    icon="arrow-left" 
+                    className="viewUserBackIcon"
+                  />
+                Back
+                </p>
               </a>
-              <div className="viewDataHeading">
+
+              <div className="viewUserHeading">
                   
-                  <p>{data.id}</p>
-                  <h2>{data.taskName}</h2>
+                <div id="viewBoxHeading" className="viewUserContactView">
+                  <div
+                    
+                    onClick={() => this.editUser(data.id, 41)}
+                    className="viewUserContactViewLink"
+                  >
+                    <h2 className="viewUserContactViewData">{data.name}</h2>
+                    <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+                  </div>
               </div>
-                  {data.taskDesc}
-                  {data.taskData}
-                  {data.taskHours}
-                  {data.taskDueDate}
+              <div id="editBoxHeading" className="viewUserContactEdit">
+                  <Input 
+                    type="text"
+                    onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.name, updateToField: "name" })}
+                    placeholder={data.name}
+                  >         
+                  </Input>
+                  <FeatherIcon 
+                    color="success" 
+                    className="viewUserContactCheck" 
+                    icon="check"
+                    onClick={() => this.editUser(data.id, 42)} 
+                  />
+                </div>
+                  
               </div>
+              <div className="viewUserContact">
+                  <h3>Contact</h3>
+                  <div className="row">
+                    <div className="col">
+
+                      <div id="viewBox" className="viewUserContactView">
+                          <div
+                            
+                            onClick={() => this.editUser(data.id, 1)}
+                            className="viewUserContactViewLink"
+                          >
+                            <p className="viewUserContactViewData">{data.desc}</p>
+                            <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+                          </div>
+                        </div>
+                        <div id="editBox" className="viewUserContactEdit">
+                          <Input 
+                            type="text"
+                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.desc, updateToField: "desc" })}
+                            placeholder={data.desc}
+                          >         
+                          </Input>
+                          <FeatherIcon 
+                            color="success" 
+                            className="viewUserContactCheck" 
+                            icon="check"
+                            onClick={() => this.editUser(data.id, 2)} 
+                          />
+                        </div>
+                        
+                        <div id="viewBox1" className="viewUserContactView">
+                        <div
+                          
+                          onClick={() => this.editUser(data.id, 11)}
+                          className="viewUserContactViewLink"
+                        >3
+                          <p className="viewUserContactViewData">{data.parentId}</p>
+                          <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+                        </div>
+                      </div>
+                        <div id="editBox1" className="viewUserContactEdit">
+                        <Input 
+                            type="text"
+                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.parentId, updateToField: "parentId" })}
+                            placeholder={data.parentId}
+                          >            
+                          </Input>
+                          <FeatherIcon 
+                            color="success" 
+                            className="viewUserContactCheck" 
+                            icon="check"
+                            onClick={() => this.editUser(data.id, 12)} 
+                          />
+                        </div>
+                        
+                      </div>
+                      <div className="col">
+                        <div id="viewBox2" className="viewUserContactView">
+                        <div
+                          
+                          onClick={() => this.editUser(data.id, 21)}
+                          className="viewUserContactViewLink"
+                        >
+                          <p className="viewUserContactViewData">{data.hours}</p>
+                          <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+                        </div>
+                      </div>
+                        <div id="editBox2" className="viewUserContactEdit">
+                        <Input 
+                            type="text"
+                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.hours, updateToField: "hours" })}
+                            placeholder={data.hours}
+                          >            
+                          </Input>
+                          <FeatherIcon 
+                            color="success" 
+                            className="viewUserContactCheck" 
+                            icon="check"
+                            onClick={() => this.editUser(data.id, 22)} 
+                          />
+                        </div>
+
+                        <div id="viewBox3" className="viewUserContactView">
+                        <div
+                          
+                          onClick={() => this.editUser(data.id, 31)}
+                          className="viewUserContactViewLink"
+                        >
+                          <p className="viewUserContactViewData">{data.dueDate}</p>
+                          <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+                        </div>
+                      </div>
+                        <div id="editBox3" className="viewUserContactEdit">
+                        <Input 
+                            type="text"
+                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.dueDate, updateToField: "dueDate" })}
+                            placeholder={data.dueDate}
+                          >    
+                          </Input>
+                          <FeatherIcon 
+                            color="success" 
+                            className="viewUserContactCheck" 
+                            icon="check"
+                            onClick={() => this.editUser(data.id, 32)} 
+                          />
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                    
             ))
           }
+      
         </div>
-      );
+      ); 
+      }
     }
 
   }
-}
 
-export default ViewData;
+  export default ViewData;

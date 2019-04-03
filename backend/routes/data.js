@@ -52,24 +52,28 @@ router.get("/getData", (req, res) => {
   
     const { 
       id, 
-      taskName, 
-      taskDesc, 
-      taskProject, 
-      taskHours, 
-      taskDueDate 
+      name, 
+      desc, 
+      parentId, 
+      parentName,
+      hours, 
+      dueDate,
+      type
     } = req.body;
   
-    if ((!id && id !== 0) || !taskName) {
+    if ((!id && id !== 0) || !name) {
       return res.json({
         success: false,
         error: "INVALID INPUTS"
       });
     }
-    data.taskName = taskName;
-    data.taskDesc = taskDesc;
-    data.taskProject = taskProject;
-    data.taskHours = taskHours;
-    data.taskDueDate = taskDueDate;
+    data.name = name;
+    data.desc = desc;
+    data.parentId = parentId;
+    data.parentName = parentName;
+    data.hours = hours;
+    data.dueDate = dueDate;
+    data.type = type;
     data.id = id;
     data.save(err => {
       if (err) return res.json({ success: false, error: err });

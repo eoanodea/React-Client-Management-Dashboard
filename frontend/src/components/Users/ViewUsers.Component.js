@@ -377,7 +377,6 @@ export class ViewUsers extends React.Component {
                   
               <div id="viewBoxHeading" className="viewUserContactView">
                 <div
-                  
                   onClick={() => this.editUser(data._id, 41)}
                   className="viewUserContactViewLink"
                 >
@@ -545,7 +544,7 @@ export class ViewUsers extends React.Component {
                     />
                     
                   </div>
-                <AddData user={data.company} userId={data._id} />  
+                <AddData type="project" user={data.company} userId={data._id} />  
               </div>
             </div>
 

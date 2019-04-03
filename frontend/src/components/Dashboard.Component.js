@@ -22,9 +22,6 @@ export class Dashboard extends React.Component {
         return(
             <div className="container-fluid">
                 <div className="row">
-
-                    {/* <Link to="/">Home</Link> <div> */}
-
                     <div className="container-fluid">
                         <BrowserRouter>
                             <>
@@ -49,8 +46,6 @@ export class Dashboard extends React.Component {
                                             <Route path="/profile" component={ViewUsers} />
                                             <Route path="/project" component={ViewProjects} />
                                         </div>
-                                        {/* //chart function broken
-                                        <canvas className="my-4 w-100" id="myChart" width="900" height="380"></canvas> */}
                                     </main>
                                 </div>
                             </>

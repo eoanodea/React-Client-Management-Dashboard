@@ -24,11 +24,13 @@ export class AddData extends React.Component {
   state = {
     data: [],
     id: 0,
-    taskName: null,
-    taskDesc: null,
-    taskProject: null,
-    taskHours: null,
-    taskDueDate: null,
+    name: null,
+    desc: null,
+    parentId: null,
+    parentName: null,
+    hours: null,
+    dueDate: null,
+    type: null,
     intervalIsSet: false,
     idToDelete: null,
     idToUpdate: null,
@@ -72,29 +74,35 @@ export class AddData extends React.Component {
   // our put method that uses our backend api
   // to create new query into our database
   putDataToDB = (
-    taskName, 
-    taskDesc, 
-    taskProject, 
-    taskHours, 
-    taskDueDate,
+    name, 
+    desc, 
+    parentId, 
+    parentName,
+    hours, 
+    dueDate,
+    type
     ) => {
     let userId = this.props.userId;
     if(userId != null) {
-      taskProject = userId;
+      parentId = userId;
+      parentName = this.props.user;
+      type = this.props.type;
     }
     let currentIds = this.state.data.map(data => data.id);
     let idToBeAdded = 0;
     while (currentIds.includes(idToBeAdded)) {
       ++idToBeAdded;
     }
-    console.log(taskProject + this.props.userId)
+    console.log(parentId + this.props.userId)
     axios.post("http://localhost:3001/api/data/putData", {
       id: idToBeAdded,
-      taskName: taskName,
-      taskDesc: taskDesc,
-      taskProject: taskProject,
-      taskHours: taskHours,
-      taskDueDate: taskDueDate
+      name: name,
+      desc: desc,
+      parentId: parentId,
+      parentName: parentName,
+      hours: hours,
+      dueDate: dueDate,
+      type: type
     })
     .then(response => { 
       console.log(response)
@@ -123,28 +131,6 @@ export class AddData extends React.Component {
     });
   };
 
-
-  // our update method that uses our backend api
-  // to overwrite existing data base information
-  updateDB = (idToUpdate, updateToApply) => {
-    let objIdToUpdate = null;
-    this.state.data.forEach(dat => {
-      if (dat.id === idToUpdate) {
-        objIdToUpdate = dat._id;
-      }
-    });
-
-    axios.post("http://localhost:3001/api/data/updateData", {
-      id: objIdToUpdate,
-      update: { 
-        taskName: updateToApply,
-        taskDesc: updateToApply,
-        taskProject: updateToApply,
-        taskHours: updateToApply,
-        taskDueDate: updateToApply
-       }
-    });
-  };
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal
@@ -170,45 +156,43 @@ export class AddData extends React.Component {
           <FormGroup>
           <Input
             type="text"
-            onChange={e => this.setState({ taskName: e.target.value })}
+            onChange={e => this.setState({ name: e.target.value })}
             placeholder="Name"
           />
           </FormGroup>
           <FormGroup>
           <Input
             type="text"
-            onChange={e => this.setState({ taskDesc: e.target.value })}
+            onChange={e => this.setState({ desc: e.target.value })}
             placeholder="Desc"
           />
           </FormGroup>
           <FormGroup>
-          {
-            userId = null
-            ? <Input
-                type="text"
-                onChange={e => this.setState({ taskProject: e.target.value })}
-                placeholder="Project"
-              />
-            : <Input
-                type="text"
-                value={userCompany}
-                disabled
-                
-          />
-          }
-          
+            {
+              userId = null
+              ? <Input
+                  type="text"
+                  onChange={e => this.setState({ parentId: e.target.value })}
+                  placeholder="Project"
+                />
+              : <Input
+                  type="text"
+                  value={userCompany}
+                  disabled
+                />
+            }
           </FormGroup>
           <FormGroup>
           <Input
             type="text"
-            onChange={e => this.setState({ taskHours: e.target.value })}
+            onChange={e => this.setState({ hours: e.target.value })}
             placeholder="Hours"
           />
           </FormGroup>
           <FormGroup>
           <Input
             type="date"
-            onChange={e => this.setState({ taskDueDate: e.target.value })}
+            onChange={e => this.setState({ dueDate: e.target.value })}
             placeholder="DueDate"
             
           />
@@ -218,11 +202,11 @@ export class AddData extends React.Component {
           <Button
             color="dark" 
             onClick={() => this.putDataToDB(
-              this.state.taskName, 
-              this.state.taskDesc, 
-              this.state.taskProject,
-              this.state.taskHours, 
-              this.state.taskDueDate
+              this.state.name, 
+              this.state.desc, 
+              this.state.parentId,
+              this.state.hours, 
+              this.state.dueDate
             )}
           >
           ADD

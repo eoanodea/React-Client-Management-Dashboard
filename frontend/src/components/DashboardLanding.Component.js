@@ -5,6 +5,7 @@ import { SignUp } from './Login/SignUp.Component';
 import { ViewProjects } from './Projects/ViewProjects.Component';
 import { ViewUsers } from './Users/ViewUsers.Component';
 import { getFromStorage } from '../utilities/storage';
+import ViewData from './Data/ViewData.Component';
 
 
 
@@ -73,7 +74,7 @@ export class DashboardLanding extends React.Component {
             <div className="container-fluid">
                 <div className="row">
 
-                    <h1>Landing Page</h1>
+                    <ViewData />
                 </div>
             </div>
         );

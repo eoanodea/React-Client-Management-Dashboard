@@ -7,7 +7,8 @@ const DataSchema = new Schema(
     id: Number,
     name: String,
     desc: String,
-    parentId: Number,
+    parentId: String,
+    parentName: String,
     hours: String,
     dueDate: Date,
     type: String
