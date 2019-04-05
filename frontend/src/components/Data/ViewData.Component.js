@@ -25,6 +25,7 @@ export class ViewData extends React.Component {
     idToUpdate: null,
     objectToUpdate: null,
     isLoading: false,
+    dataType: "project",
     viewData: false,
     viewDatas: true,
     projectId: null
@@ -379,7 +380,18 @@ export class ViewData extends React.Component {
       }
   }
 
-
+  addData(data) {
+    let type = data.type;
+    if(type === "project") {
+      return(
+        <AddData parent={data} />
+      );
+    } else {
+      return(
+        <AddData parent={data} />
+      );
+    }
+  }
 
   // here is our UI
   // it is easy to understand their functions when you 
@@ -462,37 +474,43 @@ export class ViewData extends React.Component {
                 Back
                 </p>
               </a>
-
-              <div className="viewUserHeading">
-                  
-                <div id="viewBoxHeading" className="viewUserContactView">
-                  <div
+              <div className="row">
+                <div className="col">
+                  <div className="viewUserHeading">
                     
-                    onClick={() => this.editUser(data.id, 41)}
-                    className="viewUserContactViewLink"
-                  >
-                    <h2 className="viewUserContactViewData">{data.name}</h2>
-                    <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
-                  </div>
-              </div>
-              <div id="editBoxHeading" className="viewUserContactEdit">
-                  <Input 
-                    type="text"
-                    onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.name, updateToField: "name" })}
-                    placeholder={data.name}
-                  >         
-                  </Input>
-                  <FeatherIcon 
-                    color="success" 
-                    className="viewUserContactCheck" 
-                    icon="check"
-                    onClick={() => this.editUser(data.id, 42)} 
-                  />
+                  <div id="viewBoxHeading" className="viewUserContactView">
+                    <div
+                      
+                      onClick={() => this.editUser(data.id, 41)}
+                      className="viewUserContactViewLink"
+                    >
+                      <h2 className="viewUserContactViewData">{data.name}</h2>
+                      <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+                    </div>
                 </div>
-                  
+                <div id="editBoxHeading" className="viewUserContactEdit">
+                    <Input 
+                      type="text"
+                      onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.name, updateToField: "name" })}
+                      placeholder={data.name}
+                    >         
+                    </Input>
+                    <FeatherIcon 
+                      color="success" 
+                      className="viewUserContactCheck" 
+                      icon="check"
+                      onClick={() => this.editUser(data.id, 42)} 
+                    />
+                  </div>
+                    
+                </div>
+                </div>
+                <div className="col">
+                  {this.addData(data)}
+                </div>
               </div>
               <div className="viewUserContact">
-                  <h3>Contact</h3>
+                  <h3>{data.type}</h3>
                   <div className="row">
                     <div className="col">
 

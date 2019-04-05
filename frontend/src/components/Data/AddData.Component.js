@@ -70,6 +70,55 @@ export class AddData extends React.Component {
       .then(data => data.json())
       .then(res => this.setState({ data: res.data }));
   };
+  parentType() {
+    if(this.props.type === "project") {
+      this.state.type = "task"
+    } else {
+      this.state.type = "project"
+    }
+  }
+  userProject() {
+    
+      if(this.props.type === "project") {
+        this.state.type = "task"
+      } else {
+        this.state.type = "project"
+      }
+    
+    if(!this.state.data) {
+      console.log("YOO");
+      fetch("http://localhost:3001/api/getData")
+      .then(data => data.json())
+      .then(res => this.setState({ data: res.data }));
+    }
+    const { data } = this.state;
+    return(
+      <div>
+        {
+          !data
+          ? <Input
+            type="text"
+            onChange={e => this.setState({ parentName: e.target.value })}
+            placeholder="Project"
+            />
+          : <Input
+              type="select"
+              placeholder="Select a company"
+              onChange={e => this.setState({ taskProject: e.target.value })}
+            >
+              { 
+                data.map(user => (
+                  <option key={user._id} value={user._id}>{user.firstName} {user.lastName} - {user.company}</option>      
+                ))
+              }
+            </Input>
+        }
+        </div>
+      );
+    
+    }
+
+
 
   // our put method that uses our backend api
   // to create new query into our database
@@ -82,12 +131,6 @@ export class AddData extends React.Component {
     dueDate,
     type
     ) => {
-    let userId = this.props.userId;
-    if(userId != null) {
-      parentId = userId;
-      parentName = this.props.user;
-      type = this.props.type;
-    }
     let currentIds = this.state.data.map(data => data.id);
     let idToBeAdded = 0;
     while (currentIds.includes(idToBeAdded)) {
@@ -143,15 +186,20 @@ export class AddData extends React.Component {
   // it is easy to understand their functions when you 
   // see them render into our screen
   render() {
-    const { data } = this.state;
-    let userCompany = this.props.user;
-    let userId = this.props.userId;
+    let parentName = "Default";
+    let parentId = null;
+    const { type } = this.state; 
+    if(this.props.parent != null) {
+      parentName = this.props.parent.name;
+      type = this.props.parent.type;
+      parentId = this.props.parent._id;
+    }
 
     return (  
       <div className="viewUserButton">
-        <Button color="dark" onClick={this.toggle}>Add Project</Button>
+        <Button color="dark" onClick={this.toggle}>Add {type}</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.toggle}>Add a Project</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Add a {type}</ModalHeader>
           <ModalBody>
           <FormGroup>
           <Input
@@ -169,17 +217,24 @@ export class AddData extends React.Component {
           </FormGroup>
           <FormGroup>
             {
-              userId = null
+              parentId != null
               ? <Input
                   type="text"
-                  onChange={e => this.setState({ parentId: e.target.value })}
-                  placeholder="Project"
-                />
-              : <Input
-                  type="text"
-                  value={userCompany}
+                  onChange={e => this.setState({ parentId: parentId, parentName: parentName })}
+                  placeholder={parentName}
                   disabled
                 />
+              : <Input
+                  type="select"
+                  placeholder="Select a {type}"
+                  onChange={e => this.setState({ taskProject: e.target.value })}
+                >
+                { 
+                  user.map(user => (
+                    <option key={user._id} value={user._id}>{user.firstName} {user.lastName} - {user.company}</option>      
+                  ))
+                }
+            </Input>
             }
           </FormGroup>
           <FormGroup>
@@ -205,8 +260,10 @@ export class AddData extends React.Component {
               this.state.name, 
               this.state.desc, 
               this.state.parentId,
+              this.state.parentName,
               this.state.hours, 
-              this.state.dueDate
+              this.state.dueDate,
+              this.state.type
             )}
           >
           ADD

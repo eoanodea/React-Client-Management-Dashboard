@@ -1,11 +1,9 @@
 import React from 'react';
 import FeatherIcon from 'feather-icons-react';
-import { AddProject } from './Projects/AddProject.Component';
-import { ViewProjects } from './Projects/ViewProjects.Component';
+import { ViewData } from './Data/ViewData.Component';
 import { ViewUsers } from './Users/ViewUsers.Component';
 import { DashboardLanding } from './DashboardLanding.Component';
 import { DashboardSidebar } from './DashboardSidebar.Component';
-import { getFromStorage } from '../utilities/storage';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 
 
@@ -44,7 +42,7 @@ export class Dashboard extends React.Component {
                                         <div>
                                             <Route exact path="/" component={DashboardLanding} />
                                             <Route path="/profile" component={ViewUsers} />
-                                            <Route path="/project" component={ViewProjects} />
+                                            <Route path="/project" component={ViewData} />
                                         </div>
                                     </main>
                                 </div>
