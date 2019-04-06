@@ -334,7 +334,7 @@ export class ViewData extends React.Component {
 
                   <tr key={data.id} className="fade-in" onClick={() => this.viewData(data.id)}>
                     <td>{data.name}</td>
-                    <td>{data.parentId}</td>
+                    <td>{data.parentName}</td>
                     <td>{data.hours}</td>
                     <td>{data.dueDate}</td>
                   </tr>
@@ -364,7 +364,6 @@ export class ViewData extends React.Component {
               </p>
               </a>
               <div className="viewDataHeading">
-                  
                   <p>{data.id}</p>
                   <h2>{data.name}</h2>
               </div>
@@ -417,13 +416,12 @@ export class ViewData extends React.Component {
                       <th>Due Date</th>
                     </tr>
                 </thead>
-
                     {
                       this.props.id != "admin"
                       ? this.userDatas(this.props.id, this.props.type)
                       : data.length <= 0
                         ? "NO DB ENTRIES YET"
-                        : data.map(data => (
+                        : data.filter(data => data.type === this.props.type).map(data => (
                           <tbody key={data.name}>
                           <tr key={data.id} className="fade-in" onClick={() => this.viewData(data.id)}>
                             <td>{data.name}</td>
@@ -433,8 +431,8 @@ export class ViewData extends React.Component {
                             <td>{data.dueDate}</td>
                           </tr>
                           </tbody>
-                        ))}
-                  
+                        ))
+                      }
                 </table>
               </div>
             </div>
@@ -613,12 +611,13 @@ export class ViewData extends React.Component {
                       </div>
                     </div>
                   </div>
+                  { data.type === "project" 
+                    ? <ViewData id={data._id} type="task"/>
+                    : null
+                  }
                 </div>
-
-                    
             ))
           }
-      
         </div>
       ); 
       }
