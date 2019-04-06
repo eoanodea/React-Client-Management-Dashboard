@@ -43,6 +43,7 @@ export class Dashboard extends React.Component {
                                             <Route exact path="/" component={DashboardLanding} />
                                             <Route path="/profile" component={ViewUsers} />
                                             <Route path="/project" component={ViewData} />
+                                            <Route path="/task" component={ViewData} type="task" />
                                         </div>
                                     </main>
                                 </div>
