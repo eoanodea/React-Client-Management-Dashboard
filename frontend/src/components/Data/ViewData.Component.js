@@ -320,7 +320,7 @@ export class ViewData extends React.Component {
     );
   }
 
-  userDatas(id) {
+  userDatas(id, type) {
     this.state.isLoading = false;
     this.state.title = "Datas";
     const { data, projectId } = this.state;
@@ -330,7 +330,7 @@ export class ViewData extends React.Component {
         {
           data.length <= 0
           ? <FeatherIcon icon="loading"/>
-          : data.filter(data => data.parentId === id).map(data => (
+          : data.filter(data => data.parentId === id && data.type === type).map(data => (
 
                   <tr key={data.id} className="fade-in" onClick={() => this.viewData(data.id)}>
                     <td>{data.name}</td>
@@ -381,16 +381,10 @@ export class ViewData extends React.Component {
   }
 
   addData(data) {
-    let type = data.type;
-    if(type === "project") {
       return(
         <AddData parent={data} />
       );
-    } else {
-      return(
-        <AddData parent={data} />
-      );
-    }
+    
   }
 
   // here is our UI
@@ -404,8 +398,6 @@ export class ViewData extends React.Component {
       viewDatas,
       projectId,
       alertMsg,
-      userId,
-      admin
     } = this.state;
     if(isLoading) {
       return this.loading();
@@ -419,15 +411,16 @@ export class ViewData extends React.Component {
                 <thead>
                     <tr>
                       <th>Name</th>
-                      <th>Company</th>
+                      <th>Parent</th>
                       <th>Hours Logged</th>
+                      <th>Type</th>
                       <th>Due Date</th>
                     </tr>
                 </thead>
 
                     {
-                      this.state.admin === "admin"
-                      ? this.userDatas()
+                      this.props.id != "admin"
+                      ? this.userDatas(this.props.id, this.props.type)
                       : data.length <= 0
                         ? "NO DB ENTRIES YET"
                         : data.map(data => (
@@ -436,6 +429,7 @@ export class ViewData extends React.Component {
                             <td>{data.name}</td>
                             <td>{data.parentName}</td>
                             <td>{data.hours}</td>
+                            <td>{data.type}</td>
                             <td>{data.dueDate}</td>
                           </tr>
                           </tbody>

@@ -70,52 +70,46 @@ export class AddData extends React.Component {
       .then(data => data.json())
       .then(res => this.setState({ data: res.data }));
   };
-  parentType() {
-    if(this.props.type === "project") {
-      this.state.type = "task"
+
+  authorized = () => {
+    const userAccess = JSON.parse(localStorage.getItem('user_access'));
+    if(userAccess === "admin") {
+        this.state.admin = 'admin';
     } else {
-      this.state.type = "project"
+        this.state.admin = 'all';
+        const userId = JSON.parse(localStorage.getItem('user_id'));
+        this.state.userId = userId;
     }
-  }
-  userProject() {
-    
-      if(this.props.type === "project") {
-        this.state.type = "task"
-      } else {
-        this.state.type = "project"
-      }
-    
-    if(!this.state.data) {
-      console.log("YOO");
-      fetch("http://localhost:3001/api/getData")
-      .then(data => data.json())
-      .then(res => this.setState({ data: res.data }));
-    }
+ }
+  parentType() {
     const { data } = this.state;
-    return(
-      <div>
-        {
-          !data
-          ? <Input
-            type="text"
-            onChange={e => this.setState({ parentName: e.target.value })}
-            placeholder="Project"
-            />
-          : <Input
-              type="select"
-              placeholder="Select a company"
-              onChange={e => this.setState({ taskProject: e.target.value })}
-            >
-              { 
-                data.map(user => (
-                  <option key={user._id} value={user._id}>{user.firstName} {user.lastName} - {user.company}</option>      
-                ))
-              }
-            </Input>
-        }
-        </div>
-      );
-    
+      return(
+        <div>
+          {
+            !data
+            ? <Input
+              type="text"
+              onChange={e => this.setState({ parentName: e.target.value })}
+              placeholder={this.props.type}
+              />
+            : <Input
+                type="select"
+                placeholder={this.state.type}
+                onChange={e => this.setState({ parentId: e.target.key, parentName: e.target.value })}
+              >
+                { 
+                  this.state.admin = "admin"
+                  ?  data.map(data => (
+                      <option key={data._id} value={data.name}>{data.name}</option>      
+                    ))
+                  : data.filter(data => data.parentId === this.state.userId).map(data => (
+                    <option key={data._id} value={data.name}>{data.name}</option>      
+                  ))
+                }
+              </Input>
+          }
+          </div>
+        );
     }
 
 
@@ -131,6 +125,10 @@ export class AddData extends React.Component {
     dueDate,
     type
     ) => {
+    console.log(
+        parentId, 
+        parentName,
+    );
     let currentIds = this.state.data.map(data => data.id);
     let idToBeAdded = 0;
     while (currentIds.includes(idToBeAdded)) {
@@ -188,70 +186,64 @@ export class AddData extends React.Component {
   render() {
     let parentName = "Default";
     let parentId = null;
-    const { type } = this.state; 
+    let { type } = this.state; 
     if(this.props.parent != null) {
-      parentName = this.props.parent.name;
-      type = this.props.parent.type;
       parentId = this.props.parent._id;
+      if(this.props.parent.company) {
+        this.state.type = "project"
+        parentName = this.props.parent.company;
+      } else {
+        this.state.type = "task"
+        parentName = this.props.parent.name;
+      }
     }
-
     return (  
       <div className="viewUserButton">
         <Button color="dark" onClick={this.toggle}>Add {type}</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Add a {type}</ModalHeader>
           <ModalBody>
-          <FormGroup>
-          <Input
-            type="text"
-            onChange={e => this.setState({ name: e.target.value })}
-            placeholder="Name"
-          />
-          </FormGroup>
-          <FormGroup>
-          <Input
-            type="text"
-            onChange={e => this.setState({ desc: e.target.value })}
-            placeholder="Desc"
-          />
-          </FormGroup>
-          <FormGroup>
+            <FormGroup>
+              <Input
+                type="text"
+                onChange={e => this.setState({ name: e.target.value })}
+                placeholder="Name"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Input
+                type="text"
+                onChange={e => this.setState({ desc: e.target.value })}
+                placeholder="Desc"
+              />
+            </FormGroup>
+            <FormGroup>
             {
-              parentId != null
-              ? <Input
-                  type="text"
-                  onChange={e => this.setState({ parentId: parentId, parentName: parentName })}
-                  placeholder={parentName}
-                  disabled
-                />
-              : <Input
-                  type="select"
-                  placeholder="Select a {type}"
-                  onChange={e => this.setState({ taskProject: e.target.value })}
-                >
-                { 
-                  user.map(user => (
-                    <option key={user._id} value={user._id}>{user.firstName} {user.lastName} - {user.company}</option>      
-                  ))
-                }
-            </Input>
+                parentId != null
+                ? <Input
+                    type="text"
+                    placeholder={parentName}
+                    disabled
+                  />
+                : this.parentType()
             }
-          </FormGroup>
-          <FormGroup>
-          <Input
-            type="text"
-            onChange={e => this.setState({ hours: e.target.value })}
-            placeholder="Hours"
-          />
-          </FormGroup>
-          <FormGroup>
-          <Input
-            type="date"
-            onChange={e => this.setState({ dueDate: e.target.value })}
-            placeholder="DueDate"
             
-          />
-          </FormGroup>          
+            </FormGroup>
+            <FormGroup>
+            <Input
+              type="text"
+              onChange={e => this.setState({ hours: e.target.value, parentId: parentId, parentName: parentName })}
+              placeholder="Hours"
+            />
+            </FormGroup>
+            <FormGroup>
+            <Input
+              type="date"
+              onChange={e => this.setState({ dueDate: e.target.value })}
+              placeholder="DueDate"
+              
+            />
+            </FormGroup>          
           </ModalBody>
           <ModalFooter>
           <Button

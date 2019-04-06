@@ -9,7 +9,8 @@ export class DashboardSidebar extends React.Component {
          super(props)
 
          this.state = {
-            admin: 'all',
+            admin: null,
+            intervalIsSet: false,
             navigation: [
                 {
                     id: 0,
@@ -64,10 +65,26 @@ export class DashboardSidebar extends React.Component {
 
          }
      }
-     authorized() {
+     componentDidMount() {
+        this.authorized();
+        if (!this.state.intervalIsSet) {
+          let interval = setInterval(this.authorized, 5000);
+          this.setState({ intervalIsSet: interval });
+        }
+      }
+    
+      // never let a process live forever 
+      // always kill a process everytime we are done using it
+      componentWillUnmount() {
+        if (this.state.intervalIsSet) {
+          clearInterval(this.state.intervalIsSet);
+          this.setState({ intervalIsSet: null });
+        }
+      }
+     authorized = () => {
         const userAccess = JSON.parse(localStorage.getItem('user_access'));
         if(userAccess === "admin") {
-            this.setState({admin: 'admin'})
+            this.setState({admin: 'admin'});
         } else {
             this.setState({admin: 'all'});
         }
@@ -85,7 +102,7 @@ export class DashboardSidebar extends React.Component {
                             navigation.length <= 0
                             ? "Nothing in navigation"
                             : navigation.filter(navigation => navigation.access === admin).map(navigation => (
-                                <li key={navigation.id} className="nav-item">
+                                <li key={navigation.id} className="nav-item fade-in">
                                 <Link
                                     to={navigation.link}
                                     className="nav-link" 
@@ -96,45 +113,7 @@ export class DashboardSidebar extends React.Component {
                             </li>
                             ))
                         }
-                        {/* <li className="nav-item">
-                            <Link
-                                to="/"
-                                className="nav-link" 
-                                onClick={this.navigation} 
-                            >
-                            <FeatherIcon icon="home"/>
-                            Dashboard <span className="sr-only">(current)</span>
-                            </Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link
-                                to="/profile"
-                                className="nav-link" 
-                                onClick={this.navigation} 
-                            >
-                            <FeatherIcon icon="users"/>
-                            {this.state.clients}
-                            </Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link
-                                to="/project"
-                                className="nav-link" 
-                                onClick={this.navigation} 
-                            >
-                            <FeatherIcon icon="briefcase"/>
-                            {this.state.projects}
-                            </Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link
-                                to="/"
-                                className="nav-link" onClick={this.navigation} 
-                            >
-                            <FeatherIcon icon="clipboard"/>
-                            {this.state.tasks}
-                            </Link>
-                        </li> */}
+                    
                         </ul>
                     </div>
 
@@ -146,24 +125,3 @@ export class DashboardSidebar extends React.Component {
 
 export default DashboardSidebar;
 
-
-{/* <div>
-<Link
-to="/"
-className="nav-link" 
-onClick={this.navigation} 
->
-Link</Link>
-<Link
-to="/profile"
-className="nav-link" 
-onClick={this.navigation} 
->
-Link</Link>
-<Link
-to="/project"
-className="nav-link" 
-onClick={this.navigation} 
->
-Link</Link>
-</div> */}

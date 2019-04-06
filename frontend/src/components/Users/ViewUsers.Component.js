@@ -515,7 +515,7 @@ export class ViewUsers extends React.Component {
             
               <div className="row">
                 <div className="col">
-                    <ViewData id={data._id} />
+                    <ViewData id={data._id} type="project"/>
                 </div>
               </div>
               </div>
@@ -544,7 +544,7 @@ export class ViewUsers extends React.Component {
                     />
                     
                   </div>
-                <AddData type="project" parentName={data.company} parentId={data._id} />  
+                <AddData parent={data} />  
               </div>
             </div>
 

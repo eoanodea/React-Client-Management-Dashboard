@@ -74,7 +74,7 @@ export class DashboardLanding extends React.Component {
             <div className="container-fluid">
                 <div className="row">
 
-                    <ViewData />
+                    <h1>Landing</h1>
                 </div>
             </div>
         );
