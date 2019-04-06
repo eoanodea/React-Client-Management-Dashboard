@@ -1,11 +1,6 @@
 import React from 'react';
 import FeatherIcon from 'feather-icons-react';
-import { AddProject } from './Projects/AddProject.Component';
-import { SignUp } from './Login/SignUp.Component';
-import { ViewProjects } from './Projects/ViewProjects.Component';
-import { ViewUsers } from './Users/ViewUsers.Component';
-import { getFromStorage } from '../utilities/storage';
-import ViewData from './Data/ViewData.Component';
+import { Calendar } from './Calendar.Component';
 
 
 
@@ -75,6 +70,7 @@ export class DashboardLanding extends React.Component {
                 <div className="row">
 
                     <h1>Landing</h1>
+                    <Calendar />
                 </div>
             </div>
         );

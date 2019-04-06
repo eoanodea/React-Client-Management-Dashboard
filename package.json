@@ -15,6 +15,7 @@
   "author": "Eoan O'Dea",
   "license": "ISC",
   "dependencies": {
+    "@mobiscroll/react": "https://npm.mobiscroll.com/@mobiscroll/react-trial/-/react-trial-4.6.2.tgz",
     "bcrypt": "^3.0.4",
     "bootstrap": "^4.2.1",
     "concurrently": "^4.1.0"

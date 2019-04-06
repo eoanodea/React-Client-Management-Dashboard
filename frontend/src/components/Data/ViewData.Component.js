@@ -322,7 +322,7 @@ export class ViewData extends React.Component {
 
   userDatas(id, type) {
     this.state.isLoading = false;
-    this.state.title = "Datas";
+    this.state.title = type;
     const { data, projectId } = this.state;
     if(this.state.viewDatas = true){
       return(

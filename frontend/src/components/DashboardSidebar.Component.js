@@ -54,13 +54,13 @@ export class DashboardSidebar extends React.Component {
                     link: '/task', 
                     access: 'admin'
                 },
-                {
-                    id: 6,               
-                    name: 'Tasks',
-                    icon: 'clipboard',
-                    link: '/task', 
-                    access: 'all'
-                },
+                // {
+                //     id: 6,               
+                //     name: 'Tasks',
+                //     icon: 'clipboard',
+                //     link: '/task', 
+                //     access: 'all'
+                // },
             ]
 
          }
@@ -83,10 +83,11 @@ export class DashboardSidebar extends React.Component {
       }
      authorized = () => {
         const userAccess = JSON.parse(localStorage.getItem('user_access'));
+        const userId = JSON.parse(localStorage.getItem('user_id'));
         if(userAccess === "admin") {
-            this.setState({admin: 'admin'});
+            this.setState({admin: 'admin', userId: userId});
         } else {
-            this.setState({admin: 'all'});
+            this.setState({admin: 'all' , userId: userId});
         }
      }
 

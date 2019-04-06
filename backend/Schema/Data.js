@@ -10,8 +10,9 @@ const DataSchema = new Schema(
     parentId: String,
     parentName: String,
     hours: String,
-    dueDate: Date,
-    type: String
+    dueDate: String,
+    type: String,
+    isComplete: Boolean
   },
   { timestamps: true }
 );

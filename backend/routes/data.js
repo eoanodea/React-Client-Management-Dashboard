@@ -58,7 +58,8 @@ router.get("/getData", (req, res) => {
       parentName,
       hours, 
       dueDate,
-      type
+      type,
+      isComplete
     } = req.body;
   
     if ((!id && id !== 0) || !name) {
@@ -75,6 +76,7 @@ router.get("/getData", (req, res) => {
     data.dueDate = dueDate;
     data.type = type;
     data.id = id;
+    data.isComplete = isComplete;
     data.save(err => {
       if (err) return res.json({ success: false, error: err });
       return res.json({ success: true, data: data });

@@ -11,10 +11,37 @@ export class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            current: "Dashboard"
+            current: "Dashboard",
+            userId: null
         }
     }
 
+    componentDidMount() {
+        this.userId();
+        if (!this.state.intervalIsSet) {
+          let interval = setInterval(this.userId, 5000);
+          this.setState({ intervalIsSet: interval });
+        }
+      }
+    
+      // never let a process live forever 
+      // always kill a process everytime we are done using it
+      componentWillUnmount() {
+        if (this.state.intervalIsSet) {
+          clearInterval(this.state.intervalIsSet);
+          this.setState({ intervalIsSet: null });
+        }
+      }
+    
+
+    userId = () => {
+        console.log("yeh")
+        if(!this.state.userId) {
+            const userId = JSON.parse(localStorage.getItem('user_id'));
+            this.setState({ userId: userId})
+        }
+        console.log("so the user id should be" + this.state.userId)
+    }
 
     render() {
         return(
@@ -42,8 +69,18 @@ export class Dashboard extends React.Component {
                                         <div>
                                             <Route exact path="/" component={DashboardLanding} />
                                             <Route path="/profile" component={ViewUsers} />
-                                            <Route path="/project" component={ViewData} />
-                                            <Route path="/task" component={ViewData} type="task" />
+                                            <Route 
+                                                path="/project" 
+                                                component={(props) => 
+                                                    <ViewData {...props}
+                                                        id={this.state.userId} 
+                                                        type="project" />} 
+                                                    />
+                                            <Route 
+                                                path="/task" 
+                                                component={(props) => 
+                                                    <ViewData />} 
+                                            />
                                         </div>
                                     </main>
                                 </div>

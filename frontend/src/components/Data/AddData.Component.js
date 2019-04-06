@@ -123,7 +123,7 @@ export class AddData extends React.Component {
     parentName,
     hours, 
     dueDate,
-    type
+    type,
     ) => {
     console.log(
         parentId, 
@@ -143,7 +143,8 @@ export class AddData extends React.Component {
       parentName: parentName,
       hours: hours,
       dueDate: dueDate,
-      type: type
+      type: type,
+      isComplete: false
     })
     .then(response => { 
       console.log(response)
