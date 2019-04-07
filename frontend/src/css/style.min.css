@@ -584,6 +584,22 @@ body {
   margin: auto 0;
 }
 
+.calendarOverlay {
+  position: absolute;
+  top: 50%;
+  left: 45%;
+}
+.calendarData {
+  margin-left: 15px;
+}
+
+button.StyledButton-sc-323bzc-0.lnKzGb:focus {
+  outline: none !important;
+  background-color: #C03068;
+  transition: 0.2s ease;
+  color: #fff;
+}
+
 .login {
   width: 30%;
   margin: auto;

@@ -1,6 +1,6 @@
 import React from 'react';
 import FeatherIcon from 'feather-icons-react';
-import { Calendar } from './Calendar.Component';
+import { CalendarComponent } from './Calendar/CalendarComponent.Component';
 
 
 
@@ -68,9 +68,7 @@ export class DashboardLanding extends React.Component {
         return(
             <div className="container-fluid">
                 <div className="row">
-
-                    <h1>Landing</h1>
-                    <Calendar />
+                    <CalendarComponent />
                 </div>
             </div>
         );

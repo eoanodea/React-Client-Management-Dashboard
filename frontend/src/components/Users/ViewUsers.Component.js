@@ -43,7 +43,7 @@ export class ViewUsers extends React.Component {
   componentDidMount() {
     this.getDataFromDb();
     if (!this.state.intervalIsSet) {
-      let interval = setInterval(this.getDataFromDb, 1000);
+      let interval = setInterval(this.getDataFromDb, 4000);
       this.setState({ intervalIsSet: interval });
     }
   }

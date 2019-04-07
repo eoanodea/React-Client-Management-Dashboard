@@ -1,0 +1,16 @@
+.calendar{
+    &Overlay {
+        position: absolute;
+        top: 50%;
+        left: 45%;
+    }
+    &Data {
+        margin-left: 15px;
+    }
+}
+button.StyledButton-sc-323bzc-0.lnKzGb:focus {
+    outline: none!important;
+    background-color: #C03068;
+    transition: .2s ease;
+    color: #fff;
+}
