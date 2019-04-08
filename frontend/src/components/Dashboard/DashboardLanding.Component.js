@@ -1,6 +1,6 @@
 import React from 'react';
 import FeatherIcon from 'feather-icons-react';
-import { CalendarComponent } from './Calendar/CalendarComponent.Component';
+import { CalendarComponent } from './CalendarComponent.Component';
 
 
 

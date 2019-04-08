@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dashboard } from '../Dashboard.Component';
+import { Dashboard } from '../Dashboard/Dashboard.Component';
 import 'whatwg-fetch';
 import FeatherIcon from 'feather-icons-react';
 import {

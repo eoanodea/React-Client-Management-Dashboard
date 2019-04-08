@@ -1,6 +1,6 @@
 import React from 'react';
 import FeatherIcon from 'feather-icons-react';
-import { setInStorage } from '../utilities/storage';
+import { setInStorage } from '../../utilities/storage';
 import { Link, BrowserRouter } from 'react-router-dom';
 import { Dashboard } from './Dashboard.Component';
 

@@ -83,6 +83,7 @@ export class AddData extends React.Component {
  }
   parentType() {
     const { data } = this.state;
+
       return(
         <div>
           {
@@ -178,6 +179,18 @@ export class AddData extends React.Component {
       modal: !prevState.modal
     }));
   }
+  selectType() {
+
+    return(
+      <ModalBody className="fade-out">
+        <FormGroup>
+          <h2>What are you adding?</h2>
+          <Button onClick={this.setState({ type: "project"})}>Project</Button>
+          <Button onClick={this.setState({ type: "task"})}>Task</Button>
+        </FormGroup>
+      </ModalBody>
+    );
+  }
 
 
 
@@ -198,54 +211,59 @@ export class AddData extends React.Component {
         parentName = this.props.parent.name;
       }
     }
+
     return (  
       <div className="viewUserButton">
         <Button color="dark" onClick={this.toggle}>Add {type}</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle}>Add a {type}</ModalHeader>
-          <ModalBody>
-            <FormGroup>
-              <Input
-                type="text"
-                onChange={e => this.setState({ name: e.target.value })}
-                placeholder="Name"
-              />
-            </FormGroup>
-            <FormGroup>
-              <Input
-                type="text"
-                onChange={e => this.setState({ desc: e.target.value })}
-                placeholder="Desc"
-              />
-            </FormGroup>
-            <FormGroup>
-            {
-                parentId != null
-                ? <Input
-                    type="text"
-                    placeholder={parentName}
-                    disabled
-                  />
-                : this.parentType()
+          {
+            !this.state.type
+            ? this.selectType()
+            : <ModalBody>
+                  <FormGroup>
+                    <Input
+                      type="text"
+                      onChange={e => this.setState({ name: e.target.value })}
+                      placeholder="Name"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Input
+                      type="text"
+                      onChange={e => this.setState({ desc: e.target.value })}
+                      placeholder="Desc"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                  {
+                      parentId != null
+                      ? <Input
+                          type="text"
+                          placeholder={parentName}
+                          disabled
+                        />
+                      : this.parentType()
+                  }
+                  </FormGroup>
+                  <FormGroup>
+                    <Input
+                      type="text"
+                      onChange={e => this.setState({ hours: e.target.value, parentId: parentId, parentName: parentName })}
+                      placeholder="Hours"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Input
+                      type="date"
+                      onChange={e => this.setState({ dueDate: e.target.value })}
+                      placeholder="DueDate"
+                      
+                    />
+                  </FormGroup>          
+              </ModalBody>
             }
-            
-            </FormGroup>
-            <FormGroup>
-            <Input
-              type="text"
-              onChange={e => this.setState({ hours: e.target.value, parentId: parentId, parentName: parentName })}
-              placeholder="Hours"
-            />
-            </FormGroup>
-            <FormGroup>
-            <Input
-              type="date"
-              onChange={e => this.setState({ dueDate: e.target.value })}
-              placeholder="DueDate"
-              
-            />
-            </FormGroup>          
-          </ModalBody>
+
           <ModalFooter>
           <Button
             color="dark" 

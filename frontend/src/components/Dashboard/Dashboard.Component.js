@@ -1,7 +1,7 @@
 import React from 'react';
 import FeatherIcon from 'feather-icons-react';
-import { ViewData } from './Data/ViewData.Component';
-import { ViewUsers } from './Users/ViewUsers.Component';
+import { ViewData } from '../Data/ViewData.Component';
+import { ViewUsers } from '../Users/ViewUsers.Component';
 import { DashboardLanding } from './DashboardLanding.Component';
 import { DashboardSidebar } from './DashboardSidebar.Component';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
