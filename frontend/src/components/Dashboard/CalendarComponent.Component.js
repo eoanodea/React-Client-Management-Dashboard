@@ -83,7 +83,7 @@ export class CalendarComponent extends React.Component {
               <Calendar
                 className="fade-in"
                 size="medium"
-                disabled={dataDates}
+                dates={dataDates}
                 date={date}
                 onSelect={this.onSelectDate}
               />
@@ -92,8 +92,8 @@ export class CalendarComponent extends React.Component {
             {
               selectedDateData <= 0 || !selectedDateData
               ? <div className="col-md-7"><Text>Nothing due on this day, add something?<br /><AddData date={this.state.date}/></Text></div>
-              : <DataTable
-                  className="col-md-7 calendarData"
+              : <div className="col-md-7 calendarData">
+                <DataTable
                   sortable={true} 
                   columns={[
                     {
@@ -131,6 +131,7 @@ export class CalendarComponent extends React.Component {
                   ]}
                 data={selectedDateData}
               />
+            </div>
               }
             </Grommet>
           }

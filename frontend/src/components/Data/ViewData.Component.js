@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Input, Button, Alert } from 'reactstrap';
+import { Input, Alert } from 'reactstrap';
 import FeatherIcon from 'feather-icons-react';
 import AddData from './AddData.Component';
+import { DataTable, Text, Box, Meter } from 'grommet';
+
 
 export class ViewData extends React.Component {
   // initialize our state 
@@ -26,6 +28,7 @@ export class ViewData extends React.Component {
     objectToUpdate: null,
     isLoading: false,
     dataType: "project",
+    dataField: [],
     viewData: false,
     viewDatas: true,
     projectId: null
@@ -319,28 +322,76 @@ export class ViewData extends React.Component {
       </div>
     );
   }
+  icon(type) {
 
-  userDatas(id, type) {
+    if(type === "project") {
+      return <FeatherIcon icon = "briefcase" />
+    } else {
+      return <FeatherIcon icon = "clipboard" />
+    }
+  }
+
+  userDatas = (id, type) => {
     this.state.isLoading = false;
     this.state.title = type;
-    const { data, projectId } = this.state;
+    let { data } = this.state;
+    data = data.filter(data => data.type == type);
+    let results = data, dataFields = [];
+
     if(this.state.viewDatas = true){
       return(
-        <tbody>
+        <div>
         {
           data.length <= 0
           ? <FeatherIcon icon="loading"/>
-          : data.filter(data => data.parentId === id && data.type === type).map(data => (
-
-                  <tr key={data.id} className="fade-in" onClick={() => this.viewData(data.id)}>
-                    <td>{data.name}</td>
-                    <td>{data.parentName}</td>
-                    <td>{data.hours}</td>
-                    <td>{data.dueDate}</td>
-                  </tr>
-                ))
-              }
-        </tbody>
+          : <DataTable
+                sortable={true}
+                columns={[
+                  {
+                    property: 'type',
+                    align: "center",
+                    header: <Text>Type</Text>,
+                    render: datem => (
+                      <Text>{this.icon(datem.type)}</Text>
+                    )
+                  },
+                  {
+                    property: 'name',
+                    header: <Text>Name</Text>
+                  },
+                  {
+                    property: 'parentName',
+                    header: <Text>User</Text>,
+                    render: datem => (
+                      <Text>{datem.parentName}</Text>
+                    )
+                  },
+                  {
+                    property: 'dueDate',
+                    header: <Text>Due Date</Text>,
+                    render: datem => (
+                      <Text>{datem.dueDate}</Text>
+                    )
+                  },
+                  {
+                    property: 'hours',
+                    header: 'Complete',
+                    render: datam => (
+                      <Box pad={{ vertical: 'xsmall' }}>
+                        <Meter
+                          values={[{ value: datam.hours }]}
+                          thickness="small"
+                          size="small"
+                        />
+                      </Box>
+                    ),
+                  }
+                ]}
+                data={data}
+                // data={data}
+              />
+            }
+          </div>
       );  
       }
       if(this.state.viewData = true) {
@@ -405,36 +456,16 @@ export class ViewData extends React.Component {
       return (
         <div className="row">
           <div className="col-md-12">
-            <div>
-              <table className="table table-striped table-sm">
-                <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Parent</th>
-                      <th>Hours Logged</th>
-                      <th>Type</th>
-                      <th>Due Date</th>
-                    </tr>
-                </thead>
+
                     {
                       this.props.id != "admin"
                       ? this.userDatas(this.props.id, this.props.type)
-                      : data.length <= 0
-                        ? "NO DB ENTRIES YET"
-                        : data.filter(data => data.type === this.props.type).map(data => (
-                          <tbody key={data.name}>
-                          <tr key={data.id} className="fade-in" onClick={() => this.viewData(data.id)}>
-                            <td>{data.name}</td>
-                            <td>{data.parentName}</td>
-                            <td>{data.hours}</td>
-                            <td>{data.type}</td>
-                            <td>{data.dueDate}</td>
-                          </tr>
-                          </tbody>
-                        ))
-                      }
-                </table>
-              </div>
+                      : <DataTable
+                          sortable={true}
+                          columns={data}
+                          data={data}
+                        />
+                    }
             </div>
         </div>
         );

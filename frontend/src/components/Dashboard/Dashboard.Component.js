@@ -5,6 +5,7 @@ import { ViewUsers } from '../Users/ViewUsers.Component';
 import { DashboardLanding } from './DashboardLanding.Component';
 import { DashboardSidebar } from './DashboardSidebar.Component';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { Grommet } from 'grommet';
 
 
 export class Dashboard extends React.Component {
@@ -49,7 +50,7 @@ export class Dashboard extends React.Component {
                 <div className="row">
                     <div className="container-fluid">
                         <BrowserRouter>
-                            <>
+                            <Grommet>
                                 <div className="row">
                                     <DashboardSidebar />
                                         <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
@@ -84,7 +85,7 @@ export class Dashboard extends React.Component {
                                         </div>
                                     </main>
                                 </div>
-                            </>
+                            </Grommet>
                         </BrowserRouter>
                     </div>
                 </div>
