@@ -91,9 +91,10 @@ export class CalendarComponent extends React.Component {
             </div>
             {
               selectedDateData <= 0 || !selectedDateData
-              ? <div className="col-md-7"><Text>Nothing due on this day, add something?<br /><AddData date={this.state.date}/></Text></div>
-              : <div className="col-md-7 calendarData">
-                <DataTable
+              ? <div className="col-md-7"><Text>Nothing due on this day, add something?<br /><AddData date={this.state.date} type="project"/></Text></div>
+              // : <div className="col-md-7 calendarData">
+              :  <DataTable
+                  className="col-md-7"
                   sortable={true} 
                   columns={[
                     {
@@ -131,7 +132,7 @@ export class CalendarComponent extends React.Component {
                   ]}
                 data={selectedDateData}
               />
-            </div>
+            // </div>
               }
             </Grommet>
           }

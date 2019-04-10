@@ -317,7 +317,7 @@ export class ViewUsers extends React.Component {
                       <th>Privileges</th>
                     </tr>
                 </thead>
-                <tbody key={data.taskName}>
+                <tbody>
                     {data.length <= 0
                     ? "NO DB ENTRIES YET"
                     : data.map(data => (

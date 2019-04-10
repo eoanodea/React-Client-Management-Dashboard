@@ -103,7 +103,7 @@ export class AddData extends React.Component {
                   ?  data.map(data => (
                       <option key={data._id} value={data.name}>{data.name}</option>      
                     ))
-                  : data.filter(data => data.parentId === this.state.userId).map(data => (
+                  : data.filter(data => data.parentId === this.state.userId && data.type === this.props.type ).map(data => (
                     <option key={data._id} value={data.name}>{data.name}</option>      
                   ))
                 }
