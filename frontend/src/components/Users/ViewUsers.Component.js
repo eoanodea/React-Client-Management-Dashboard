@@ -511,8 +511,7 @@ export class ViewUsers extends React.Component {
                   </div>
               </div>
             
-              {/* User project */}
-            
+              {/* After user details are shown, show projects associated with that user */}
               <div className="row">
                 <div className="col">
                     <ViewData id={data._id} type="project"/>
