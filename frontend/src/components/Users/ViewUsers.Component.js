@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Input, Button, Alert, Jumbotron } from 'reactstrap';
+import { Select } from 'grommet';
 import FeatherIcon from 'feather-icons-react';
 import {ViewData} from '../Data/ViewData.Component';
 import {AddData} from '../Data/AddData.Component';
@@ -226,11 +227,15 @@ export class ViewUsers extends React.Component {
     })   
     .then(response => { 
       console.log(response)
-      alertMsg.message = response.data;
       if(alertMsg.message !== response.data) {
+        alertMsg.message = response.data;
         this.setState({
-          alertMsg: {message: response.data}
-        })
+          alertMsg: {
+            message: response.data,
+            color: "success"
+          },
+          isLoading: false
+        });
       }
     })
     .catch(error => {
@@ -241,20 +246,8 @@ export class ViewUsers extends React.Component {
           isLoading: false
         }
       })
-        console.log(error.response)
-
+      console.log(error.response)
     });
-    if(alertMsg.message.success === "true" && alertMsg.color !== "success") {
-      this.setState({
-        alertMsg: {color: "success"},
-        isLoading: false
-      })
-      console.log("true")
-    } else if (isLoading === "true") {
-        this.setState({
-          isLoading: false
-        })
-      }
   };
   viewUser(id) {
     this.setState({
@@ -348,179 +341,186 @@ export class ViewUsers extends React.Component {
       );
     }
     if(!isLoading && viewUser) {
+
       return(
         <div>  
           {
-            data.length <= 0
+            data.length <= 0 || data.length === undefined
             ? <IsLoading />
             : data.filter(data => data._id === userId).map(data => (
-              <div key={data._id} className="row">
-              <Jumbotron className="viewUser col-md-9">
-              {
-                (alertMsg.message) ? (
-                  <Alert color="danger" style={{ marginTop: '10px' }}>
-                    {alertMsg.message}
-                  </Alert>
-                ) : (null)
-              }       
-              {
-                this.state.admin === "admin"
-                ? <a
-                    onClick={this.viewUsers}
-                    className="viewUserBackLink"
-                    >
-                      <p> 
-                        <FeatherIcon 
-                          icon="arrow-left" 
-                          className="viewUserBackIcon"
-                        />
-                      Back
-                      </p>
-                    </a>
-                : null
-              }   
-              <div className="viewUserHeading">                  
-                <span className="viewUserContactViewType">{data.access}</span>
-                <div id="viewBoxHeading" className="viewUserContactView">
-                  <div
-                    onClick={() => this.editUser(data._id, 41)}
-                    className="viewUserContactViewLink"
-                  >
-                    <h1 className="viewUserContactViewData">{data.company}</h1>
-                    <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
-                  </div>
-                </div>
-              <div id="editBoxHeading" className="viewUserContactEdit">
-                  <Input 
-                    type="text"
-                    onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.company, updateToField: "company" })}
-                    placeholder={data.company}
-                  >         
-                  </Input>
-                  <FeatherIcon 
-                    color="success" 
-                    className="viewUserContactCheck" 
-                    icon="check"
-                    onClick={() => this.editUser(data._id, 42)} 
-                  />
-                </div>
-              </div>
-              <div className="viewUserContact">
-                  <h3>Contact</h3>
-                  <div className="row">
-                    <div className="col">
-                      <div id="viewBox" className="viewUserContactView">
+              <Jumbotron className="row viewUser">
+                <div className="col-md-9">
+                {
+                  (alertMsg.message) ? (
+                    <Alert color="danger" style={{ marginTop: '10px' }}>
+                      {alertMsg.message}
+                    </Alert>
+                  ) : (null)
+                }       
+                {
+                  this.state.admin === "admin"
+                  ? <div>
+                      <a
+                        onClick={this.viewUsers}
+                        className="viewUserBackLink"
+                        >
+                          <p> 
+                            <FeatherIcon 
+                              icon="arrow-left" 
+                              className="viewUserBackIcon"
+                            />
+                          Back
+                          </p>
+                        </a>
+                        <div id="viewBox3" className="viewUserContactView">
                           <div
-                            onClick={() => this.editUser(data._id, 1)}
+                            onClick={() => this.editUser(data._id, 31)}
                             className="viewUserContactViewLink"
                           >
-                            <p className="viewUserContactViewData">{data.firstName}</p>
+                            <p className="viewUserContactViewType">{data.access}</p>
                             <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
                           </div>
                         </div>
-                        <div id="editBox" className="viewUserContactEdit">
-                          <Input 
-                            type="text"
-                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.firstName, updateToField: "firstName" })}
-                            placeholder={data.firstName}
-                          >         
-                          </Input>
-                          <FeatherIcon 
-                            color="success" 
-                            className="viewUserContactCheck" 
-                            icon="check"
-                            onClick={() => this.editUser(data._id, 2)} 
-                          />
-                        </div>
-                        
-                        <div id="viewBox1" className="viewUserContactView">
-                        <div
-                          
-                          onClick={() => this.editUser(data._id, 11)}
-                          className="viewUserContactViewLink"
-                        >
-                          <p className="viewUserContactViewData">{data.lastName}</p>
-                          <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
-                        </div>
-                      </div>
-                        <div id="editBox1" className="viewUserContactEdit">
-                        <Input 
-                            type="text"
-                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.lastName, updateToField: "lastName" })}
-                            placeholder={data.lastName}
-                          >            
-                          </Input>
-                          <FeatherIcon 
-                            color="success" 
-                            className="viewUserContactCheck" 
-                            icon="check"
-                            onClick={() => this.editUser(data._id, 12)} 
-                          />
-                        </div>
-                        
-                      </div>
-                      <div className="col">
-                        <div id="viewBox2" className="viewUserContactView">
-                        <div
-                          
-                          onClick={() => this.editUser(data._id, 21)}
-                          className="viewUserContactViewLink"
-                        >
-                          <p className="viewUserContactViewData">{data.email}</p>
-                          <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
-                        </div>
-                      </div>
-                        <div id="editBox2" className="viewUserContactEdit">
-                        <Input 
-                            type="text"
-                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.email, updateToField: "email" })}
-                            placeholder={data.email}
-                          >            
-                          </Input>
-                          <FeatherIcon 
-                            color="success" 
-                            className="viewUserContactCheck" 
-                            icon="check"
-                            onClick={() => this.editUser(data._id, 22)} 
-                          />
-                        </div>
-
-                        <div id="viewBox3" className="viewUserContactView">
-                        <div
-                          
-                          onClick={() => this.editUser(data._id, 31)}
-                          className="viewUserContactViewLink"
-                        >
-                          <p className="viewUserContactViewData">{data.access}</p>
-                          <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
-                        </div>
-                      </div>
-                        <div id="editBox3" className="viewUserContactEdit">
-                        <Input 
-                            type="text"
-                            onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.access, updateToField: "access" })}
+                          <div id="editBox3" className="viewUserContactEdit">
+                          <Select
                             placeholder={data.access}
-                          >    
-                          </Input>
-                          <FeatherIcon 
-                            color="success" 
-                            className="viewUserContactCheck" 
-                            icon="check"
-                            onClick={() => this.editUser(data._id, 32)} 
+                            options={['admin', 'client', 'testing']}
+                            value={data.access}
+                            onChange={({option}) => this.setState({ updateToApply: (option), updateCurrent: data.access, updateToField: "access" })}
+                            onClose={() => this.editUser(data._id, 32)}
                           />
-                        </div>
-
+                          {/* <Input 
+                              type="text"
+                              onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.access, updateToField: "access" })}
+                              placeholder={data.access}
+                            >    
+                            </Input>
+                            <FeatherIcon 
+                              color="success" 
+                              className="viewUserContactCheck" 
+                              icon="check"
+                              onClick={() => this.editUser(data._id, 32)} 
+                            /> */}
+                          </div>
+                      </div>
+                  : <span className="viewUserContactViewType">{data.access}</span>
+                }   
+                <div className="viewUserHeading">                  
+                  <div id="viewBoxHeading" className="viewUserContactView">
+                    <div
+                      onClick={() => this.editUser(data._id, 41)}
+                      className="viewUserContactViewLink"
+                    >
+                      <h1 className="viewUserContactViewData">{data.company}</h1>
+                      <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
                     </div>
                   </div>
-              </div>
-            
-              {/* After user details are shown, show projects associated with that user */}
-              <div className="row">
-                <div className="col">
-                    {/* <ViewData id={data._id} type="project"/> */}
+                <div id="editBoxHeading" className="viewUserContactEdit">
+                    <Input 
+                      type="text"
+                      onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.company, updateToField: "company" })}
+                      placeholder={data.company}
+                    >         
+                    </Input>
+                    <FeatherIcon 
+                      color="success" 
+                      className="viewUserContactCheck" 
+                      icon="check"
+                      onClick={() => this.editUser(data._id, 42)} 
+                    />
+                  </div>
+                </div>
+                <div className="viewUserContact">
+                    <h3>Contact</h3>
+                    <div className="row">
+                      <div className="col">
+                        <label className="viewUserContactLabel">First Name:</label>
+                        <div id="viewBox" className="viewUserContactView">
+                            <div
+                              onClick={() => this.editUser(data._id, 1)}
+                              className="viewUserContactViewLink"
+                            >
+                              <p className="viewUserContactViewData">{data.firstName}</p>
+                              <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+                            </div>
+                          </div>
+
+                        <div id="editBox" className="viewUserContactEdit">
+                            <Input 
+                              type="text"
+                              onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.firstName, updateToField: "firstName" })}
+                              placeholder={data.firstName}
+                            >         
+                            </Input>
+                            <FeatherIcon 
+                              color="success" 
+                              className="viewUserContactCheck" 
+                              icon="check"
+                              onClick={() => this.editUser(data._id, 2)} 
+                            />
+                          </div>
+                        <label className="viewUserContactLabel">Email:</label>
+                        <div id="viewBox2" className="viewUserContactView">
+                          <div
+                            onClick={() => this.editUser(data._id, 21)}
+                            className="viewUserContactViewLink"
+                          >
+                            <p className="viewUserContactViewData">{data.email}</p>
+                            <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+                          </div>
+                        </div>
+                          <div id="editBox2" className="viewUserContactEdit">
+                          <Input 
+                              type="text"
+                              onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.email, updateToField: "email" })}
+                              placeholder={data.email}
+                            >            
+                            </Input>
+                            <FeatherIcon 
+                              color="success" 
+                              className="viewUserContactCheck" 
+                              icon="check"
+                              onClick={() => this.editUser(data._id, 22)} 
+                            />
+                          </div>
+                          
+                        </div>
+                        <div className="col">
+                        <label className="viewUserContactLabel">Last Name:</label>
+                        <div id="viewBox1" className="viewUserContactView">
+                            <div
+                              onClick={() => this.editUser(data._id, 11)}
+                              className="viewUserContactViewLink"
+                            >
+                              <p className="viewUserContactViewData">{data.lastName}</p>
+                              <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+                            </div>
+                          </div>
+                          <div id="editBox1" className="viewUserContactEdit">
+                          <Input 
+                              type="text"
+                              onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.lastName, updateToField: "lastName" })}
+                              placeholder={data.lastName}
+                            >            
+                            </Input>
+                            <FeatherIcon 
+                              color="success" 
+                              className="viewUserContactCheck" 
+                              icon="check"
+                              onClick={() => this.editUser(data._id, 12)} 
+                            />
+                          </div>
+                      </div>
+                    </div>
+                </div>
+              
+                {/* After user details are shown, show projects associated with that user */}
+                <div className="row">
+                  <div className="col">
+                      {/* <ViewData id={data._id} type="project"/> */}
+                  </div>
                 </div>
               </div>
-              </Jumbotron>
               <div className="col-md-3">
               <div id="viewBoxPassword" className="viewUserButton">
                   <Button color="dark" onClick={() => this.editUser(data._id, 51)}>Change Password</Button>
@@ -544,18 +544,13 @@ export class ViewUsers extends React.Component {
                       icon="check"
                       onClick={() => this.editUser(data._id, 52)} 
                     />
-                    
                   </div>
                 <AddData parent={data} />  
               </div>
-            </div>
-
+              </Jumbotron>
             ))
           }
-                      
-
         </div>
-        
       );
     }
 
