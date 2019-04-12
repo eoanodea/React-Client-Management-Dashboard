@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import './css/style.min.css';
-
-import { AppNavbar } from './components/AppNavbar.Component';
 import { UserLogin } from './components/Login/UserLogIn.Component'
 
 

@@ -1,8 +1,6 @@
 import React from 'react';
 import FeatherIcon from 'feather-icons-react';
-import { setInStorage } from '../../utilities/storage';
-import { Link, BrowserRouter } from 'react-router-dom';
-import { Dashboard } from './Dashboard.Component';
+import { Link } from 'react-router-dom';
 
 export class DashboardSidebar extends React.Component {
      constructor(props) {

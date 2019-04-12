@@ -205,7 +205,6 @@ export class UserLogin extends React.Component {
       signInError,
       signInEmail,
       signInPassword,
-      loggedIn
     } = this.state;
 
     if (isLoading) {

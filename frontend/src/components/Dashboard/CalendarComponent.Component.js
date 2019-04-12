@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { Grommet, Calendar, DataTable, Box, Meter, Text } from 'grommet';
 import { Spinner } from 'reactstrap';
 import FeatherIcon from 'feather-icons-react';
@@ -70,7 +70,7 @@ export class CalendarComponent extends React.Component {
  
   
     render() {
-      const { date, dataDates, data, selectedDateData } = this.state;
+      const { date, dataDates, selectedDateData } = this.state;
 
       return (
         <div className="container">

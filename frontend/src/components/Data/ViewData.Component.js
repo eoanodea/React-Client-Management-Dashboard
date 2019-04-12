@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import axios from 'axios';
-import { Input, Alert } from 'reactstrap';
-import FeatherIcon from 'feather-icons-react';
+import { Input, Alert, Spinner } from 'reactstrap';
 import AddData from './AddData.Component';
+import FeatherIcon from 'feather-icons-react';
 import { DataTable, Text, Box, Meter } from 'grommet';
 
 
@@ -40,7 +40,7 @@ export class ViewData extends React.Component {
   componentDidMount() {
     this.getDataFromDb();
     if (!this.state.intervalIsSet) {
-      let interval = setInterval(this.getDataFromDb, 1000);
+      let interval = setInterval(this.getDataFromDb, 2000);
       this.setState({ intervalIsSet: interval });
     }
   }
@@ -127,9 +127,7 @@ export class ViewData extends React.Component {
     const viewBox4 = document.getElementById("viewBox4");
 
     console.log(id);
-    const updateToApply = this.state.updateToApply;
-    const updateCurrent = this.state.updateCurrent;
-    const updateToField = this.state.updateToField;
+    const { updateToApply, updateCurrent, updateToField } = this.state;
 
     if(num === 1) {
 
@@ -244,7 +242,6 @@ export class ViewData extends React.Component {
     this.setState({
       isLoading: true,
     })
-    let update = null;
     let objIdToUpdate = null;
     this.state.data.forEach(dat => {
       if (dat.id === idToUpdate) {
@@ -264,7 +261,8 @@ export class ViewData extends React.Component {
     })   
     .then(response => { 
       console.log(response)
-      this.state.alertMsg = response.data;
+      this.setState({ alertMsg: {message: response.data }});
+  
     })
     .catch(error => {
         console.log(error.response)
@@ -305,19 +303,18 @@ export class ViewData extends React.Component {
   authorized = () => {
     const userAccess = JSON.parse(localStorage.getItem('user_access'));
     if(userAccess === "admin") {
-        this.state.admin = 'admin';
+        this.setState({ admin: userAccess })
         this.viewDatas();
     } else {
-        this.state.admin = 'all';
         const userId = JSON.parse(localStorage.getItem('user_id'));
-        this.state.userId = userId;
+        this.setState({ admin: 'all', userId: userId });
     }
  }
 
   loading() {
     return(
       <div className="loading">
-        <FeatherIcon className="loadingIcon" icon="loader" size="54" />
+        <Spinner color="primary" />
         {this.authorized()}
       </div>
     );
@@ -332,13 +329,16 @@ export class ViewData extends React.Component {
   }
 
   userDatas = (id, type) => {
-    this.state.isLoading = false;
-    this.state.title = type;
-    let { data } = this.state;
-    data = data.filter(data => data.type == type);
-    let results = data, dataFields = [];
+    let { data, viewDatas, viewData, title, isLoading } = this.state;
+    if(isLoading !== false && title !== type) {
+      this.setState({
+        isLoading: false,
+        title: type
+      })
+    }
 
-    if(this.state.viewDatas = true){
+    data = data.filter(data => data.type === type);
+    if(viewDatas === true){
       return(
         <div>
         {
@@ -394,7 +394,7 @@ export class ViewData extends React.Component {
           </div>
       );  
       }
-      if(this.state.viewData = true) {
+      if(viewData === true) {
         return(
         <div>  
           {
@@ -430,7 +430,7 @@ export class ViewData extends React.Component {
       }
   }
 
-  addData(data) {
+  addData = (data) => {
       return(
         <AddData parent={data} />
       );
@@ -456,16 +456,15 @@ export class ViewData extends React.Component {
       return (
         <div className="row">
           <div className="col-md-12">
-
-                    {
-                      this.props.id != "admin"
-                      ? this.userDatas(this.props.id, this.props.type)
-                      : <DataTable
-                          sortable={true}
-                          columns={data}
-                          data={data}
-                        />
-                    }
+            {
+              this.props.id !== "admin"
+              ? this.userDatas(this.props.id, this.props.type)
+              : <DataTable
+                  sortable={true}
+                  columns={data}
+                  data={data}
+                />
+            }
             </div>
         </div>
         );

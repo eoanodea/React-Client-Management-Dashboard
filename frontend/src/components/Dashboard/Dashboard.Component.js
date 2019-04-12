@@ -1,10 +1,9 @@
 import React from 'react';
-import FeatherIcon from 'feather-icons-react';
 import { ViewData } from '../Data/ViewData.Component';
 import { ViewUsers } from '../Users/ViewUsers.Component';
 import { DashboardLanding } from './DashboardLanding.Component';
 import { DashboardSidebar } from './DashboardSidebar.Component';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import { Grommet } from 'grommet';
 
 
@@ -41,7 +40,6 @@ export class Dashboard extends React.Component {
             const userId = JSON.parse(localStorage.getItem('user_id'));
             this.setState({ userId: userId})
         }
-        console.log("so the user id should be" + this.state.userId)
     }
 
     render() {
@@ -54,7 +52,7 @@ export class Dashboard extends React.Component {
                                 <div className="row">
                                     <DashboardSidebar />
                                         <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
-                                            <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                            {/* <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                             <h1 className="h2">{this.state.current}</h1>
                                                 <div className="btn-toolbar mb-2 mb-md-0">
                                                     <div className="btn-group mr-2">
@@ -66,7 +64,7 @@ export class Dashboard extends React.Component {
                                                         This week
                                                     </button>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         <div>
                                             <Route exact path="/" component={DashboardLanding} />
                                             <Route path="/profile" component={ViewUsers} />

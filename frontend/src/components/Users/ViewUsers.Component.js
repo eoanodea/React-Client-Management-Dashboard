@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import axios from 'axios';
-import { Input, Button, Alert } from 'reactstrap';
+import { Input, Button, Alert, Jumbotron } from 'reactstrap';
 import FeatherIcon from 'feather-icons-react';
 import {ViewData} from '../Data/ViewData.Component';
 import {AddData} from '../Data/AddData.Component';
@@ -8,9 +8,7 @@ import { SignUp } from '../Login/SignUp.Component';
 
 
 export class ViewUsers extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+
   // initialize our state 
   state = {
     data: [],
@@ -204,10 +202,10 @@ export class ViewUsers extends React.Component {
     updateCurrent,
     updateToField
     ) => {
+    const { alertMsg, isLoading } = this.state;
     this.setState({
       isLoading: true,
     })
-    let update = null;
     let objIdToUpdate = null;
     this.state.data.forEach(dat => {
       if (dat._id === idToUpdate) {
@@ -227,24 +225,35 @@ export class ViewUsers extends React.Component {
     })   
     .then(response => { 
       console.log(response)
-      this.state.alertMsg = response.data;
+      alertMsg.message = response.data;
+      if(alertMsg.message !== response.data) {
+        this.setState({
+          alertMsg: {message: response.data}
+        })
+      }
     })
     .catch(error => {
+      this.setState({
+        alertMsg: {
+          message: error.response,
+          color: "danger",
+          isLoading: false
+        }
+      })
         console.log(error.response)
+
     });
-    if(this.state.alertMsg.success === "true") {
+    if(alertMsg.message.success === "true" && alertMsg.color !== "success") {
       this.setState({
         alertMsg: {color: "success"},
         isLoading: false
       })
       console.log("true")
-    } else {
-      this.setState({
-        alertMsg: {color: "danger"},
-        isLoading: false
-      })
-      console.log("false")
-  }
+    } else if (isLoading === "true") {
+        this.setState({
+          isLoading: false
+        })
+      }
   };
   viewUser(id) {
     this.setState({
@@ -288,7 +297,6 @@ export class ViewUsers extends React.Component {
       viewUsers,
       userId,
       alertMsg,
-      admin
     } = this.state;
 
     if(isLoading) {
@@ -347,7 +355,7 @@ export class ViewUsers extends React.Component {
             ? "NO DB ENTRIES YET"
             : data.filter(data => data._id === userId).map(data => (
               <div key={data._id} className="row">
-              <div className="viewUser col-md-9">
+              <Jumbotron className="viewUser col-md-9">
               {
                 (alertMsg.message) ? (
                   <Alert color="danger" style={{ marginTop: '10px' }}>
@@ -380,7 +388,7 @@ export class ViewUsers extends React.Component {
                   onClick={() => this.editUser(data._id, 41)}
                   className="viewUserContactViewLink"
                 >
-                  <h2 className="viewUserContactViewData">{data.company}</h2>
+                  <h1 className="viewUserContactViewData">{data.company}</h1>
                   <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
                 </div>
               </div>
@@ -514,10 +522,10 @@ export class ViewUsers extends React.Component {
               {/* After user details are shown, show projects associated with that user */}
               <div className="row">
                 <div className="col">
-                    <ViewData id={data._id} type="project"/>
+                    {/* <ViewData id={data._id} type="project"/> */}
                 </div>
               </div>
-              </div>
+              </Jumbotron>
               <div className="col-md-3">
               <div id="viewBoxPassword" className="viewUserButton">
                   <Button color="dark" onClick={() => this.editUser(data._id, 51)}>Change Password</Button>

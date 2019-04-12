@@ -7,11 +7,7 @@ import {
     Nav,
     NavItem,
     NavLink,
-    Container
 } from 'reactstrap';
-import UserLogIn from './Login/UserLogIn.Component';
-import { Link } from 'react-router-dom';
-import UserLogout from './Login/UserLogout.Component';
 
 
 export class AppNavbar extends React.Component {

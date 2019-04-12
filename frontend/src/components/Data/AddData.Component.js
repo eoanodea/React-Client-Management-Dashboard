@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   Button,
   Modal,
@@ -74,15 +74,14 @@ export class AddData extends React.Component {
   authorized = () => {
     const userAccess = JSON.parse(localStorage.getItem('user_access'));
     if(userAccess === "admin") {
-        this.state.admin = 'admin';
+        this.setState({admin: 'admin'})
     } else {
-        this.state.admin = 'all';
-        const userId = JSON.parse(localStorage.getItem('user_id'));
-        this.state.userId = userId;
+      const userId = JSON.parse(localStorage.getItem('user_id'));
+      this.setState({admin: 'all', userId: userId})
     }
  }
   parentType() {
-    const { data } = this.state;
+    const { data, admin } = this.state;
 
       return(
         <div>
@@ -99,7 +98,7 @@ export class AddData extends React.Component {
                 onChange={e => this.setState({ parentId: e.target.key, parentName: e.target.value })}
               >
                 { 
-                  this.state.admin = "admin"
+                  admin === "admin"
                   ?  data.map(data => (
                       <option key={data._id} value={data.name}>{data.name}</option>      
                     ))
@@ -126,16 +125,12 @@ export class AddData extends React.Component {
     dueDate,
     type,
     ) => {
-    console.log(
-        parentId, 
-        parentName,
-    );
+
     let currentIds = this.state.data.map(data => data.id);
     let idToBeAdded = 0;
     while (currentIds.includes(idToBeAdded)) {
       ++idToBeAdded;
     }
-    console.log(parentId + this.props.userId)
     axios.post("http://localhost:3001/api/data/putData", {
       id: idToBeAdded,
       name: name,
@@ -204,10 +199,14 @@ export class AddData extends React.Component {
     if(this.props.parent != null) {
       parentId = this.props.parent._id;
       if(this.props.parent.company) {
-        this.state.type = "project"
+        if(type !== "project"){
+          this.setState({ type: "project" })
+        }
         parentName = this.props.parent.company;
       } else {
-        this.state.type = "task"
+        if(type !== "task") {
+          this.setState({ type: "task" })
+        }
         parentName = this.props.parent.name;
       }
     }
