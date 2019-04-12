@@ -14,6 +14,7 @@ import {
   setInStorage
 } from '../../utilities/storage';
 import { AppNavbar } from '../AppNavbar.Component';
+import { IsLoading } from '../IsLoading.Component';
 
 
 export class UserLogin extends React.Component {
@@ -208,12 +209,7 @@ export class UserLogin extends React.Component {
     } = this.state;
 
     if (isLoading) {
-      return(
-        <div className="loading">
-          <FeatherIcon className="loadingIcon" icon="loader" size="54" />
-        
-        </div>
-        );
+      return <IsLoading />;
       
     }
     // Display before user logs in

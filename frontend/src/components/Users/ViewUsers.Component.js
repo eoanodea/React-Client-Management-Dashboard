@@ -5,6 +5,7 @@ import FeatherIcon from 'feather-icons-react';
 import {ViewData} from '../Data/ViewData.Component';
 import {AddData} from '../Data/AddData.Component';
 import { SignUp } from '../Login/SignUp.Component';
+import { IsLoading } from '../IsLoading.Component';
 
 
 export class ViewUsers extends React.Component {
@@ -262,7 +263,6 @@ export class ViewUsers extends React.Component {
       viewUser: true,
       userId: id
     })
-    console.log(this.state.userId);
   }
   viewUsers = () => {
     this.setState({
@@ -302,7 +302,7 @@ export class ViewUsers extends React.Component {
     if(isLoading) {
       return(
         <div>
-          <FeatherIcon icon="loading"/>
+          <IsLoading />
           {this.authorized()}
         </div>
       );
@@ -327,7 +327,7 @@ export class ViewUsers extends React.Component {
                 </thead>
                 <tbody>
                     {data.length <= 0
-                    ? "NO DB ENTRIES YET"
+                    ? <IsLoading />
                     : data.map(data => (
                         <tr key={data._id} className="fade-in" onClick={() => this.viewUser(data._id)}>
                           <td>{data.company}</td>
@@ -352,7 +352,7 @@ export class ViewUsers extends React.Component {
         <div>  
           {
             data.length <= 0
-            ? "NO DB ENTRIES YET"
+            ? <IsLoading />
             : data.filter(data => data._id === userId).map(data => (
               <div key={data._id} className="row">
               <Jumbotron className="viewUser col-md-9">
@@ -377,21 +377,19 @@ export class ViewUsers extends React.Component {
                       Back
                       </p>
                     </a>
-                : <> </>
+                : null
               }   
-
-
-              <div className="viewUserHeading">
-                  
-              <div id="viewBoxHeading" className="viewUserContactView">
-                <div
-                  onClick={() => this.editUser(data._id, 41)}
-                  className="viewUserContactViewLink"
-                >
-                  <h1 className="viewUserContactViewData">{data.company}</h1>
-                  <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+              <div className="viewUserHeading">                  
+                <span className="viewUserContactViewType">{data.access}</span>
+                <div id="viewBoxHeading" className="viewUserContactView">
+                  <div
+                    onClick={() => this.editUser(data._id, 41)}
+                    className="viewUserContactViewLink"
+                  >
+                    <h1 className="viewUserContactViewData">{data.company}</h1>
+                    <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+                  </div>
                 </div>
-              </div>
               <div id="editBoxHeading" className="viewUserContactEdit">
                   <Input 
                     type="text"
@@ -406,16 +404,13 @@ export class ViewUsers extends React.Component {
                     onClick={() => this.editUser(data._id, 42)} 
                   />
                 </div>
-                  
               </div>
               <div className="viewUserContact">
                   <h3>Contact</h3>
                   <div className="row">
                     <div className="col">
-
                       <div id="viewBox" className="viewUserContactView">
                           <div
-                            
                             onClick={() => this.editUser(data._id, 1)}
                             className="viewUserContactViewLink"
                           >
