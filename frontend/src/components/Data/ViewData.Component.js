@@ -330,6 +330,10 @@ export class ViewData extends React.Component {
 
   userDatas = (id, type) => {
     let { data, viewDatas, viewData, title, isLoading } = this.state;
+    let newType = type;
+    if(newType === "viewProjects") {
+      newType = "project"
+    } 
     if(isLoading !== false && title !== type) {
       this.setState({
         isLoading: false,
@@ -448,7 +452,16 @@ export class ViewData extends React.Component {
       viewDatas,
       projectId,
       alertMsg,
+      admin
     } = this.state;
+    let userType;
+    if(this.props.type === "user") {
+      userType = "project";
+    } else if (this.props.type === "project")  {
+      userType = "viewProjects";
+    } else {
+      userType = "task";
+    }
     if(isLoading) {
       return this.loading();
     }
@@ -457,8 +470,8 @@ export class ViewData extends React.Component {
         <div className="row">
           <div className="col-md-12">
             {
-              this.props.id !== "admin"
-              ? this.userDatas(this.props.id, this.props.type)
+              admin !== "admin"
+              ? this.userDatas(this.props.id, userType)
               : <DataTable
                   sortable={true}
                   columns={data}

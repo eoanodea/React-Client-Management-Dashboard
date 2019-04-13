@@ -19,7 +19,7 @@ export class DashboardSidebar extends React.Component {
                 },
                 {
                     id: 1,
-                    name: 'Clients',
+                    name: 'Users',
                     icon: 'users',
                     link: '/profile', 
                     access: 'admin'

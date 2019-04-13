@@ -15,7 +15,7 @@
     &Heading h2 {
         font-size: 1.5rem
     }
-    &Contact h3 {
+    &Contact h3, &Projects {
         margin: 20px 0;
         border-bottom: 1px solid #00000024;
         padding-bottom: 10px;
@@ -41,6 +41,7 @@
         padding: .375rem .75rem;
         border: 2px solid #e9ecef;
         transition: .2s ease;
+        width: max-content;
     }
     &ContactViewLinkEdit {
         display: none;
@@ -48,6 +49,7 @@
         width: 1.3rem;
         height: 1.3rem;
         color: grey;
+        margin: auto 0 auto 15px;
     }
     &ContactViewLink:hover > &ContactViewLinkEdit {
         display: block;

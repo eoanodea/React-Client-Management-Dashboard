@@ -64,7 +64,9 @@ export class Dashboard extends React.Component {
                                             <Route 
                                                 path="/task" 
                                                 component={(props) => 
-                                                    <ViewData />} 
+                                                    <ViewData {...props}
+                                                        id={this.state.userId} 
+                                                        type="task" />} 
                                             />
                                         </div>
                                     </main>

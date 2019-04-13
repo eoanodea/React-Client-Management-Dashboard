@@ -22,10 +22,8 @@ export class ViewUsers extends React.Component {
     updateToPasswordApply: null,
     updateToField: null,
     updateCurrent: null,
-    alertMsg: {
-      color: "danger",
-      message: null,
-    },
+    alertMsg: null,
+    alertMsgClr: "danger",
     project: null,
     intervalIsSet: false,
     idToDelete: null,
@@ -204,10 +202,10 @@ export class ViewUsers extends React.Component {
     updateCurrent,
     updateToField
     ) => {
-    const { alertMsg, isLoading } = this.state;
-    this.setState({
-      isLoading: true,
-    })
+    const { alertMsg, userId } = this.state;
+    // this.setState({
+    //   isLoading: true,
+    // })
     let objIdToUpdate = null;
     this.state.data.forEach(dat => {
       if (dat._id === idToUpdate) {
@@ -230,23 +228,20 @@ export class ViewUsers extends React.Component {
       if(alertMsg.message !== response.data) {
         alertMsg.message = response.data;
         this.setState({
-          alertMsg: {
-            message: response.data,
-            color: "success"
-          },
-          isLoading: false
+          alertMsg: response.data,
+          alertMsgClr: "success",
         });
       }
     })
     .catch(error => {
-      this.setState({
-        alertMsg: {
-          message: error.response,
-          color: "danger",
-          isLoading: false
-        }
-      })
-      console.log(error.response)
+      if(error.response) {
+        this.setState({
+          alertMsg: error.response,
+          alertMsgClr: "danger",
+          // isLoading: false,
+        })
+        console.log(error.response)
+      }
     });
   };
   viewUser(id) {
@@ -290,6 +285,7 @@ export class ViewUsers extends React.Component {
       viewUsers,
       userId,
       alertMsg,
+      alertMsgClr
     } = this.state;
 
     if(isLoading) {
@@ -348,12 +344,12 @@ export class ViewUsers extends React.Component {
             data.length <= 0 || data.length === undefined
             ? <IsLoading />
             : data.filter(data => data._id === userId).map(data => (
-              <Jumbotron className="row viewUser">
+              <Jumbotron className="row viewUser" key={data._id}>
                 <div className="col-md-9">
                 {
-                  (alertMsg.message) ? (
-                    <Alert color="danger" style={{ marginTop: '10px' }}>
-                      {alertMsg.message}
+                  (alertMsg) ? (
+                    <Alert color={alertMsgClr} style={{ marginTop: '10px' }}>
+                      {alertMsg}
                     </Alert>
                   ) : (null)
                 }       
@@ -386,21 +382,9 @@ export class ViewUsers extends React.Component {
                             placeholder={data.access}
                             options={['admin', 'client', 'testing']}
                             value={data.access}
-                            onChange={({option}) => this.setState({ updateToApply: (option), updateCurrent: data.access, updateToField: "access" })}
+                            onChange={({option}) => this.setState({ updateToApply: option, updateCurrent: data.access, updateToField: "access" })}
                             onClose={() => this.editUser(data._id, 32)}
                           />
-                          {/* <Input 
-                              type="text"
-                              onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.access, updateToField: "access" })}
-                              placeholder={data.access}
-                            >    
-                            </Input>
-                            <FeatherIcon 
-                              color="success" 
-                              className="viewUserContactCheck" 
-                              icon="check"
-                              onClick={() => this.editUser(data._id, 32)} 
-                            /> */}
                           </div>
                       </div>
                   : <span className="viewUserContactViewType">{data.access}</span>
@@ -433,7 +417,7 @@ export class ViewUsers extends React.Component {
                 <div className="viewUserContact">
                     <h3>Contact</h3>
                     <div className="row">
-                      <div className="col">
+                      <div className="col-md-3">
                         <label className="viewUserContactLabel">First Name:</label>
                         <div id="viewBox" className="viewUserContactView">
                             <div
@@ -459,33 +443,8 @@ export class ViewUsers extends React.Component {
                               onClick={() => this.editUser(data._id, 2)} 
                             />
                           </div>
-                        <label className="viewUserContactLabel">Email:</label>
-                        <div id="viewBox2" className="viewUserContactView">
-                          <div
-                            onClick={() => this.editUser(data._id, 21)}
-                            className="viewUserContactViewLink"
-                          >
-                            <p className="viewUserContactViewData">{data.email}</p>
-                            <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
-                          </div>
-                        </div>
-                          <div id="editBox2" className="viewUserContactEdit">
-                          <Input 
-                              type="text"
-                              onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.email, updateToField: "email" })}
-                              placeholder={data.email}
-                            >            
-                            </Input>
-                            <FeatherIcon 
-                              color="success" 
-                              className="viewUserContactCheck" 
-                              icon="check"
-                              onClick={() => this.editUser(data._id, 22)} 
-                            />
-                          </div>
-                          
-                        </div>
-                        <div className="col">
+                      </div>
+                      <div className="col-md-3">
                         <label className="viewUserContactLabel">Last Name:</label>
                         <div id="viewBox1" className="viewUserContactView">
                             <div
@@ -511,13 +470,40 @@ export class ViewUsers extends React.Component {
                             />
                           </div>
                       </div>
+                      <div className="col-md-3">
+                        <label className="viewUserContactLabel">Email:</label>
+                        <div id="viewBox2" className="viewUserContactView">
+                          <div
+                            onClick={() => this.editUser(data._id, 21)}
+                            className="viewUserContactViewLink"
+                          >
+                            <p className="viewUserContactViewData">{data.email}</p>
+                            <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+                          </div>
+                        </div>
+                        <div id="editBox2" className="viewUserContactEdit">
+                          <Input 
+                              type="text"
+                              onChange={e => this.setState({ updateToApply: e.target.value, updateCurrent: data.email, updateToField: "email" })}
+                              placeholder={data.email}
+                            >            
+                            </Input>
+                            <FeatherIcon 
+                              color="success" 
+                              className="viewUserContactCheck" 
+                              icon="check"
+                              onClick={() => this.editUser(data._id, 22)} 
+                            />
+                        </div>   
+                      </div>
                     </div>
                 </div>
               
                 {/* After user details are shown, show projects associated with that user */}
+                <h3 className="viewUserProjects">Projects</h3>
                 <div className="row">
                   <div className="col">
-                      {/* <ViewData id={data._id} type="project"/> */}
+                      <ViewData id={data._id} type="user"/>
                   </div>
                 </div>
               </div>
