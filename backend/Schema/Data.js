@@ -9,7 +9,7 @@ const DataSchema = new Schema(
     desc: String,
     parentId: String,
     parentName: String,
-    hours: String,
+    hours: Number,
     dueDate: Date,
     type: String,
     isComplete: Boolean

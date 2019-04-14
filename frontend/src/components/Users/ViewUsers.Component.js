@@ -503,7 +503,7 @@ export class ViewUsers extends React.Component {
                 <h3 className="viewUserProjects">Projects</h3>
                 <div className="row">
                   <div className="col">
-                      <ViewData id={data._id} type="user"/>
+                      <ViewData id={data._id} user="user"/>
                   </div>
                 </div>
               </div>

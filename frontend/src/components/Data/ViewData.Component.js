@@ -18,10 +18,8 @@ export class ViewData extends React.Component {
     parentId: null,
     hours: null,
     dueDate: null,
-    alertMsg: {
-      color: "danger",
-      message: null,
-    },
+    alertMsg: null,
+    alertMsgClr: "danger",
     intervalIsSet: false,
     idToDelete: null,
     idToUpdate: null,
@@ -261,25 +259,17 @@ export class ViewData extends React.Component {
     })   
     .then(response => { 
       console.log(response)
-      this.setState({ alertMsg: {message: response.data }});
-  
+      if(response) {
+      this.setState({ alertMsg: response.data, color: "success" });
+      }
+      console.log(response);
     })
     .catch(error => {
+      if(error) {
+        this.setState({ alertMsg: error.response, color: "danger" });
+        }
         console.log(error.response)
     });
-    if(this.state.alertMsg.success === "true") {
-      this.setState({
-        alertMsg: {color: "success"},
-        isLoading: false
-      })
-      console.log("true")
-    } else {
-      this.setState({
-        alertMsg: {color: "danger"},
-        isLoading: false
-      })
-      console.log("false")
-  }
   };
   viewData(id) {
     this.setState({
@@ -455,10 +445,10 @@ export class ViewData extends React.Component {
       admin
     } = this.state;
     let userType;
-    if(this.props.type === "user") {
+    if(this.props.user) {
       userType = "project";
     } else if (this.props.type === "project")  {
-      userType = "viewProjects";
+      userType = "project";
     } else {
       userType = "task";
     }
