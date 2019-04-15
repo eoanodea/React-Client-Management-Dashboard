@@ -4,6 +4,7 @@ import { Input, Alert, Spinner } from 'reactstrap';
 import AddData from './AddData.Component';
 import FeatherIcon from 'feather-icons-react';
 import { DataTable, Text, Box, Meter } from 'grommet';
+import { IsLoading } from '../IsLoading.Component';
 
 
 export class ViewData extends React.Component {
@@ -317,9 +318,12 @@ export class ViewData extends React.Component {
       return <FeatherIcon icon = "clipboard" />
     }
   }
+  handleClick = (id) => {
+    console.log('The link was clicked.');
+  }
 
   userDatas = (id, type) => {
-    let { data, viewDatas, viewData, title, isLoading } = this.state;
+    let { data, viewDatas, title, isLoading } = this.state;
     let newType = type;
     if(newType === "viewProjects") {
       newType = "project"
@@ -340,6 +344,7 @@ export class ViewData extends React.Component {
           ? <FeatherIcon icon="loading"/>
           : <DataTable
                 sortable={true}
+                primaryKey="_id"
                 columns={[
                   {
                     property: 'type',
@@ -347,11 +352,14 @@ export class ViewData extends React.Component {
                     header: <Text>Type</Text>,
                     render: datem => (
                       <Text>{this.icon(datem.type)}</Text>
-                    )
+                    ),
                   },
                   {
                     property: 'name',
-                    header: <Text>Name</Text>
+                    header: <Text>Name</Text>,
+                    render: datem => (
+                      <Text onClick={() => this.viewData(datem._id)}>{datem.name}</Text>
+                    ),
                   },
                   {
                     property: 'parentName',
@@ -382,46 +390,11 @@ export class ViewData extends React.Component {
                   }
                 ]}
                 data={data}
-                // data={data}
               />
             }
           </div>
       );  
-      }
-      if(viewData === true) {
-        return(
-        <div>  
-          {
-            data.length <= 0
-            ? <FeatherIcon icon="loading"/>
-            : data.filter(data => data.id === id).map(data => (
-              <div key={data.id} className="viewData">
-              <a
-              onClick={this.viewDatas}
-              className="viewDataBackLink"
-              >
-              <p> 
-                <FeatherIcon 
-                  icon="arrow-left" 
-                  className="viewDataBackIcon"
-                />
-              Back
-              </p>
-              </a>
-              <div className="viewDataHeading">
-                  <p>{data.id}</p>
-                  <h2>{data.name}</h2>
-              </div>
-                  {data.desc}
-                  {data.type}
-                  {data.hours}
-                  {data.dueDate}
-              </div>
-            ))
-          }
-        </div>
-        );
-      }
+    }
   }
 
   addData = (data) => {
@@ -442,12 +415,13 @@ export class ViewData extends React.Component {
       viewDatas,
       projectId,
       alertMsg,
+      alertMsgClr,
       admin
     } = this.state;
     let userType;
     if(this.props.user) {
       userType = "project";
-    } else if (this.props.type === "project")  {
+    } else if (this.props.project)  {
       userType = "project";
     } else {
       userType = "task";
@@ -477,13 +451,13 @@ export class ViewData extends React.Component {
         <div>  
           {
             data.length <= 0
-            ? "NO DB ENTRIES YET"
-            : data.filter(data => data.id === projectId).map(data => (
+            ? <IsLoading />
+            : data.filter(data => data._id === projectId).map(data => (
               <div key={data.id} className="viewUser">
               {
-                (alertMsg.message) ? (
-                  <Alert color="danger" style={{ marginTop: '10px' }}>
-                    {alertMsg.message}
+                (alertMsg) ? (
+                  <Alert color={alertMsgClr} style={{ marginTop: '10px' }}>
+                    {alertMsg}
                   </Alert>
                 ) : (null)
               }              
@@ -505,7 +479,6 @@ export class ViewData extends React.Component {
                     
                   <div id="viewBoxHeading" className="viewUserContactView">
                     <div
-                      
                       onClick={() => this.editUser(data.id, 41)}
                       className="viewUserContactViewLink"
                     >

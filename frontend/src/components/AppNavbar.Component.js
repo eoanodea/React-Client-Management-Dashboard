@@ -7,18 +7,20 @@ import {
     Nav,
     NavItem,
     NavLink,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem
 } from 'reactstrap';
+import FeatherIcon from 'feather-icons-react';
+import { Box, Clock } from 'grommet';
 
 
 export class AppNavbar extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            iconName: 'Client Management',
-        }
-    }
+
     state = {
-        isOpen: false
+        isOpen: false,
+        iconName: 'Client Management'
     }
     toggle = () => {
         this.setState({
@@ -38,20 +40,28 @@ export class AppNavbar extends React.Component {
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
-                            <NavItem>
-                                <NavLink to="/profile">
+                            <UncontrolledDropdown nav inNavbar>
+                                <DropdownToggle nav caret>
                                     Hi, {userFirstName}
-                                </NavLink>
-                            </NavItem>
+                                </DropdownToggle>
+                                <DropdownMenu right>
+                                    <DropdownItem>
+                                    <FeatherIcon icon="users" /> Profile
+                                    </DropdownItem>
+                                    <DropdownItem>
+                                        <FeatherIcon icon="log-out" /> Logout
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </UncontrolledDropdown>
                             <NavItem className="d-none d-sm-block">
-                                <NavLink>
-                                    <div className="divider"></div>
-                                </NavLink>
+                                <NavLink divider />
+                                    {/* <div className="divider"></div>
+                                </NavLink> */}
                             </NavItem>
                             <NavItem>
-                                <NavLink>
-                                {/* <UserLogout /> */}
-                                </NavLink>
+                            <Box round='large' background='#353A3F' pad='small'>
+                                <Clock type="digital" className="appNavBarClock" />
+                            </Box>
                             </NavItem>
                         </Nav>
                     </Collapse>

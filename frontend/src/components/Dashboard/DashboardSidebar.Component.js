@@ -15,7 +15,7 @@ export class DashboardSidebar extends React.Component {
                     name: 'Dashboard',
                     icon: 'home',
                     link: '/', 
-                    access: 'all'
+                    access: 'both'
                 },
                 {
                     id: 1,
@@ -100,7 +100,7 @@ export class DashboardSidebar extends React.Component {
                         { 
                             navigation.length <= 0
                             ? "Nothing in navigation"
-                            : navigation.filter(navigation => navigation.access === admin).map(navigation => (
+                            : navigation.filter(navigation => navigation.access === admin || navigation.access === "both").map(navigation => (
                                 <li key={navigation.id} className="nav-item fade-in">
                                 <Link
                                     to={navigation.link}
