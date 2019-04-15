@@ -334,14 +334,17 @@ export class ViewData extends React.Component {
         title: type
       })
     }
-
-    data = data.filter(data => data.type === type);
+    if(id) {
+      data = data.filter(data => data.type === type && data.parentId === id);
+    } else {
+      data = data.filter(data => data.type === type);
+    }
     if(viewDatas === true){
       return(
         <div>
         {
           data.length <= 0
-          ? <FeatherIcon icon="loading"/>
+          ? <IsLoading />
           : <DataTable
                 sortable={true}
                 primaryKey="_id"
@@ -427,7 +430,7 @@ export class ViewData extends React.Component {
       userType = "task";
     }
     if(isLoading) {
-      return this.loading();
+      return <isLoading />
     }
     if(!isLoading && viewDatas) {
       return (

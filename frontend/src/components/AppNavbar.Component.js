@@ -51,6 +51,9 @@ export class AppNavbar extends React.Component {
                                     <DropdownItem>
                                         <FeatherIcon icon="log-out" /> Logout
                                     </DropdownItem>
+                                    <DropdownItem>
+                                        <FeatherIcon icon="log-out" /> Logout
+                                    </DropdownItem>
                                 </DropdownMenu>
                             </UncontrolledDropdown>
                             <NavItem className="d-none d-sm-block">

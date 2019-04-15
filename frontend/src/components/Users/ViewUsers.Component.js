@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Input, Button, Alert, Jumbotron } from 'reactstrap';
+import { Input, Button, Alert, Jumbotron, Table } from 'reactstrap';
 import { Select } from 'grommet';
 import FeatherIcon from 'feather-icons-react';
 import {ViewData} from '../Data/ViewData.Component';
@@ -305,13 +305,12 @@ export class ViewUsers extends React.Component {
           <div className="col-md-9">
             <h2>User</h2>
             <div>
-              <table className="table table-striped table-sm">
+              <Table className="table table-striped table-sm">
                 <thead>
                     <tr>
                       <th>Company</th>
                       <th>Contact</th>
-                      <th>Contact Email</th>
-                      <th>Privileges</th>
+                      <th>Type</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -320,14 +319,13 @@ export class ViewUsers extends React.Component {
                     : data.map(data => (
                         <tr key={data._id} className="fade-in" onClick={() => this.viewUser(data._id)}>
                           <td>{data.company}</td>
-                          <td>{data.firstName}</td>
-                          <td>{data.lastName}</td>
-                          <td>{data.email}</td>
+                          <td>{data.firstName} {data.lastName}</td>
+
                           <td>{data.access}</td>
                         </tr>
                       ))}
                 </tbody>
-              </table>
+              </Table>
             </div>
           </div>
           <div className="col-md-3">
