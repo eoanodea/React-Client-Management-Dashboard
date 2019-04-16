@@ -48,24 +48,13 @@ export class AppNavbar extends React.Component {
                                     <DropdownItem>
                                     <FeatherIcon icon="users" /> Profile
                                     </DropdownItem>
-                                    <DropdownItem>
-                                        <FeatherIcon icon="log-out" /> Logout
-                                    </DropdownItem>
+                                    <DropdownItem divider />
                                     <DropdownItem>
                                         <FeatherIcon icon="log-out" /> Logout
                                     </DropdownItem>
                                 </DropdownMenu>
                             </UncontrolledDropdown>
-                            <NavItem className="d-none d-sm-block">
-                                <NavLink divider />
-                                    {/* <div className="divider"></div>
-                                </NavLink> */}
-                            </NavItem>
-                            <NavItem>
-                            <Box round='large' background='#353A3F' pad='small'>
-                                <Clock type="digital" className="appNavBarClock" />
-                            </Box>
-                            </NavItem>
+
                         </Nav>
                     </Collapse>
                 </Navbar>

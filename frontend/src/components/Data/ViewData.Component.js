@@ -302,13 +302,8 @@ export class ViewData extends React.Component {
     }
  }
 
-  loading() {
-    return(
-      <div className="loading">
-        <Spinner color="primary" />
-        {this.authorized()}
-      </div>
-    );
+ isLoading() {
+    return 
   }
   icon(type) {
 
@@ -344,7 +339,7 @@ export class ViewData extends React.Component {
         <div>
         {
           data.length <= 0
-          ? <IsLoading />
+          ? this.isLoading(data.type)
           : <DataTable
                 sortable={true}
                 primaryKey="_id"

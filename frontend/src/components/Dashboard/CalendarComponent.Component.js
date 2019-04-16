@@ -32,12 +32,8 @@ export class CalendarComponent extends React.Component {
         let dataDates = []
         this.state.data.forEach(dat => {
          if(typeof(dat.dueDate) !== undefined && dat.dueDate !== null) {
-          // if(typeof(dat.dueDue) !== undefined || dat.dueDate != null){
             dataDates = dataDates.concat(dat.dueDate) 
-          // } else {
          }
-          //   console.log("undefined date on" + dat.name)
-          // }
         });
 
         this.setState({ dataDates: dataDates })
