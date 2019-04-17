@@ -231,22 +231,34 @@ export class ViewData extends React.Component {
 
   // our update method that uses our backend api
   // to overwrite existing data base information
+  // handleClick(event) {  
+  //   var clickedId = event.target.id;
+  //   console.log(clickedId);
+  //   alert("It works! You clicked " + clickedId)
+  // }
   isComplete = (checked, id) => {
-    const updateToApply = checked,
-          idToUpdate = id,
-          updateCurrent = !checked,
-          updateToField = "isComplete";
-    this.updateDB(
-      idToUpdate, 
-      updateToApply,
-      updateCurrent,
-      updateToField
-    );
+
+    const idToUpdate = id, updateToField = "isComplete", updateToApply = checked;
+    // if(checked === "on") {
+    //   updateToApply = true;
+    // } else {
+    //   updateToApply = false;
+    // }
+    const  updateCurrent = !updateToApply;
     this.state.data.forEach(dat => {
-      if(dat.id === id && dat.isComplete !== checked) {
-        dat.isComplete = checked;
+      if(dat._id === idToUpdate && dat.isComplete !== checked) {
+        dat.isComplete = updateToApply;
+        this.updateDB(
+          idToUpdate, 
+          updateToApply,
+          updateCurrent,
+          updateToField
+        );
+      } else {
+        console.log("Error, cannot resolve data ID")
       }
     });
+    
   }
 
   updateDB = (
@@ -261,10 +273,11 @@ export class ViewData extends React.Component {
     })
     let objIdToUpdate = null;
     this.state.data.forEach(dat => {
-      if (dat.id === idToUpdate) {
+      if (dat._id === idToUpdate) {
         objIdToUpdate = dat.id;
       }
     });
+    console.log(objIdToUpdate);
 
     console.log(objIdToUpdate, updateCurrent, updateToApply, updateToField)
     axios.post("http://localhost:3001/api/data/updateData", {
@@ -274,7 +287,7 @@ export class ViewData extends React.Component {
       id: objIdToUpdate,
       current: updateCurrent,
       update: updateToApply,
-      field: this.state.updateToField,
+      field: updateToField,
     })   
     .then(response => { 
       console.log(response)
@@ -303,11 +316,20 @@ export class ViewData extends React.Component {
     
   }
   viewDatas = () => {
+    console.log("yeh?!");
     this.setState({
       isLoading: false,
       viewData: false,
       viewDatas: true,
       projectId: null
+    })
+  }
+  calculateData = (id, type) => {
+    let dataArray = [];
+    this.state.data.forEach(dat => {
+      if(dat.parentName === id ) {
+        dataArray = dataArray.concat(dat)
+      } 
     })
   }
 
@@ -334,17 +356,10 @@ export class ViewData extends React.Component {
       return <FeatherIcon icon = "clipboard" />
     }
   }
-  handleClick = (id) => {
-    console.log('The link was clicked.');
-  }
-
   userDatas = (id, type) => {
-    const checked = this.state;
+
     let { data, viewDatas, title, isLoading } = this.state;
-    let newType = type;
-    if(newType === "viewProjects") {
-      newType = "project"
-    } 
+    
     if(isLoading !== false && title !== type) {
       this.setState({
         isLoading: false,
@@ -398,19 +413,19 @@ export class ViewData extends React.Component {
                   {
                     property: 'hours',
                     header: 'Complete',
-                    render: datam => (
-                      datam.type === "project"
+                    render: datem => (
+                      datem.type === "project"
                        ? <Box pad={{ vertical: 'xsmall' }}>
                           <Meter
-                            values={[{ value: datam.hours }]}
+                            values={this.calculateData(datem._id)}
                             thickness="small"
                             size="small"
                           />
                         </Box>
                         : <CheckBox
-                            checked={datam.isComplete}
+                            checked={datem.isComplete}
                             label='Oh yeh?'
-                            onChange={event => this.isComplete(event, datam._id)}
+                            onChange={(event) => this.isComplete(event.target.checked, datem._id)}
                           />
                     ),
                   }
@@ -479,7 +494,7 @@ export class ViewData extends React.Component {
             data.length <= 0
             ? <IsLoading />
             : data.filter(data => data._id === projectId).map(data => (
-              <div key={data.id} className="viewUser">
+              <div key={data._id} className="viewUser">
               {
                 (alertMsg) ? (
                   <Alert color={alertMsgClr} style={{ marginTop: '10px' }}>
@@ -505,7 +520,7 @@ export class ViewData extends React.Component {
                   <div className="viewUserHeading">
                   <div id="viewBoxHeading" className="viewUserContactView">
                     <div
-                      onClick={() => this.editUser(data.id, 41)}
+                      onClick={() => this.editUser(data._id, 41)}
                       className="viewUserContactViewLink"
                     >
                       <h2 className="viewUserContactViewData">{data.name}</h2>
@@ -523,7 +538,7 @@ export class ViewData extends React.Component {
                       color="success" 
                       className="viewUserContactCheck" 
                       icon="check"
-                      onClick={() => this.editUser(data.id, 42)} 
+                      onClick={() => this.editUser(data._id, 42)} 
                     />
                   </div>
                     
@@ -541,7 +556,7 @@ export class ViewData extends React.Component {
                       <div id="viewBox" className="viewUserContactView">
                           <div
                             
-                            onClick={() => this.editUser(data.id, 1)}
+                            onClick={() => this.editUser(data._id, 1)}
                             className="viewUserContactViewLink"
                           >
                             <p className="viewUserContactViewData">{data.desc}</p>
@@ -559,14 +574,14 @@ export class ViewData extends React.Component {
                             color="success" 
                             className="viewUserContactCheck" 
                             icon="check"
-                            onClick={() => this.editUser(data.id, 2)} 
+                            onClick={() => this.editUser(data._id, 2)} 
                           />
                         </div>
                         
                         <div id="viewBox1" className="viewUserContactView">
                         <div
                           
-                          onClick={() => this.editUser(data.id, 11)}
+                          onClick={() => this.editUser(data._id, 11)}
                           className="viewUserContactViewLink"
                         >3
                           <p className="viewUserContactViewData">{data.parentId}</p>
@@ -584,7 +599,7 @@ export class ViewData extends React.Component {
                             color="success" 
                             className="viewUserContactCheck" 
                             icon="check"
-                            onClick={() => this.editUser(data.id, 12)} 
+                            onClick={() => this.editUser(data._id, 12)} 
                           />
                         </div>
                         
@@ -593,7 +608,7 @@ export class ViewData extends React.Component {
                         <div id="viewBox2" className="viewUserContactView">
                         <div
                           
-                          onClick={() => this.editUser(data.id, 21)}
+                          onClick={() => this.editUser(data._id, 21)}
                           className="viewUserContactViewLink"
                         >
                           <p className="viewUserContactViewData">{data.hours}</p>
@@ -611,14 +626,14 @@ export class ViewData extends React.Component {
                             color="success" 
                             className="viewUserContactCheck" 
                             icon="check"
-                            onClick={() => this.editUser(data.id, 22)} 
+                            onClick={() => this.editUser(data._id, 22)} 
                           />
                         </div>
 
                         <div id="viewBox3" className="viewUserContactView">
                         <div
                           
-                          onClick={() => this.editUser(data.id, 31)}
+                          onClick={() => this.editUser(data._id, 31)}
                           className="viewUserContactViewLink"
                         >
                           <p className="viewUserContactViewData">{data.dueDate}</p>
@@ -636,7 +651,7 @@ export class ViewData extends React.Component {
                             color="success" 
                             className="viewUserContactCheck" 
                             icon="check"
-                            onClick={() => this.editUser(data.id, 32)} 
+                            onClick={() => this.editUser(data._id, 32)} 
                           />
 
                         </div>
