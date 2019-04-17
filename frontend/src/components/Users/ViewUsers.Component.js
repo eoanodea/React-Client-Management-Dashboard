@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Input, Button, Alert, Jumbotron, Table } from 'reactstrap';
-import { Select } from 'grommet';
+import { Select, DataTable, Text, Box, Meter } from 'grommet';
 import FeatherIcon from 'feather-icons-react';
 import {ViewData} from '../Data/ViewData.Component';
 import {AddData} from '../Data/AddData.Component';
@@ -301,32 +301,72 @@ export class ViewUsers extends React.Component {
 
     if(!isLoading && viewUsers) {
       return (
-        <div className="row">
-          <div className="col-md-9">
+        <div className="row justify-content-between">
+          <div className="col-md-8">
             <h2>User</h2>
-            <div>
-              <Table className="table table-striped table-sm">
-                <thead>
-                    <tr>
-                      <th>Company</th>
-                      <th>Contact</th>
-                      <th>Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.length <= 0
-                    ? <IsLoading />
-                    : data.map(data => (
-                        <tr key={data._id} className="fade-in" onClick={() => this.viewUser(data._id)}>
-                          <td>{data.company}</td>
-                          <td>{data.firstName} {data.lastName}</td>
+            {
+              data.length <= 0
+                ? <IsLoading />
+                : <DataTable
+                    sortable={false}
+                    primaryKey="_id"
+                    columns={[
+                      {
+                        // property: 'type',
+                        align: "center",
+                        header: <Text>Type</Text>,
+                        render: datem => (
+                          <FeatherIcon icon="users"></FeatherIcon>
+                        ),
+                      },
+                      {
+                        property: 'company',
+                        header: <Text>Company</Text>,
+                        render: datem => (
+                          <Text onClick={() => this.viewUser(datem._id)}>{datem.company}</Text>
+                        ),
+                      },
+                      {
+                        property: 'firstName',
+                        header: <Text>Contact</Text>,
+                        render: datem => (
+                          <Text>{datem.firstName + " " + datem.lastName}</Text>
+                        )
+                      },
+                      {
+                        property: 'access',
+                        header: <Text>Type</Text>,
+                      },
+                      // {
+                      //   property: 'hours',
+                      //   header: 'Complete',
+                      //   render: datam => (
+                      //     <Box pad={{ vertical: 'xsmall' }}>
+                      //       <Meter
+                      //         values={[{ value: datam.hours }]}
+                      //         thickness="small"
+                      //         size="small"
+                      //       />
+                      //     </Box>
+                      //   ),
+                      // }
+                    ]}
+                    data={data}
+                  />
+            }
+                    
+                    
+                    
+                    
+                    {/* // : data.map(data => (
+                        // <tr key={data._id} className="fade-in" onClick={() => this.viewUser(data._id)}>
+                        //   <td>{data.company}</td>
+                        //   <td>{data.firstName} {data.lastName}</td>
 
-                          <td>{data.access}</td>
-                        </tr>
-                      ))}
-                </tbody>
-              </Table>
-            </div>
+                        //   <td>{data.access}</td>
+                        // </tr>
+                      // ))} */}
+
           </div>
           <div className="col-md-3">
               <SignUp />

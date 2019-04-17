@@ -623,13 +623,6 @@ button.StyledButton-sc-323bzc-0.lnKzGb:focus {
   margin: 15px 0;
 }
 
-.divider {
-  margin: 3px;
-  background-color: #fff;
-  width: 1px;
-  height: 20px;
-}
-
 .isLoadingComponent {
   position: absolute;
   top: 50%;

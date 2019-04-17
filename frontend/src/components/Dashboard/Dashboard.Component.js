@@ -50,7 +50,7 @@ export class Dashboard extends React.Component {
                             <Grommet>
                                 <div className="row">
                                     <DashboardSidebar />
-                                    <main className="col-md-9 ml-sm-auto col-lg-10 px-4">
+                                    <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
                                         <div>
                                             <Route exact path="/" component={DashboardLanding} />
                                             <Route path="/profile" component={ViewUsers} />
