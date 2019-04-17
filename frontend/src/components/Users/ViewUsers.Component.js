@@ -305,54 +305,82 @@ export class ViewUsers extends React.Component {
           <div className="col-md-8">
             <h2>User</h2>
             {
-              data.length <= 0
+              data.length <= 0 || data.length == undefined
                 ? <IsLoading />
                 : <DataTable
-                    sortable={false}
-                    primaryKey="_id"
-                    columns={[
-                      {
-                        // property: 'type',
-                        align: "center",
-                        header: <Text>Type</Text>,
-                        render: datem => (
-                          <FeatherIcon icon="users"></FeatherIcon>
-                        ),
-                      },
-                      {
-                        property: 'company',
-                        header: <Text>Company</Text>,
-                        render: datem => (
-                          <Text onClick={() => this.viewUser(datem._id)}>{datem.company}</Text>
-                        ),
-                      },
-                      {
-                        property: 'firstName',
-                        header: <Text>Contact</Text>,
-                        render: datem => (
-                          <Text>{datem.firstName + " " + datem.lastName}</Text>
-                        )
-                      },
-                      {
-                        property: 'access',
-                        header: <Text>Type</Text>,
-                      },
-                      // {
-                      //   property: 'hours',
-                      //   header: 'Complete',
-                      //   render: datam => (
-                      //     <Box pad={{ vertical: 'xsmall' }}>
-                      //       <Meter
-                      //         values={[{ value: datam.hours }]}
-                      //         thickness="small"
-                      //         size="small"
-                      //       />
-                      //     </Box>
-                      //   ),
-                      // }
-                    ]}
-                    data={data}
-                  />
+                columns={[
+                  {
+                    property: 'name',
+                    header: <Text>Name</Text>,
+                    primary: true,
+                  },
+                  {
+                    property: 'percent',
+                    header: 'Complete',
+                    render: datum => (
+                      <Box pad={{ vertical: 'xsmall' }}>
+                        <Meter
+                          values={[{ value: datum.percent }]}
+                          thickness="small"
+                          size="small"
+                          style={{transition: ".2s ease"}}
+                        />
+                      </Box>
+                    ),
+                  },
+                ]}
+                data={[
+                  { name: 'Bryan', percent: 30 },
+                  { name: 'Chris', percent: 40 },
+                  { name: 'Eric', percent: 80 },
+                ]}
+              />
+                // <DataTable
+                //     sortable={false}
+                //     primaryKey="_id"
+                //     columns={[
+                //       {
+                //         // property: 'type',
+                //         align: "center",
+                //         header: <Text>Type</Text>,
+                //         render: datem => (
+                //           <FeatherIcon icon="users"></FeatherIcon>
+                //         ),
+                //       },
+                //       {
+                //         property: 'company',
+                //         header: <Text>Company</Text>,
+                //         render: datem => (
+                //           <Text onClick={() => this.viewUser(datem._id)}>{datem.company}</Text>
+                //         ),
+                //       },
+                //       {
+                //         property: 'firstName',
+                //         header: <Text>Contact</Text>,
+                //         render: datem => (
+                //           <Text>{datem.firstName + " " + datem.lastName}</Text>
+                //         )
+                //       },
+                //       {
+                //         property: 'access',
+                //         header: <Text>Type</Text>,
+                //       },
+                //       // {
+                //       //   property: 'hours',
+                //       //   header: 'Complete',
+                //       //   render: datam => (
+                //       //     <Box pad={{ vertical: 'xsmall' }}>
+                //       //       <Meter
+                //       //         values={[{ value: datam.hours }]}
+                //       //         thickness="small"
+                //       //         size="small"
+                //       //       />
+                //       //     </Box>
+                //       //   ),
+                //       // }
+                //     ]}
+                //     data={data}
+                //   />
             }
                     
                     
