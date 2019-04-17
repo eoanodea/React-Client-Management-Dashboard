@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Input, Alert, Spinner } from 'reactstrap';
 import AddData from './AddData.Component';
 import FeatherIcon from 'feather-icons-react';
-import { DataTable, Text, Box, Meter } from 'grommet';
+import { DataTable, Text, Box, Meter, CheckBox } from 'grommet';
 import { IsLoading } from '../IsLoading.Component';
 
 
@@ -61,7 +61,7 @@ export class ViewData extends React.Component {
   // our first get method that uses our backend api to 
   // fetch data from our data base
   getDataFromDb = () => {
-    fetch("http://localhost:3001/api/getData")
+    fetch("http://localhost:3001/api/data/getData")
       .then(data => data.json())
       .then(res => this.setState({ data: res.data }));
 
@@ -231,7 +231,23 @@ export class ViewData extends React.Component {
 
   // our update method that uses our backend api
   // to overwrite existing data base information
-
+  isComplete = (checked, id) => {
+    const updateToApply = checked,
+          idToUpdate = id,
+          updateCurrent = !checked,
+          updateToField = "isComplete";
+    this.updateDB(
+      idToUpdate, 
+      updateToApply,
+      updateCurrent,
+      updateToField
+    );
+    this.state.data.forEach(dat => {
+      if(dat.id === id && dat.isComplete !== checked) {
+        dat.isComplete = checked;
+      }
+    });
+  }
 
   updateDB = (
     idToUpdate, 
@@ -241,6 +257,7 @@ export class ViewData extends React.Component {
     ) => {
     this.setState({
       isLoading: true,
+      updateToField: updateToField
     })
     let objIdToUpdate = null;
     this.state.data.forEach(dat => {
@@ -257,7 +274,7 @@ export class ViewData extends React.Component {
       id: objIdToUpdate,
       current: updateCurrent,
       update: updateToApply,
-      field: updateToField,
+      field: this.state.updateToField,
     })   
     .then(response => { 
       console.log(response)
@@ -272,6 +289,9 @@ export class ViewData extends React.Component {
         }
         console.log(error.response)
     });
+    this.setState({
+      isLoading: false,
+    })
   };
   viewData(id) {
     this.setState({
@@ -319,6 +339,7 @@ export class ViewData extends React.Component {
   }
 
   userDatas = (id, type) => {
+    const checked = this.state;
     let { data, viewDatas, title, isLoading } = this.state;
     let newType = type;
     if(newType === "viewProjects") {
@@ -378,13 +399,19 @@ export class ViewData extends React.Component {
                     property: 'hours',
                     header: 'Complete',
                     render: datam => (
-                      <Box pad={{ vertical: 'xsmall' }}>
-                        <Meter
-                          values={[{ value: datam.hours }]}
-                          thickness="small"
-                          size="small"
-                        />
-                      </Box>
+                      datam.type === "project"
+                       ? <Box pad={{ vertical: 'xsmall' }}>
+                          <Meter
+                            values={[{ value: datam.hours }]}
+                            thickness="small"
+                            size="small"
+                          />
+                        </Box>
+                        : <CheckBox
+                            checked={datam.isComplete}
+                            label='Oh yeh?'
+                            onChange={event => this.isComplete(event, datam._id)}
+                          />
                     ),
                   }
                 ]}
@@ -426,7 +453,7 @@ export class ViewData extends React.Component {
       userType = "task";
     }
     if(isLoading) {
-      return <isLoading />
+      return <IsLoading />
     }
     if(!isLoading && viewDatas) {
       return (
@@ -474,8 +501,8 @@ export class ViewData extends React.Component {
               </a>
               <div className="row">
                 <div className="col">
+                  
                   <div className="viewUserHeading">
-                    
                   <div id="viewBoxHeading" className="viewUserContactView">
                     <div
                       onClick={() => this.editUser(data.id, 41)}

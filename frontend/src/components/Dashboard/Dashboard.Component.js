@@ -51,7 +51,7 @@ export class Dashboard extends React.Component {
                                 <div className="row">
                                     <DashboardSidebar />
                                     <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
-                                        <div>
+                                        <div className="container-fluid">
                                             <Route exact path="/" component={DashboardLanding} />
                                             <Route path="/profile" component={ViewUsers} />
                                             <Route 

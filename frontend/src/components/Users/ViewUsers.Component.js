@@ -301,104 +301,50 @@ export class ViewUsers extends React.Component {
 
     if(!isLoading && viewUsers) {
       return (
-        <div className="row justify-content-between">
-          <div className="col-md-8">
-            <h2>User</h2>
+        <div>
+        <h2>All Users</h2>
+         <div className="row justify-content-between">
+
+          {/* <div className=""> */}
             {
               data.length <= 0 || data.length == undefined
                 ? <IsLoading />
                 : <DataTable
-                columns={[
-                  {
-                    property: 'name',
-                    header: <Text>Name</Text>,
-                    primary: true,
-                  },
-                  {
-                    property: 'percent',
-                    header: 'Complete',
-                    render: datum => (
-                      <Box pad={{ vertical: 'xsmall' }}>
-                        <Meter
-                          values={[{ value: datum.percent }]}
-                          thickness="small"
-                          size="small"
-                          style={{transition: ".2s ease"}}
-                        />
-                      </Box>
-                    ),
-                  },
-                ]}
-                data={[
-                  { name: 'Bryan', percent: 30 },
-                  { name: 'Chris', percent: 40 },
-                  { name: 'Eric', percent: 80 },
-                ]}
-              />
-                // <DataTable
-                //     sortable={false}
-                //     primaryKey="_id"
-                //     columns={[
-                //       {
-                //         // property: 'type',
-                //         align: "center",
-                //         header: <Text>Type</Text>,
-                //         render: datem => (
-                //           <FeatherIcon icon="users"></FeatherIcon>
-                //         ),
-                //       },
-                //       {
-                //         property: 'company',
-                //         header: <Text>Company</Text>,
-                //         render: datem => (
-                //           <Text onClick={() => this.viewUser(datem._id)}>{datem.company}</Text>
-                //         ),
-                //       },
-                //       {
-                //         property: 'firstName',
-                //         header: <Text>Contact</Text>,
-                //         render: datem => (
-                //           <Text>{datem.firstName + " " + datem.lastName}</Text>
-                //         )
-                //       },
-                //       {
-                //         property: 'access',
-                //         header: <Text>Type</Text>,
-                //       },
-                //       // {
-                //       //   property: 'hours',
-                //       //   header: 'Complete',
-                //       //   render: datam => (
-                //       //     <Box pad={{ vertical: 'xsmall' }}>
-                //       //       <Meter
-                //       //         values={[{ value: datam.hours }]}
-                //       //         thickness="small"
-                //       //         size="small"
-                //       //       />
-                //       //     </Box>
-                //       //   ),
-                //       // }
-                //     ]}
-                //     data={data}
-                //   />
-            }
-                    
-                    
-                    
-                    
-                    {/* // : data.map(data => (
-                        // <tr key={data._id} className="fade-in" onClick={() => this.viewUser(data._id)}>
-                        //   <td>{data.company}</td>
-                        //   <td>{data.firstName} {data.lastName}</td>
-
-                        //   <td>{data.access}</td>
-                        // </tr>
-                      // ))} */}
-
-          </div>
+                    className="col-md-8"
+                    sortable={false}
+                    primaryKey="_id"
+                    columns={[
+                      {
+                        align: "center",
+                        header: <Text>Type</Text>,
+                        render:  datem => (
+                          <FeatherIcon icon="users" />
+                        ),
+                      },
+                      {
+                        property: 'company',
+                        header: <Text>Company</Text>,
+                      },
+                      {
+                        property: 'firstName',
+                        header: <Text>Contact</Text>,
+                        render: datem => (
+                          <Text onClick={this.viewUser(datem._id)}>{datem.firstName + " " + datem.lastName}</Text>
+                        )
+                      },
+                      {
+                        property: 'access',
+                        header: <Text>Type</Text>,
+                      },
+                    ]}
+                    data={data}
+                  />
+              }
+          {/* </div> */}
           <div className="col-md-3">
               <SignUp />
           </div>
+      </div>
       </div>
       );
     }
