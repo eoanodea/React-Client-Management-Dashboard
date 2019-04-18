@@ -47,7 +47,7 @@ export class Dashboard extends React.Component {
                 <div className="row">
                     <div className="container-fluid">
                         <BrowserRouter>
-                            <Grommet>
+                            <Grommet theme={{ global: { colors: { brand: '#C03068' } } }}>
                                 <div className="row">
                                     <DashboardSidebar />
                                     <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">

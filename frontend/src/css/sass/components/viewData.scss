@@ -12,6 +12,9 @@
     }
 }
 .viewUser {
+    &DataTable tr td {
+        vertical-align: middle;
+    }
     &Heading h2 {
         font-size: 1.5rem
     }
@@ -24,6 +27,30 @@
     &Button .btn {
         width: 80%;
         margin: 10px auto;
+    }
+    &DataButton {
+        transition: .5s;
+    }
+    &DataButton:hover {
+        text-decoration: none!important;
+    }
+    &DataLinkIcon {
+        opacity: 0;
+        transition: .5s cubic-bezier(0.91, 0.02, 0.25, 1);
+        padding-left: 15px;
+        margin-left: 15px;
+    }
+    &BackIcon {
+        padding: 0 15px 5px 0;
+        margin: 0 15px 0 0;
+    }
+    &BackLink {
+        text-transform: uppercase;
+        padding-top: 5px;
+    }
+    &DataButton:hover > &DataLink &DataLinkIcon {
+        opacity: 1;
+        padding: 0;
     }
     &ContactViewType {
         text-transform: uppercase;

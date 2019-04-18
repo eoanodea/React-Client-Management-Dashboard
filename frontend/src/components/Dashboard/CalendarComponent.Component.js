@@ -73,7 +73,7 @@ export class CalendarComponent extends React.Component {
           {
             !dataDates
             ? <div className="calendarOverlay"><Spinner color="primary" className="calendarLoading"/></div>
-            :   <Grommet className="row clearfix justify-content-between"> 
+            :   <div className="row clearfix justify-content-between"> 
             <div className="col-md-4 calendar">
             <h1>{date}</h1>
               <Calendar
@@ -130,7 +130,7 @@ export class CalendarComponent extends React.Component {
               />
             // </div>
               }
-            </Grommet>
+            </div>
           }
           
 

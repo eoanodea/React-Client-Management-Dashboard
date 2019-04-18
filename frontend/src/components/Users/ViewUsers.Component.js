@@ -40,7 +40,7 @@ export class ViewUsers extends React.Component {
   // changed and implement those changes into our UI
   componentDidMount() {
     if (!this.state.intervalIsSet) {
-      let interval = setInterval(this.getDataFromDb, 4000);
+      let interval = setInterval(this.getDataFromDb, 1000);
       this.setState({ intervalIsSet: interval });
     }
   }
@@ -310,7 +310,6 @@ export class ViewUsers extends React.Component {
         <div>
         <h2>All Users</h2>
          <div className="row justify-content-between">
-
             {
               data.length <= 0 || data.length == undefined
                 ? <IsLoading />
@@ -329,19 +328,26 @@ export class ViewUsers extends React.Component {
                       {
                         property: 'company',
                         header: <Text>Company</Text>,
+                        render: datem => (
+                          <Button 
+                            color="none"
+                            className="btn-link viewUserDataButton" 
+                            onClick={() => this.viewUser(datem._id)}
+                          >
+                             <Text className="viewUserDataLink">
+                                {datem.company} 
+                                <FeatherIcon className="viewUserDataLinkIcon" icon="arrow-right" />
+                              </Text>
+                          </Button>
+                        )
                       },
                       {
                         property: 'firstName',
                         header: <Text>Contact</Text>,
                         render: datem => (
-
-                          //building arrows on dropdown for contact name
-                          <Button 
-                            color="dark" 
-                            onClick={() => this.viewUser(datem._id)}>
-                            {datem.firstName + " " + datem.lastName} 
-                            <FeatherIcon className="" icon="arrow-right" />
-                          </Button>
+                            <Text>
+                              {datem.firstName + " " + datem.lastName} 
+                            </Text>
                         )
                       },
                       {
@@ -383,18 +389,19 @@ export class ViewUsers extends React.Component {
                 {
                   this.state.admin === "admin"
                   ? <div>
-                      <a
-                        onClick={() => this.viewUsers}
-                        className="viewUserBackLink"
+                      <Button
+                        onClick={() => this.viewUsers()}
+                        color="none"
+                        className="btn-link viewUserDataButton" 
                         >
-                          <p> 
+                          <Text className="viewUserDataLink viewUserBackLink">
                             <FeatherIcon 
                               icon="arrow-left" 
-                              className="viewUserBackIcon"
+                              className="viewUserDataLinkIcon viewUserBackIcon"
                             />
-                          Back
-                          </p>
-                        </a>
+                            Back
+                          </Text>
+                        </Button>
                         <div id="viewBox3" className="viewUserContactView">
                           <div
                             onClick={() => this.editUser(data._id, 31)}

@@ -423,7 +423,7 @@ body {
 .feather {
   width: 16px;
   height: 16px;
-  vertical-align: text-bottom;
+  vertical-align: middle;
 }
 
 /*
@@ -533,6 +533,9 @@ body {
   cursor: pointer;
 }
 
+.viewUserDataTable tr td {
+  vertical-align: middle;
+}
 .viewUserHeading h2 {
   font-size: 1.5rem;
 }
@@ -545,6 +548,30 @@ body {
 .viewUserButton .btn {
   width: 80%;
   margin: 10px auto;
+}
+.viewUserDataButton {
+  transition: 0.5s;
+}
+.viewUserDataButton:hover {
+  text-decoration: none !important;
+}
+.viewUserDataLinkIcon {
+  opacity: 0;
+  transition: 0.5s cubic-bezier(0.91, 0.02, 0.25, 1);
+  padding-left: 15px;
+  margin-left: 15px;
+}
+.viewUserBackIcon {
+  padding: 0 15px 5px 0;
+  margin: 0 15px 0 0;
+}
+.viewUserBackLink {
+  text-transform: uppercase;
+  padding-top: 5px;
+}
+.viewUserDataButton:hover > .viewUserDataLink .viewUserDataLinkIcon {
+  opacity: 1;
+  padding: 0;
 }
 .viewUserContactViewType {
   text-transform: uppercase;
@@ -630,7 +657,7 @@ button.StyledButton-sc-323bzc-0.lnKzGb:focus {
 .isLoadingComponent {
   position: absolute;
   top: 50%;
-  left: 45%;
+  left: 50%;
   width: 100%;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.5);

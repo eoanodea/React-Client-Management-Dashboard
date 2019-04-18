@@ -1,9 +1,9 @@
 import React from 'react';
 import axios from 'axios';
-import { Input, Alert, Spinner } from 'reactstrap';
+import { Input, Alert, Button } from 'reactstrap';
 import AddData from './AddData.Component';
 import FeatherIcon from 'feather-icons-react';
-import { DataTable, Text, Box, Meter, CheckBox } from 'grommet';
+import { DataTable, Text, Box, Meter, CheckBox, Tabs, Tab } from 'grommet';
 import { IsLoading } from '../IsLoading.Component';
 
 
@@ -11,6 +11,70 @@ export class ViewData extends React.Component {
   // initialize our state 
   state = {
     data: [],
+    sortedData: [],
+    dataTableColumns:
+      [
+        {
+          id: 0,
+          property: 'type',
+          align: "center",
+          header: <Text>Type</Text>,
+          render: datem => (
+            <Text>{this.icon(datem.type)}</Text>
+          ),
+        },
+        {
+          id: 1,
+          property: 'name',
+          header: <Text>Name</Text>,
+          render: datem => (
+            <Button 
+                  color="none"
+                  className="btn-link viewUserDataButton" 
+                  onClick={() => this.viewData(datem._id)}
+                >
+                  <Text className="viewUserDataLink">
+                      {datem.name} 
+                      <FeatherIcon className="viewUserDataLinkIcon" icon="arrow-right" />
+                    </Text>
+            </Button>
+          ),
+        },
+        {
+          id: 2,
+          property: 'parentName',
+          header: <Text>User</Text>,
+          render: datem => (
+            <Text>{datem.parentName}</Text>
+          )
+        },
+        {
+          id: 3,
+          property: 'hours',
+          header: 'Complete',
+          align: 'center',
+          render: datem => (
+            
+            <Box size='small' pad='xsmall'> 
+              { 
+               datem.type === "project"
+              ? <Meter
+                  values={this.calculateData(datem._id)}
+                  thickness="small"
+                  size="small"
+                />  
+              : <CheckBox
+                  checked={datem.isComplete}
+                  size="small"
+                  className="text-center"
+                  onChange={(event) => this.isComplete(event.target.checked, datem._id)}
+                />
+              }
+            </Box>
+            
+          ),
+        }
+    ],
     id: 0,
     admin: "all",
     itemId: null,
@@ -37,9 +101,8 @@ export class ViewData extends React.Component {
   // then we incorporate a polling logic so that we can easily see if our db has 
   // changed and implement those changes into our UI
   componentDidMount() {
-    // this.getDataFromDb();
     if (!this.state.intervalIsSet) {
-      let interval = setInterval(this.getDataFromDb, 2000);
+      let interval = setInterval(this.getDataFromDb, 1000);
       this.setState({ intervalIsSet: interval });
     }
   }
@@ -229,22 +292,11 @@ export class ViewData extends React.Component {
   };
 
 
-  // our update method that uses our backend api
-  // to overwrite existing data base information
-  // handleClick(event) {  
-  //   var clickedId = event.target.id;
-  //   console.log(clickedId);
-  //   alert("It works! You clicked " + clickedId)
-  // }
   isComplete = (checked, id) => {
-
     const idToUpdate = id, updateToField = "isComplete", updateToApply = checked;
-    // if(checked === "on") {
-    //   updateToApply = true;
-    // } else {
-    //   updateToApply = false;
-    // }
     const  updateCurrent = !updateToApply;
+
+
     this.state.data.forEach(dat => {
       if(dat._id === idToUpdate && dat.isComplete !== checked) {
         dat.isComplete = updateToApply;
@@ -324,30 +376,40 @@ export class ViewData extends React.Component {
       projectId: null
     })
   }
-  calculateData = (id, type) => {
+  calculateData = (id) => {
     let dataArray = [];
     this.state.data.forEach(dat => {
       if(dat.parentName === id ) {
         dataArray = dataArray.concat(dat)
       } 
     })
+    console.log(dataArray);
+
   }
 
 
   authorized = () => {
     const userAccess = JSON.parse(localStorage.getItem('user_access'));
-    if(userAccess === "admin") {
+    if(userAccess === "admin" && this.state.admin !== "admin") {
         this.setState({ admin: userAccess })
         this.viewDatas();
-    } else {
+    } else if (this.state.admin !== "all"){
         const userId = JSON.parse(localStorage.getItem('user_id'));
         this.setState({ admin: 'all', userId: userId });
     }
  }
 
- isLoading() {
-    return 
+ isLoading(data) {
+
+
+  return (
+    <div className="container">
+      <h3>No data available</h3>
+      <AddData />
+    </div>
+    );
   }
+
   icon(type) {
 
     if(type === "project") {
@@ -356,9 +418,42 @@ export class ViewData extends React.Component {
       return <FeatherIcon icon = "clipboard" />
     }
   }
-  userDatas = (id, type) => {
 
-    let { data, viewDatas, title, isLoading } = this.state;
+  //Broken function, could not fix the error I got for it
+  //Data was for some reason not recognized as an array here
+  // sortData = (bool) => {
+  //   let sortedData = [];
+  //   const { data, dataTableColumns } = this.state;
+  //   console.log("data before: " + data);
+  //   if(data) {
+  //     data.forEach(dat => {
+  //       if(dat.isComplete === bool) {
+  //         sortedData = sortedData.concat(dat);
+  //       }
+  //     })
+  //     console.log("data after: " + sortedData);
+  //     return(
+  //       <DataTable
+  //         sortable={true}
+  //         primaryKey="_id"
+  //         columns={dataTableColumns}
+  //       />
+  //     );
+  //   } else {
+  //     console.log("There was an error with the receieved data: " + data + ", " + bool )
+  //   }
+
+  // }
+
+  userDatas = (id, type) => {
+    let { 
+      data, 
+      viewDatas, 
+      title, 
+      isLoading, 
+      dataTableColumns,
+      admin
+    } = this.state;
     
     if(isLoading !== false && title !== type) {
       this.setState({
@@ -366,7 +461,8 @@ export class ViewData extends React.Component {
         title: type
       })
     }
-    if(id) {
+
+    if(id && admin === "all") {
       data = data.filter(data => data.type === type && data.parentId === id);
     } else {
       data = data.filter(data => data.type === type);
@@ -375,63 +471,16 @@ export class ViewData extends React.Component {
       return(
         <div>
         {
-          data.length <= 0
-          ? this.isLoading(data.type)
+          data.length <= 0 || data.length == undefined
+          ? this.isLoading(data)
           : <DataTable
-                sortable={true}
-                primaryKey="_id"
-                columns={[
-                  {
-                    property: 'type',
-                    align: "center",
-                    header: <Text>Type</Text>,
-                    render: datem => (
-                      <Text>{this.icon(datem.type)}</Text>
-                    ),
-                  },
-                  {
-                    property: 'name',
-                    header: <Text>Name</Text>,
-                    render: datem => (
-                      <Text onClick={() => this.viewData(datem._id)}>{datem.name}</Text>
-                    ),
-                  },
-                  {
-                    property: 'parentName',
-                    header: <Text>User</Text>,
-                    render: datem => (
-                      <Text>{datem.parentName}</Text>
-                    )
-                  },
-                  {
-                    property: 'dueDate',
-                    header: <Text>Due Date</Text>,
-                    render: datem => (
-                      <Text>{datem.dueDate}</Text>
-                    )
-                  },
-                  {
-                    property: 'hours',
-                    header: 'Complete',
-                    render: datem => (
-                      datem.type === "project"
-                       ? <Box pad={{ vertical: 'xsmall' }}>
-                          <Meter
-                            values={this.calculateData(datem._id)}
-                            thickness="small"
-                            size="small"
-                          />
-                        </Box>
-                        : <CheckBox
-                            checked={datem.isComplete}
-                            onChange={(event) => this.isComplete(event.target.checked, datem._id)}
-                          />
-                    ),
-                  }
-                ]}
-                data={data}
-              />
-            }
+              sortable={true}
+              primaryKey="_id"
+              className="viewUserDataTable"
+              columns={dataTableColumns}
+              data={data}
+            />
+          }
           </div>
       );  
     }
@@ -456,7 +505,7 @@ export class ViewData extends React.Component {
       projectId,
       alertMsg,
       alertMsgClr,
-      admin
+
     } = this.state;
     let userType;
     if(this.props.user) {
@@ -473,15 +522,18 @@ export class ViewData extends React.Component {
       return (
         <div className="row">
           <div className="col-md-12">
-            {
+          {this.userDatas(this.props.id, userType)}
+            {/* {
               admin !== "admin"
               ? this.userDatas(this.props.id, userType)
               : <DataTable
                   sortable={true}
-                  columns={data}
+                  primaryKey="_id"
+                  className="viewUserDataTable"
+                  columns={dataTableColumns}
                   data={data}
                 />
-            }
+            } */}
             </div>
         </div>
         );
