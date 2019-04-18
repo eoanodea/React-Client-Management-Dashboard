@@ -202,9 +202,7 @@ export class ViewUsers extends React.Component {
     updateToField
     ) => {
     const { alertMsg, userId } = this.state;
-    // this.setState({
-    //   isLoading: true,
-    // })
+
     let objIdToUpdate = null;
     this.state.data.forEach(dat => {
       if (dat._id === idToUpdate) {
@@ -212,7 +210,7 @@ export class ViewUsers extends React.Component {
       }
     });
     
-    console.log(objIdToUpdate, updateCurrent, updateToApply, updateToField)
+    
     axios.post("http://localhost:3001/api/account/updateData", {
       headers: {
         'Content-Type': 'application/json'
@@ -244,8 +242,6 @@ export class ViewUsers extends React.Component {
     });
   };
   viewUser(id) {
-    console.log("YEEEHHh?!");
-
       this.setState({
         isLoading: false,
         viewUsers: false,
@@ -254,7 +250,6 @@ export class ViewUsers extends React.Component {
       })
   }
   viewUsers = () => {
-    console.log("I'm working?!");
       this.setState({
         isLoading: false,
         viewUser: false,
