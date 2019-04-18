@@ -46,7 +46,10 @@ export class AppNavbar extends React.Component {
                                 </DropdownToggle>
                                 <DropdownMenu right>
                                     <DropdownItem>
-                                    <FeatherIcon icon="users" /> Profile
+                                    <FeatherIcon icon="users" href="/profile"/> Profile
+                                    </DropdownItem>
+                                    <DropdownItem href="https://gitlab.mi.hdm-stuttgart.de/eo023/client-management-system">
+                                    <FeatherIcon icon="github" /> GitHub
                                     </DropdownItem>
                                     <DropdownItem divider />
                                     <DropdownItem>

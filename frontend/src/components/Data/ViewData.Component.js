@@ -376,39 +376,38 @@ export class ViewData extends React.Component {
       projectId: null
     })
   }
+
+
   calculateData = (id) => {
     let dataArray = [];
     this.state.data.forEach(dat => {
-      if(dat.parentName === id ) {
+      if(dat.parentId === id ) {
         dataArray = dataArray.concat(dat)
       } 
     })
-    console.log(dataArray);
 
   }
 
 
   authorized = () => {
+    
     const userAccess = JSON.parse(localStorage.getItem('user_access'));
-    if(userAccess === "admin" && this.state.admin !== "admin") {
-        this.setState({ admin: userAccess })
+    if(userAccess === "admin") {
+        if(this.state.admin !== userAccess) {
+          this.setState({ admin: userAccess })
+        }
         this.viewDatas();
-    } else if (this.state.admin !== "all"){
+    } else {
         const userId = JSON.parse(localStorage.getItem('user_id'));
         this.setState({ admin: 'all', userId: userId });
     }
  }
 
  isLoading(data) {
-
-
-  return (
-    <div className="container">
-      <h3>No data available</h3>
-      <AddData />
-    </div>
-    );
-  }
+  setInterval(this.authorized, 5000);
+  return <IsLoading />
+ 
+}
 
   icon(type) {
 
@@ -462,7 +461,7 @@ export class ViewData extends React.Component {
       })
     }
 
-    if(id && admin === "all") {
+    if(id) {
       data = data.filter(data => data.type === type && data.parentId === id);
     } else {
       data = data.filter(data => data.type === type);
@@ -505,6 +504,8 @@ export class ViewData extends React.Component {
       projectId,
       alertMsg,
       alertMsgClr,
+      dataTableColumns,
+      admin
 
     } = this.state;
     let userType;
@@ -516,13 +517,25 @@ export class ViewData extends React.Component {
       userType = "task";
     }
     if(isLoading) {
+      {this.authorized()}
       return <IsLoading />
+
     }
     if(!isLoading && viewDatas) {
       return (
         <div className="row">
           <div className="col-md-12">
-          {this.userDatas(this.props.id, userType)}
+          {
+            admin !== "admin"
+            ? this.userDatas(this.props.id, userType)
+            : <DataTable
+                sortable={true}
+                primaryKey="_id"
+                className="viewUserDataTable"
+                columns={dataTableColumns}
+                data={data}
+              />
+          }
             {/* {
               admin !== "admin"
               ? this.userDatas(this.props.id, userType)
@@ -553,23 +566,25 @@ export class ViewData extends React.Component {
                   </Alert>
                 ) : (null)
               }              
-              <a
-              onClick={this.viewDatas}
-              className="viewUserBackLink"
+            <Button
+              onClick={() => this.viewDatas()}
+              color="none"
+              className="btn-link viewUserDataButton" 
               >
-                <p> 
+                <Text className="viewUserDataLink viewUserBackLink">
                   <FeatherIcon 
                     icon="arrow-left" 
-                    className="viewUserBackIcon"
+                    className="viewUserDataLinkIcon viewUserBackIcon"
                   />
-                Back
-                </p>
-              </a>
+                  Back
+                </Text>
+              </Button>
               <div className="row">
                 <div className="col">
                   
                   <div className="viewUserHeading">
                   <div id="viewBoxHeading" className="viewUserContactView">
+                  <label className="viewUserContactViewType">Name:</label>
                     <div
                       onClick={() => this.editUser(data._id, 41)}
                       className="viewUserContactViewLink"
@@ -599,12 +614,14 @@ export class ViewData extends React.Component {
                   {this.addData(data)}
                 </div>
               </div>
+
               <div className="viewUserContact">
-                  <h3>{data.type}</h3>
+                  <h3>{data.type} details:</h3>
                   <div className="row">
                     <div className="col">
 
                       <div id="viewBox" className="viewUserContactView">
+                        <label className="viewUserContactLabel">Description:</label>
                           <div
                             
                             onClick={() => this.editUser(data._id, 1)}
@@ -630,13 +647,13 @@ export class ViewData extends React.Component {
                         </div>
                         
                         <div id="viewBox1" className="viewUserContactView">
+                        <label className="viewUserContactLabel">Parent:</label>
                         <div
-                          
-                          onClick={() => this.editUser(data._id, 11)}
+                          // onClick={() => this.editUser(data._id, 11)}
                           className="viewUserContactViewLink"
-                        >3
-                          <p className="viewUserContactViewData">{data.parentId}</p>
-                          <FeatherIcon className="viewUserContactViewLinkEdit" icon="edit" />
+                        >
+                          <p className="viewUserContactViewData">{data.parentName}</p>
+                          <FeatherIcon className="viewUserContactViewLinkEdit" icon="x-circle" />
                         </div>
                       </div>
                         <div id="editBox1" className="viewUserContactEdit">
@@ -657,6 +674,7 @@ export class ViewData extends React.Component {
                       </div>
                       <div className="col">
                         <div id="viewBox2" className="viewUserContactView">
+                        <label className="viewUserContactLabel">Hours Logged:</label>
                         <div
                           
                           onClick={() => this.editUser(data._id, 21)}
@@ -682,6 +700,7 @@ export class ViewData extends React.Component {
                         </div>
 
                         <div id="viewBox3" className="viewUserContactView">
+                        <label className="viewUserContactLabel">Due Date:</label>
                         <div
                           
                           onClick={() => this.editUser(data._id, 31)}

@@ -6,7 +6,8 @@ import {
   ModalBody,
   ModalFooter,
   FormGroup,
-  Input
+  Input,
+  Label
 } from 'reactstrap';
 import axios from 'axios';
 import FeatherIcon from 'feather-icons-react';
@@ -237,6 +238,7 @@ export class AddData extends React.Component {
             ? this.selectType(modalTitle)
             : <ModalBody>
                   <FormGroup>
+                  <Label>{this.state.type} name</Label>
                     <Input
                       type="text"
                       onChange={e => this.setState({ name: e.target.value })}
@@ -244,6 +246,7 @@ export class AddData extends React.Component {
                     />
                   </FormGroup>
                   <FormGroup>
+                  <Label>Description</Label>
                     <Input
                       type="text"
                       onChange={e => this.setState({ desc: e.target.value })}
@@ -251,6 +254,7 @@ export class AddData extends React.Component {
                     />
                   </FormGroup>
                   <FormGroup>
+                  <Label>Parent</Label>
                   {
                       parentId != null
                       ? <Input
@@ -262,6 +266,7 @@ export class AddData extends React.Component {
                   }
                   </FormGroup>
                   <FormGroup>
+                  <Label>Hours</Label>
                     <Input
                       type="text"
                       onChange={e => this.setState({ hours: e.target.value, parentId: parentId, parentName: parentName })}
@@ -269,6 +274,7 @@ export class AddData extends React.Component {
                     />
                   </FormGroup>
                   <FormGroup>
+                  <Label>Due Date</Label>
                     <Input
                       type="date"
                       onChange={e => this.setState({ dueDate: e.target.value })}
