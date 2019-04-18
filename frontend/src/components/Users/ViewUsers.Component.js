@@ -39,7 +39,6 @@ export class ViewUsers extends React.Component {
   // then we incorporate a polling logic so that we can easily see if our db has 
   // changed and implement those changes into our UI
   componentDidMount() {
-    this.getDataFromDb();
     if (!this.state.intervalIsSet) {
       let interval = setInterval(this.getDataFromDb, 4000);
       this.setState({ intervalIsSet: interval });
@@ -245,29 +244,39 @@ export class ViewUsers extends React.Component {
     });
   };
   viewUser(id) {
-    this.setState({
-      isLoading: false,
-      viewUsers: false,
-      viewUser: true,
-      userId: id
-    })
+    console.log("YEEEHHh?!");
+    if(this.state.viewUser !== true) {
+      this.setState({
+        isLoading: false,
+        viewUsers: false,
+        viewUser: true,
+        userId: id
+      })
+    }
   }
   viewUsers = () => {
-    this.setState({
-      isLoading: false,
-      viewUser: false,
-      viewUsers: true,
-      userId: null
-    })
+    console.log("I'm working?!");
+    if(this.state.viewUser !== false) {
+      this.setState({
+        isLoading: false,
+        viewUser: false,
+        viewUsers: true,
+        userId: null
+      })
+    }
   }
 
   authorized = () => {
     const userAccess = JSON.parse(localStorage.getItem('user_access'));
     if(userAccess === "admin") {
-        this.setState({admin: 'admin'})
+      if(this.state.admin !== "admin") {
+          this.setState({admin: 'admin'})
+        }
         this.viewUsers();
     } else {
+      if(this.state.admin !== "all") {
         this.setState({admin: 'all'});
+      }
         const userId = JSON.parse(localStorage.getItem('user_id'));
         this.viewUser(userId);
     }
@@ -329,7 +338,7 @@ export class ViewUsers extends React.Component {
                         property: 'firstName',
                         header: <Text>Contact</Text>,
                         render: datem => (
-                          <Text onClick={this.viewUser(datem._id)}>{datem.firstName + " " + datem.lastName}</Text>
+                          <Text onClick={() => this.viewUser(datem._id)}>{datem.firstName + " " + datem.lastName}</Text>
                         )
                       },
                       {
@@ -369,7 +378,7 @@ export class ViewUsers extends React.Component {
                   this.state.admin === "admin"
                   ? <div>
                       <a
-                        onClick={this.viewUsers}
+                        onClick={() => this.viewUsers}
                         className="viewUserBackLink"
                         >
                           <p> 

@@ -37,7 +37,7 @@ export class ViewData extends React.Component {
   // then we incorporate a polling logic so that we can easily see if our db has 
   // changed and implement those changes into our UI
   componentDidMount() {
-    this.getDataFromDb();
+    // this.getDataFromDb();
     if (!this.state.intervalIsSet) {
       let interval = setInterval(this.getDataFromDb, 2000);
       this.setState({ intervalIsSet: interval });
@@ -424,7 +424,6 @@ export class ViewData extends React.Component {
                         </Box>
                         : <CheckBox
                             checked={datem.isComplete}
-                            label='Oh yeh?'
                             onChange={(event) => this.isComplete(event.target.checked, datem._id)}
                           />
                     ),

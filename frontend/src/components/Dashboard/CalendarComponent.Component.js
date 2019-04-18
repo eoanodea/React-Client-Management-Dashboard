@@ -11,7 +11,7 @@ export class CalendarComponent extends React.Component {
       testDates: ["2019-05-12T00:00:00.000Z", "2019-12-15T00:00:00.000Z"]
     }
     componentDidMount() {
-      this.getDataFromDb();
+      // this.getDataFromDb();
       if (!this.state.intervalIsSet) {
         let interval = setInterval(this.getDataFromDb, 2000);
         this.setState({ intervalIsSet: interval });
