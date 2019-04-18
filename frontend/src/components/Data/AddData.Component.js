@@ -180,8 +180,8 @@ export class AddData extends React.Component {
       <ModalBody className="fade-out">
         <FormGroup>
           <h2>What are you adding?</h2>
-          <Button onClick={this.setState({ type: "project"})}>Project</Button>
-          <Button onClick={this.setState({ type: "task"})}>Task</Button>
+          <Button onClick={() => this.setState({ type: "project"})}>Project</Button>
+          <Button onClick={() => this.setState({ type: "task"})}>Task</Button>
         </FormGroup>
       </ModalBody>
     );
