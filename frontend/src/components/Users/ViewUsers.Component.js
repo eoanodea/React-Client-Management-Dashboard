@@ -245,25 +245,22 @@ export class ViewUsers extends React.Component {
   };
   viewUser(id) {
     console.log("YEEEHHh?!");
-    if(this.state.viewUser !== true) {
+
       this.setState({
         isLoading: false,
         viewUsers: false,
         viewUser: true,
         userId: id
       })
-    }
   }
   viewUsers = () => {
     console.log("I'm working?!");
-    if(this.state.viewUser !== false) {
       this.setState({
         isLoading: false,
         viewUser: false,
         viewUsers: true,
         userId: null
       })
-    }
   }
 
   authorized = () => {
@@ -314,7 +311,6 @@ export class ViewUsers extends React.Component {
         <h2>All Users</h2>
          <div className="row justify-content-between">
 
-          {/* <div className=""> */}
             {
               data.length <= 0 || data.length == undefined
                 ? <IsLoading />
@@ -338,7 +334,14 @@ export class ViewUsers extends React.Component {
                         property: 'firstName',
                         header: <Text>Contact</Text>,
                         render: datem => (
-                          <Text onClick={() => this.viewUser(datem._id)}>{datem.firstName + " " + datem.lastName}</Text>
+
+                          //building arrows on dropdown for contact name
+                          <Button 
+                            color="dark" 
+                            onClick={() => this.viewUser(datem._id)}>
+                            {datem.firstName + " " + datem.lastName} 
+                            <FeatherIcon className="" icon="arrow-right" />
+                          </Button>
                         )
                       },
                       {
@@ -349,11 +352,14 @@ export class ViewUsers extends React.Component {
                     data={data}
                   />
               }
-          {/* </div> */}
-          <div className="col-md-3">
-              <SignUp />
-          </div>
-      </div>
+          {
+            data.length <= 0 || data.length == undefined
+            ? null
+            : <div className="col-md-3">
+                  <SignUp />
+              </div>
+          }
+        </div>
       </div>
       );
     }
@@ -362,7 +368,7 @@ export class ViewUsers extends React.Component {
       return(
         <div>  
           {
-            data.length <= 0 || data.length === undefined
+            data.length <= 0 || data.length == undefined
             ? <IsLoading />
             : data.filter(data => data._id === userId).map(data => (
               <Jumbotron className="row viewUser" key={data._id}>

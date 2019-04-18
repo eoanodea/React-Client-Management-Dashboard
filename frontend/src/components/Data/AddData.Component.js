@@ -9,6 +9,7 @@ import {
   Input
 } from 'reactstrap';
 import axios from 'axios';
+import FeatherIcon from 'feather-icons-react';
 
 export class AddData extends React.Component {
   constructor(props) {
@@ -175,13 +176,22 @@ export class AddData extends React.Component {
     }));
   }
   selectType() {
-
     return(
-      <ModalBody className="fade-out">
-        <FormGroup>
-          <h2>What are you adding?</h2>
-          <Button onClick={() => this.setState({ type: "project"})}>Project</Button>
-          <Button onClick={() => this.setState({ type: "task"})}>Task</Button>
+      <ModalBody className="container fade-in">
+        <br />
+        <FormGroup className="row justify-content-around">
+          <Button 
+            onClick={() => this.setState({ type: "project"})}
+            className="col-md-4"
+            color="dark"
+          >
+            <FeatherIcon icon="briefcase" />Project</Button>
+          <Button 
+            onClick={() => this.setState({ type: "task"})}
+            className="col-md-4"
+            color="dark"
+          >
+          <FeatherIcon icon="clipboard" />Task</Button>
         </FormGroup>
       </ModalBody>
     );
@@ -193,9 +203,15 @@ export class AddData extends React.Component {
   // it is easy to understand their functions when you 
   // see them render into our screen
   render() {
-    let parentName = "Default";
-    let parentId = null;
+    let parentName = "Default", parentId, modalTitle, modalButtonTitle;
     let { type } = this.state; 
+    if(type) {
+      modalTitle = "Add a " + type;
+      modalButtonTitle = modalTitle;
+    } else {
+      modalTitle = "What are you adding?"
+      modalButtonTitle = "Add something"
+    }
     if(this.props.parent != null) {
       parentId = this.props.parent._id;
       if(this.props.parent.company) {
@@ -213,12 +229,12 @@ export class AddData extends React.Component {
 
     return (  
       <div className="viewUserButton">
-        <Button color="dark" onClick={this.toggle}>Add {type}</Button>
+        <Button color="dark" onClick={this.toggle}>{modalButtonTitle}</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.toggle}>Add a {type}</ModalHeader>
+          <ModalHeader toggle={this.toggle}>{modalTitle}</ModalHeader>
           {
             !this.state.type
-            ? this.selectType()
+            ? this.selectType(modalTitle)
             : <ModalBody>
                   <FormGroup>
                     <Input
