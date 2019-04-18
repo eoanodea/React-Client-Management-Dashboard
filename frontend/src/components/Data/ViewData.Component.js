@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Input, Alert, Button } from 'reactstrap';
 import AddData from './AddData.Component';
 import FeatherIcon from 'feather-icons-react';
-import { DataTable, Text, Box, Meter, CheckBox, Tabs, Tab } from 'grommet';
+import { DataTable, Text, Box, Meter, CheckBox } from 'grommet';
 import { IsLoading } from '../IsLoading.Component';
 
 
@@ -377,16 +377,23 @@ export class ViewData extends React.Component {
     })
   }
 
+//Attempting to get the percentage of tasks completed out of all tasks associated with each project but unsuccessful
+  // calculateData = (id) => {
+  //   let dataArray = [],
+  //   totalComplete = [];
+  //   this.state.data.forEach(dat => {
+  //     if(dat.parentId === id ) {
+  //       dataArray = dataArray.concat(dat)
+  //       if(dat.isComplete === true)
+  //         totalComplete = totalComplete.concat(dat)
+  //     } 
+  //   })
+  //   console.log(dataArray.length, totalComplete.length);
+  //   const percent = (dataArray.length - totalComplete.length) /dataArray 
+  //   console.log(percent);
+  //   return percent
 
-  calculateData = (id) => {
-    let dataArray = [];
-    this.state.data.forEach(dat => {
-      if(dat.parentId === id ) {
-        dataArray = dataArray.concat(dat)
-      } 
-    })
-
-  }
+  // }
 
 
   authorized = () => {

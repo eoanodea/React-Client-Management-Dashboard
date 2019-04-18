@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { Input, Button, Alert, Jumbotron, Table } from 'reactstrap';
-import { Select, DataTable, Text, Box, Meter } from 'grommet';
+import { Input, Button, Alert, Jumbotron } from 'reactstrap';
+import { Select, DataTable, Text } from 'grommet';
 import FeatherIcon from 'feather-icons-react';
 import {ViewData} from '../Data/ViewData.Component';
 import {AddData} from '../Data/AddData.Component';

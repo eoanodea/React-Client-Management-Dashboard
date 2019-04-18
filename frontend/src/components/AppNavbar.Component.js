@@ -5,15 +5,12 @@ import {
     NavbarToggler,
     NavbarBrand,
     Nav,
-    NavItem,
-    NavLink,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
     DropdownItem
 } from 'reactstrap';
 import FeatherIcon from 'feather-icons-react';
-import { Box, Clock } from 'grommet';
 
 
 export class AppNavbar extends React.Component {
@@ -45,15 +42,12 @@ export class AppNavbar extends React.Component {
                                     Hi, {userFirstName}
                                 </DropdownToggle>
                                 <DropdownMenu right>
-                                    <DropdownItem>
-                                    <FeatherIcon icon="users" href="/profile"/> Profile
-                                    </DropdownItem>
-                                    <DropdownItem href="https://gitlab.mi.hdm-stuttgart.de/eo023/client-management-system">
-                                    <FeatherIcon icon="github" /> GitHub
+                                    <DropdownItem  href="/profile">
+                                    <FeatherIcon icon="users"/> Profile
                                     </DropdownItem>
                                     <DropdownItem divider />
-                                    <DropdownItem>
-                                        <FeatherIcon icon="log-out" /> Logout
+                                    <DropdownItem href="https://gitlab.mi.hdm-stuttgart.de/eo023/client-management-system">
+                                    <FeatherIcon icon="github" /> GitHub
                                     </DropdownItem>
                                 </DropdownMenu>
                             </UncontrolledDropdown>
