@@ -59,7 +59,7 @@ export class ViewData extends React.Component {
               { 
                datem.type === "project"
               ? <Meter
-                  values={this.calculateData(datem._id)}
+                  values={[{ value: datem.hours }]}
                   thickness="small"
                   size="small"
                 />  
