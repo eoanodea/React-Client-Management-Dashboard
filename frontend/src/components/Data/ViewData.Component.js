@@ -80,7 +80,6 @@ export class ViewData extends React.Component {
     itemId: null,
     name: null,
     desc: null,
-    parentId: null,
     hours: null,
     dueDate: null,
     alertMsg: null,
@@ -359,22 +358,25 @@ export class ViewData extends React.Component {
     })
   };
   viewData(id) {
-    this.setState({
-      isLoading: false,
-      viewDatas: false,
-      viewData: true,
-      projectId: id
-    })
+    if(this.state.viewData !== true) {
+      this.setState({
+        isLoading: false,
+        viewDatas: false,
+        viewData: true,
+        projectId: id
+      })
+    }
     
   }
   viewDatas = () => {
-    console.log("yeh?!");
-    this.setState({
-      isLoading: false,
-      viewData: false,
-      viewDatas: true,
-      projectId: null
-    })
+    if(this.state.viewDatas !== true){
+      this.setState({
+        isLoading: false,
+        viewData: false,
+        viewDatas: true,
+        projectId: null
+      })
+    }
   }
 
 //Attempting to get the percentage of tasks completed out of all tasks associated with each project but unsuccessful
