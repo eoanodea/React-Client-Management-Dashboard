@@ -1,0 +1,107 @@
+.viewProject {
+    &Heading {
+        display: flex;
+    }
+    &BackLink {
+        font-size: 1.2em;
+    }
+    &BackIcon {
+        width: 1.5em;
+        height: 1.5em;
+        cursor: pointer;
+    }
+}
+.viewUser {
+    &DataTable tr td {
+        vertical-align: middle;
+    }
+    &Heading h2 {
+        font-size: 1.5rem
+    }
+    &Contact h3, &Projects {
+        margin: 20px 0;
+        border-bottom: 1px solid #00000024;
+        padding-bottom: 10px;
+        width: 70%;
+    }
+    &Button .btn {
+        width: 80%;
+        margin: 10px auto;
+    }
+    &DataButton {
+        transition: .5s;
+    }
+    &DataButton:hover {
+        text-decoration: none!important;
+    }
+    &DataLinkIcon {
+        opacity: 0;
+        transition: .5s cubic-bezier(0.91, 0.02, 0.25, 1);
+        padding-left: 15px;
+        margin-left: 15px;
+    }
+    &BackIcon {
+        padding: 0 15px 5px 0;
+        margin: 0 15px 0 0;
+    }
+    &BackLink {
+        text-transform: uppercase;
+        padding-top: 5px;
+    }
+    &DataButton:hover > &DataLink &DataLinkIcon {
+        opacity: 1;
+        padding: 0;
+    }
+    &ContactViewType {
+        text-transform: uppercase;
+        margin-bottom: 5px;
+        display: block;
+    }
+    &ContactEdit {
+        display: flex;
+        justify-content: space-between;
+        display: none;
+    }
+    &ContactViewLink {
+        display: flex;
+        justify-content: space-between;
+        padding: .375rem .75rem;
+        border: 2px solid #fff;
+        transition: .2s ease;
+        width: max-content;
+    }
+    &ContactViewLinkEdit {
+        display: none;
+        transition: .2s ease;
+        width: 1.3rem;
+        height: 1.3rem;
+        color: grey;
+        margin: auto 0 auto 15px;
+    }
+    &ContactViewLink:hover > &ContactViewLinkEdit {
+        display: block;
+    }
+    &ContactViewLink:hover {
+        cursor: pointer;
+
+        background-clip: padding-box;
+        border-color: #a2a4a7;
+        border-radius: .25rem;
+    }
+    &ContactEdit input {
+        transition: .2s ease;
+    }
+    &ContactCheck {
+        width: 40px;
+        height: 40px;
+        position: relative;
+        top: 1px;
+        right: -5px;
+        
+    }
+    &ContactViewData {
+        font-weight: 400;
+        margin: auto 0;
+    }
+
+}
